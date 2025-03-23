@@ -1,16 +1,15 @@
 ---
-​---
 layout:     post
 title:      "世界计划"
-subtitle:   "世界计划游戏介绍"
-date:       2025-01-29 12:00:00
+subtitle:   "风靡全球的音乐手游"
+date:       2025-03-14 
 author:     "Arashi"
 header-img: ""
+catalog: true
 tags:
-    - 世界计划
-    - 手机游戏
-    - 初音未来
-​---
+  - 世界计划
+  - 手机游戏	
+  - 初音未来
 ---
 
 > 这篇文章转载自互联网
