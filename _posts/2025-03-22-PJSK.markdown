@@ -5,8 +5,11 @@ title:      "世界计划"
 subtitle:   "世界计划游戏介绍"
 date:       2025-01-29 12:00:00
 author:     "Arashi"
+header-img: ""
 tags:
-    - Life
+    - 世界计划
+    - 手机游戏
+    - 初音未来
 ​---
 ---
 
