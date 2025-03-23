@@ -1,61 +1,22 @@
-Hey，我是黄玄（a.k.a. Hux, _@huxpro_），一个略懂计算机科学与艺术的斜杆不动青年，自诩是一个[广院](https://baike.baidu.com/item/%E4%B8%AD%E5%9B%BD%E4%BC%A0%E5%AA%92%E5%A4%A7%E5%AD%A6)数字媒体艺术系与 RIT 计算机科学系（师从 [Prof. Matthew Fluet](https://www.cs.rit.edu/~mtf/) 专攻编程语言）杂交出来的[黑客与画家](https://book.douban.com/subject/6021440/)。
-
-现为 <del>Facebook</del> Meta 签约软件工程师，就职于开源技术<del>网红</del>团队 [React](https://beta.reactjs.org/community/meet-the-team#react-core)，曾参与 [Hermes JavaScript 引擎](https://hermesengine.dev/)，[ReasonML](https://reasonml.github.io/) (现 [ReScript](https://rescript-lang.org/))，以及 [Reality Labs](https://tech.fb.com/ar-vr/) 某保密项目等。在国内期间，曾被招募为阿里巴巴 · [阿里旅行（飞猪）](http://alitrip.com)· 前端工程师、微影时代 · 微票儿 · 前端基础设施工程团队负责人、[饿了么](https://ele.me/) · 大前端团队 · [PWA 顾问](https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509) 等。
+Hey，我是十六夜岚（Arashi Izayoi, _@Arashi_Izayoi_），一个略懂软件工程与热爱ACG文化的普通青年，主要从事前端方向的开发，希望有朝一日成为有艺术细胞的开发者。
 
 
-目前的物理活动范围主要在美帝纽约与硅谷，也想当个数字游<del>民</del>侠。虚拟分身日常出没于[微博](https://weibo.com/huxpro)、[知乎](https://www.zhihu.com/people/huxpro/pins/posts)、[B站](https://space.bilibili.com/43271611)、[Instagram](https://www.instagram.com/huxpro/)、[推特](https://twitter.com/Huxpro/)、[Github](https://github.com/huxpro) 等。
+对未知事物会充满兴趣：诸如医学，生物学，地理学，物理学，计算机科学，历史，人文等。喜欢看书和音乐，常常因为接触未知的新鲜事物投入太多，而忘记时间。
 
 
-##### 技术演讲
+##### 关于博客
 
-- [我的大前端世界观][20] · [FEDAY](https://fequan.com/2023/) · 2023
-- [前端已死，前端永生][21] · [掘金年度技术演讲](https://juejin.cn/meetings/talk2023) · 2023
-- [React 国情咨文 2022][13] · 第七届中国开源年会 · 2023
-- [React Labs: What We've Been Working On – June 2022][12] · React Blog
-- [React Without Memo][11] · [React Conf 2021](https://conf.reactjs.org/)
-- [Toward Hermes being the Default][11] · React Native Blog · 2021
-- React Native 0.64 with Hermes for iOS · [The RN Show Podcast Ep #5](https://www.callstack.com/podcast-react-native-show) · 2021
-- [Upgrading to Progressive Web Apps][9] · [Youtube](https://www.youtube.com/watch?v=RWzMF-1fjJ8&t=1s) · [JSConf CN 上海 2017](http://2017.jsconf.cn/)
-- Building Progressive Web Apps · [CSDI 广州 2017](http://www.csdisummit.com/)
-- The State of Progressive Web App · GDG IO Redux 北京 2017
-- 炒冷饭 · PWA 到底是个什么玩意？· Baidu HQ 北京 2017
-- [Service Worker 101][5] · GDG DevFest 北京 2016
-- [Progressive Web App，复兴序章][4] · [QCon 上海 2016](http://2016.qconshanghai.com/presentation/3111)
-- Progressive Web App 之我见 · GDG IO Redux 北京 2016
-- [CSS Still Sucks 2015][2] · 2015
-- [JavaScript 模块化七日谈][1] · 2015
+- 拥有一个简易的个人网站，总觉得是一件很酷的事
+      在3年的暑假，正值高考后，从繁忙的学业中挣脱出来的我，就想着着手做一些自己感兴趣的事。从小就对互联网以及一些科技产品感兴趣的我于是就开始从这里开始切入。一次偶然的机会我从我的表哥（现在看来算是我的前辈，因为都学一样的专业）那得知他有自己的个人网站。于是就有了想创建个人网站的想法。那时对于没有专业知识的我只能通过自学+加上表哥的指导来完成这项工作。大概折腾了3天左右我的个人网站就完成了。但由于高昂的服务器费用这个个人网站只持续了一个暑假的时间就结束了。可能是因为多少一点执念吧？从第一个个人网站到现在这个重新建起来的个人网站这个期间，时不时就会有再做一个个人网站的想法，直到现在我再次拥有它了。
+      由于现在这段时间比较忙所以，这个新站借用了Hux大佬的博客模板，你可以从下方的github链接直接跳转到他的博客模板仓库。在未来我会时不时在这里更新一些内容（如果我还记得的话），如果看到这篇文章的你也有自己的个人网站或者博客你可以通过我的邮箱将你的网站链接发给我，我们可以交个朋友，互相在对方的网站上挂上友链。
+  
+  
 
 
-##### 媒体关注
+##### 关于自设
 
-- [Hux 黄玄：从全局视角看 React 生态][14] · 直播 · 图灵 8 点半 · 2023
-- [2022 中国开源先锋 33 人][18] · SegmentFault · 2023
-- [React 黄玄：不懂艺术的 B-Boy 不是 Swag 的程序员][16] · Gitee 封面人物 · 2022
-- [在硅谷当程序员是怎样的体验？][17] · 知乎[《我所向往的职业啊》](https://movie.douban.com/subject/36015036/) · 2022
+- 都上网了，那至少换一下形象！
+      全名十六夜岚，十六夜取自东方Project的十六夜咲夜的姓（老车万人了），因为自己非常喜欢这个角色，加上本身有夜晚的含义，自己也是一个夜猫子故取“十六夜”为自设形象的姓
+      至于名岚则是因为受到村上春树的一句话的启发“当你穿过风暴，你就不是原来那个人了”，岚意为风暴，我希望自己的心像风暴一样热烈，也希望自己能穿越风暴，历经磨练成为一个自立自强的人。
 
-<!--
-- [掘金 AMA：我是前端娱乐圈的老人 & Facebook 实习生 -- 黄玄][19] · 2018
--->
-
-
-[1]: //huangxuan.me/2015/07/09/js-module-7day/
-[2]: //huangxuan.me/2015/12/28/css-sucks-2015/
-[3]: //huangxuan.me/2016/06/05/pwa-in-my-pov/
-[4]: //huangxuan.me/2016/10/20/pwa-qcon2016/
-[5]: //huangxuan.me/2016/11/20/sw-101-gdgdf/
-[6]: https://yanshuo.io/assets/player/?deck=58ac8598b123db0067292f92 "PWA Rehashing"
-[7]: https://yanshuo.io/assets/player/?deck=593ad6fbfe88c2006a0a0d6d "The State of PWA"
-[8]: https://yanshuo.io/assets/player/?deck=594d673d570c357d0698a950 "Building PWA"
-[9]: //huangxuan.me/jsconfcn2017/
-[10]: https://reactnative.dev/blog/2021/10/26/toward-hermes-being-the-default
-[11]: https://youtu.be/lGEMwh32soc
-[12]: https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html
-[13]: https://www.bilibili.com/video/BV1LY411Q7hC/?spm_id_from=333.999.0.0
-[14]: https://appycyfaqcq1951.pc.xiaoe-tech.com/p/t_pc/course_pc_detail/video/v_64477dbfe4b0cf39e6c11d2a
-[15]: https://segmentfault.com/a/1190000043208486
-[16]: https://gitee.com/gitee-stars/30
-[17]: https://www.zhihu.com/zvideo/1542577108190068737?page=ogv
-[18]: https://segmentfault.com/a/1190000043208486
-[19]: https://juejin.cn/post/6844903750155419655
-[20]: https://www.bilibili.com/video/BV1SC4y1c7ju/
-[21]: https://www.bilibili.com/video/BV1uz421d7Ch/
+  
