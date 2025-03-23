@@ -74,7 +74,7 @@ ga_domain: arashiizayoi.me
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "一个 热爱生活 的程序员 <br> "
+sidebar-about-description: "一个 热爱生活 的程序员 <br> Email：arashiizayoi@qq.com"
 sidebar-avatar: https://avatars.githubusercontent.com/u/107742034?s=96&v=4 # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
