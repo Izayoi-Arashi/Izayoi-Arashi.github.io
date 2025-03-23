@@ -1,38 +1,19 @@
-Hey, I am Huang, Xuan (a.k.a. _@huxpro_). I worked on the [React Team](https://beta.reactjs.org/community/meet-the-team#react-core) at <del>Facebook</del>Meta.
+Hey, I am Arashi, Izayoi (Arashi_Izayoi _@ArashiIzayoi_). An ordinary young man who knows a little about software engineering and loves ACG culture, mainly engaged in the front-end direction of the development, and hopes to become a developer with artistic cells one day.
 
-I considered myself as a hybrid between a software engineer specifically into the programming languages theories and implementations domain (i.e. compiler, type system, type-based formal verification, virtual machine, runtime systems, garbage collection), and a creative technologiest deeply caring about many humanistic aspects (e.g. visual, sound, interaction) in UI and HCI in general.
+Will be interested in unknown things: such as medicine, biology, geography, physics, computer science, history, humanities, etc.likes to read books and music, and often loses track of time because he or she is so involved in new and unknown things.
 
-I also worked on the [Hermes JavaScript Engine](https://hermesengine.dev/), some other projects under the [Reality Labs (Research)](https://tech.fb.com/ar-vr/), and [ReasonML](https://reasonml.github.io/) (now [ReScript](https://rescript-lang.org/)) efforts at Meta (Facebook).
+##### About Blog
 
-In the past, I worked on [Alitrip (Fliggy)](https://www.alitrip.com/) mobile and web apps under the [Alibaba Group](https://en.wikipedia.org/wiki/Alibaba_Group), found and lead front-end infrastructure team at an unicorn startup company [Beijing Weiying (a.k.a. WePiao, now acquired by Maoyan)](https://www.crunchbase.com/organization/beijing-weiying-technology), and helped [Ele.me (now acquired by Alibaba)](https://en.wikipedia.org/wiki/Ele.me) to upgrade their mobile web site into [the first influential PWA (progressive web app) in China](https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509).
+- It's always cool to have a simple personal website
+  <br>
+  During the summer vacation of 3 years, right after the entrance exams, I broke away from my busy school schedule and thought of embarking on something that I was interested in. Since I was a kid, I've been interested in the Internet and some technology products, so I started to cut my teeth on it. By chance, I learned from my cousin (who is now considered my senior because he studied the same major) that he has his own personal website. So there is the idea of creating a personal website. At that time, I had no professional knowledge, but only through self-study + plus my cousin's guidance to complete this work. After about 3 days, my personal website was completed. But due to the high server cost, this personal website only lasted for one summer vacation. Maybe it's because of a little bit of obsession? During the period from the first personal website to the present personal website, I had the idea of making another personal website from time to time, until now I have it again.
+  <br>
+      Since I'm busy now, I've borrowed Hux's blog template for this new site. You can jump to his blog template repository directly from the github link below. The image element part uses Itsuki，紺屋鴉江，ののこ thank you to all three artists for their paintings. In the future I will update some content here from time to time (if I still remember), if you see this post you also have your own personal website or blog you can send me the link to your website through my email, we can make a friend and hang a friend link on each other's website.
 
-I studied BA, Digital Media Art at [Communication University of China](https://en.wikipedia.org/wiki/Communication_University_of_China) and MS, Computer Science (with a focus on programming languages, mainly supervised by [Prof. Matthew Fluet](https://www.cs.rit.edu/~mtf/)) at [Rochester Institute of Technology](https://en.wikipedia.org/wiki/Rochester_Institute_of_Technology).
+##### About Customized Roles
 
-##### Appearence
-
-- [React Labs: What We've Been Working On – June 2022][12] · React Blog · 2022
-- [React Without Memo][11] · [React Conf 2021](https://conf.reactjs.org/)
-- [Toward Hermes being the Default][11] · React Native Blog · 2021
-- React Native 0.64 with Hermes for iOS · [The RN Show Podcast Ep #5](https://www.callstack.com/podcast-react-native-show) · 2021
-- [Upgrading to Progressive Web Apps][9] · [JSConf China Shanghai 2017](http://2017.jsconf.cn/)
-- Building Progressive Web Apps · [CSDI Guangzhou 2017](http://www.csdisummit.com/)
-- The State of Progressive Web App · GDG IO Redux Beijing 2017
-- PWA Rehashing · Baidu HQ Beijing 2017
-- [Service Worker 101][5] · GDG DevFest Beijing 2016
-- [Progressive Web Apps][4] · QCon Shanghai 2016
-- Progressive Web App in my POV · GDG IO Redux Beijing 2016
-- [CSS Still Sucks 2015][2] · 2015
-- [JavaScript Modularization Journey][1] · 2015
-
-[1]: //huangxuan.me/2015/07/09/js-module-7day/
-[2]: //huangxuan.me/2015/12/28/css-sucks-2015/
-[3]: //huangxuan.me/2016/06/05/pwa-in-my-pov/
-[4]: //huangxuan.me/2016/10/20/pwa-qcon2016/
-[5]: //huangxuan.me/2016/11/20/sw-101-gdgdf/
-[6]: https://yanshuo.io/assets/player/?deck=58ac8598b123db0067292f92 "PWA Rehashing"
-[7]: https://yanshuo.io/assets/player/?deck=593ad6fbfe88c2006a0a0d6d "The State of PWA"
-[8]: https://yanshuo.io/assets/player/?deck=594d673d570c357d0698a950 "Building PWA"
-[9]: //huangxuan.me/jsconfcn2017/
-[10]: https://reactnative.dev/blog/2021/10/26/toward-hermes-being-the-default
-[11]: https://youtu.be/lGEMwh32soc
-[12]: https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html
+- It's all online, so at least change your image!
+  <br>
+   My full name is Izayoi Arashi, Izayoi  is taken from the last name of Touhou Project's Izayo Sakuya , because I like this character very much, plus it has the meaning of night itself, and I'm a night owl, so I took “Izayoi” as the last name of my self-defined image. 
+  <br>
+   As for the name Arashi, it is because of the inspiration of Haruki Murakami's words. “When you pass through a storm, you're not the same person you were before.” Arashi means storm, and I hope that my heart is as passionate as a storm, and that I can pass through the storm and become a self-reliant person through trials and tribulations.
