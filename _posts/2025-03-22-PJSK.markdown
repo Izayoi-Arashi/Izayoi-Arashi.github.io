@@ -1,13 +1,12 @@
 ---
 ​---
 layout:     post
-title:      "世界计划游戏介绍"
-date:       2025-03-22 12:00:00
+title:      "世界计划"
+subtitle:   "世界计划游戏介绍"
+date:       2025-01-29 12:00:00
 author:     "Arashi"
 tags:
-    - 手机游戏
-    - 二次元
-    - 世界计划
+    - Life
 ​---
 ---
 
