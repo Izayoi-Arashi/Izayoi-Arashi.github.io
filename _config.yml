@@ -69,8 +69,8 @@ netease_comment: false
 # ba_track_id: [your track id]
 
 # Google Analytics
-ga_track_id: "UA-49627206-1" # Format: UA-xxxxxx-xx
-ga_domain: arashiizayoi.me
+ga_track_id: "G-ZZD4NR49SE" # Format: UA-xxxxxx-xx
+ga_domain: arashiizayoi.xin
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
