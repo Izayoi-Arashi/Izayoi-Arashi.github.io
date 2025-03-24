@@ -14,6 +14,6 @@ Will be interested in unknown things: such as medicine, biology, geography, phys
 
 - It's all online, so at least change your image!
   <br>
-   My full name is Izayoi Arashi, Izayoi  is taken from the last name of Touhou Project's Izayo Sakuya , because I like this character very much, plus it has the meaning of night itself, and I'm a night owl, so I took “Izayoi” as the last name of my self-defined image. 
+   My full name is Izayoi Arashi, Izayoi  is taken from the last name of Touhou Project's Izayoi Sakuya , because I like this character very much, plus it has the meaning of night itself, and I'm a night owl, so I took “Izayoi” as the last name of my self-defined image. 
   <br>
    As for the name Arashi, it is because of the inspiration of Haruki Murakami's words. “When you pass through a storm, you're not the same person you were before.” Arashi means storm, and I hope that my heart is as passionate as a storm, and that I can pass through the storm and become a self-reliant person through trials and tribulations.
