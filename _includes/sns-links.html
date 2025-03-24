@@ -21,9 +21,10 @@
 {% if site.bilibili_username %}
 <li>
   <a href="https://space.bilibili.com/{{ site.bilibili_username }}" target="_blank" rel="noopener noreferrer">
-    <span class="fa-stack fa-lg">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <img src="/img/bilibili_icon.png" alt="哔哩哔哩" class="fa-stack-1x fa-inverse" width="32" height="32">
+    <span class="icon-container">
+      <img src="/assets/icons/bilibili.png"
+           srcset="/assets/icons/bilibili@2x.png 2x, /assets/icons/bilibili@3x.png 3x"
+           alt="哔哩哔哩" width="32" height="32">
     </span>
   </a>
 </li>
