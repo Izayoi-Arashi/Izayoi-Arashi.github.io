@@ -1,4 +1,4 @@
-Hey, I am Arashi, Izayoi (Arashi_Izayoi _@ArashiIzayoi_). An ordinary young man who knows a little about software engineering and loves ACG culture, mainly engaged in the front-end direction of the development, and hopes to become a developer with artistic cells one day.
+Hey, I am Arashi Izayoi (_@ArashiIzayoi_). An ordinary young man who knows a little about software engineering and loves ACG culture, mainly engaged in the front-end direction of the development, and hopes to become a developer with artistic cells one day.
 
 Will be interested in unknown things: such as medicine, biology, geography, physics, computer science, history, humanities, etc.likes to read books and music, and often loses track of time because he or she is so involved in new and unknown things.
 
