@@ -66,3 +66,30 @@
         isPlaying = !isPlaying;  // 切换状态
     });
 </script>
+<style>
+    /* 音乐控制按钮样式 */
+.music-player a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 18px;
+    color: #333; /* 与现有按钮颜色一致 */
+}
+
+.music-player a:hover {
+    color: #007bff; /* 鼠标悬停时，保持一致的悬停效果 */
+}
+
+/* 在移动端调整按钮样式 */
+@media (max-width: 768px) {
+    .navbar-right {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .music-player {
+        margin-right: 15px;
+    }
+}
+</style>
