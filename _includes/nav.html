@@ -25,10 +25,10 @@
                 <li><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></li>
                 {% endif %}
                 {% endfor %}
-                <!-- 音乐播放器按钮 -->
+                <!-- 音乐控制按钮 -->
                 <li class="music-player">
                     <a href="javascript:void(0)" class="music-toggle">
-                        <i class="fa fa-music"></i> Music
+                        <i class="fa fa-play-circle"></i> Play/Pause
                     </a>
                 </li>
                 <li class="search-icon">
@@ -43,20 +43,26 @@
 </nav>
 
 <!-- 音乐播放器（网易云音乐嵌入） -->
-<div class="music-player-container" style="display:none;">
-    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" 
-        src="//music.163.com/outchain/player?type=2&id=2006747853&auto=1&height=66">
-    </iframe>
-</div>
+<iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
+    src="//music.163.com/outchain/player?type=2&id=2006747853&auto=1&height=66">
+</iframe>
 
 <script>
-    // Toggle music player visibility
+    var musicPlayer = document.getElementById('music-player');
+    var musicToggle = document.querySelector('.music-toggle i');
+    var isPlaying = true;  // 默认状态为播放
+
+    // 切换播放/暂停
     document.querySelector('.music-toggle').addEventListener('click', function() {
-        var player = document.querySelector('.music-player-container');
-        if (player.style.display === 'none') {
-            player.style.display = 'block';
+        if (isPlaying) {
+            musicPlayer.contentWindow.postMessage('{"method":"pause"}', '*');  // 暂停
+            musicToggle.classList.remove('fa-play-circle');
+            musicToggle.classList.add('fa-pause-circle');
         } else {
-            player.style.display = 'none';
+            musicPlayer.contentWindow.postMessage('{"method":"play"}', '*');  // 播放
+            musicToggle.classList.remove('fa-pause-circle');
+            musicToggle.classList.add('fa-play-circle');
         }
+        isPlaying = !isPlaying;  // 切换状态
     });
 </script>
