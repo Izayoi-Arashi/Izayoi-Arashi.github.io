@@ -6588,5 +6588,23 @@ button.close {
         margin-right: 15px;
     }
 }
+/* 清除导航栏的外部空白 */
+.navbar, .navbar-header {
+    margin: 0;
+    padding: 0;
+}
+
+/* 确保页面的顶部没有额外的空间 */
+body {
+    margin-top: 0;
+}
+.navbar {
+    margin-top: 0; /* 去除顶部的空白 */
+    padding: 0; /* 去除不必要的内边距 */
+}
+
+.navbar-header {
+    padding: 0; /* 清除内边距 */
+}
 
 /*# sourceMappingURL=bootstrap.css.map */
