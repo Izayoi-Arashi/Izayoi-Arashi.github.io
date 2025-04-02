@@ -3938,15 +3938,51 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   top: auto;
   left: auto;
 }
-@media (min-width: 768px) {
-  .nav-tabs.nav-justified > li {
-    display: table-cell;
-    width: 1%;
-  }
-  .nav-tabs.nav-justified > li > a {
-    margin-bottom: 0;
-  }
+/* 音乐播放器容器样式 */
+.music-player-container {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    z-index: 999;
+    text-align: center;
+    border-top: 1px solid #ddd; /* 可选：顶部边框 */
 }
+
+/* 音乐播放器按钮样式 */
+.music-player a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 18px;
+    color: #333; /* 与现有按钮颜色一致 */
+}
+
+.music-player a:hover {
+    color: #007bff; /* 鼠标悬停时，保持一致的悬停效果 */
+}
+
+/* 在移动端调整播放器样式 */
+@media (max-width: 768px) {
+    .navbar-right {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .music-player {
+        margin-right: 15px;
+    }
+
+    .music-player-container iframe {
+        width: 100%; /* 在移动端时播放器宽度适应屏幕 */
+    }
+}
+
 .nav-tabs.nav-justified > li > a {
   margin-right: 0;
   border-radius: 4px;
