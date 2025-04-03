@@ -6,18 +6,67 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="">
 
+    <!-- 全局播放器：音乐播放器固定在页面的右上角（移动端时底部）-->
+    <div class="music-player">
+        <iframe id="musicPlayer" frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
+    </div>
+
     {% include nav.html %}
     {% include search.html %}
 
+    <!-- 页面内容部分 -->
     {{ content }}
 
     {% include footer.html %}
 
+    <!-- Image to hack wechat -->
+    <img src="/img/icon_wechat.png" width="0" height="0" />
+    <!-- Migrate from head to bottom, no longer block render and still work -->
 
-<!-- Image to hack wechat -->
-<img src="/img/icon_wechat.png" width="0" height="0" />
-<!-- Migrate from head to bottom, no longer block render and still work -->
+    <!-- 保持播放器状态：继续播放 -->
+    <script>
+        window.addEventListener('load', function() {
+            var isPlaying = localStorage.getItem('musicPlayerStatus');
+            var iframe = document.getElementById('musicPlayer');
+            if (isPlaying === 'playing') {
+                iframe.src = iframe.src.replace('auto=1', 'auto=1');
+            }
+
+            window.addEventListener('beforeunload', function() {
+                localStorage.setItem('musicPlayerStatus', 'playing');
+            });
+        });
+    </script>
+
+    <!-- 在这里插入 CSS 样式 -->
+    <style>
+        .music-player {
+            position: fixed;
+            top: 10px;  /* 在桌面端的右上角 */
+            right: 10px;
+            z-index: 9999;
+            width: 330px;
+            height: 86px;
+        }
+
+        .music-player iframe {
+            border-radius: 10px;
+        }
+
+        /* 移动端优化：调整播放器位置和大小 */
+        @media (max-width: 767px) {
+            .music-player {
+                position: fixed;
+                bottom: 10px;   /* 移动端播放器放置在页面底部 */
+                left: 50%;
+                transform: translateX(-50%);  /* 居中显示 */
+                width: 250px;  /* 调整宽度适应移动端 */
+                height: 66px;  /* 调整高度 */
+            }
+        }
+    </style>
 
 </body>
 
 </html>
+
