@@ -6,16 +6,23 @@
     {% include nav.html %}
     {% include search.html %}
 
-    <!-- 集成控制菜单 -->
-    <div id="control-menu">
+    <!-- 音乐播放器 -->
+    <div id="music-container" class="collapsed">
+        <div id="music-toggle">▶</div>
+        <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86"
+            src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
+    </div>
+
+    <!-- 深色模式切换按钮 -->
+    <button id="dark-mode-toggle">🌙</button>
+
+    <!-- 菜单按钮 -->
+    <div id="menu-container">
         <button id="menu-toggle">☰</button>
         <div id="menu-content">
-            <div id="dark-mode-toggle" title="深色模式">🌙</div>
-            <div id="music-control" title="音乐播放">
-                <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
-                    src="//music.163.com/outchain/player?type=2&id=730861&auto=0&height=66"></iframe>
-                <span id="music-icon">♫</span>
-            </div>
+            <a href="#home">首页</a>
+            <a href="#about">关于</a>
+            <a href="#contact">联系方式</a>
         </div>
     </div>
 
@@ -24,49 +31,48 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            const musicContainer = document.getElementById("music-container");
+            const musicToggle = document.getElementById("music-toggle");
+            const darkModeToggle = document.getElementById("dark-mode-toggle");
+            const musicPlayer = document.getElementById("music-player");
             const menuToggle = document.getElementById("menu-toggle");
             const menuContent = document.getElementById("menu-content");
-            const darkModeToggle = document.getElementById("dark-mode-toggle");
-            const musicControl = document.getElementById("music-control");
-            const musicPlayer = document.getElementById("music-player");
-            const musicIcon = document.getElementById("music-icon");
 
-            // 控制菜单状态
-            let isMenuOpen = localStorage.getItem("menu-open") === "true";
-            updateMenuState();
+            // **播放器折叠效果**
+            let isExpanded = localStorage.getItem("music-expanded") === "true";
 
-            menuToggle.addEventListener("click", function (e) {
-                e.stopPropagation();
-                isMenuOpen = !isMenuOpen;
-                localStorage.setItem("menu-open", isMenuOpen);
-                updateMenuState();
-            });
-
-            function updateMenuState() {
-                if (isMenuOpen) {
-                    menuContent.style.display = "flex";  // 菜单内容显示
-                    menuToggle.textContent = "✕";  // 修改按钮为关闭图标
+            function updateMusicState() {
+                if (isExpanded) {
+                    musicContainer.classList.remove("collapsed");
+                    musicToggle.innerText = "◀";
                 } else {
-                    menuContent.style.display = "none";  // 菜单内容隐藏
-                    menuToggle.textContent = "☰";  // 恢复为菜单图标
+                    musicContainer.classList.add("collapsed");
+                    musicToggle.innerText = "▶";
                 }
             }
 
-            // 点击外部关闭菜单
+            musicToggle.addEventListener("click", function () {
+                isExpanded = !isExpanded;
+                localStorage.setItem("music-expanded", isExpanded);
+                updateMusicState();
+            });
+
             document.addEventListener("click", function (e) {
-                if (!menuContent.contains(e.target) && e.target !== menuToggle) {
-                    isMenuOpen = false;
-                    localStorage.setItem("menu-open", isMenuOpen);
-                    updateMenuState();
+                if (!musicContainer.contains(e.target)) {
+                    isExpanded = false;
+                    localStorage.setItem("music-expanded", isExpanded);
+                    updateMusicState();
                 }
             });
 
-            // 深色模式
+            updateMusicState();
+
+            // **深色模式**
             let darkMode = localStorage.getItem("dark-mode");
 
             function applyDarkMode(state) {
                 document.body.classList.toggle("dark-mode", state);
-                darkModeToggle.textContent = state ? "☀️" : "🌙";
+                darkModeToggle.innerText = state ? "☀️" : "🌙";
                 localStorage.setItem("dark-mode", state);
             }
 
@@ -82,28 +88,71 @@
 
             applyDarkMode(darkMode === "true");
 
-            // 移除播放器按钮的动态变化
-            musicControl.addEventListener("click", function () {
-                // 这里只做播放器的打开或关闭，不再动态变化
-                if (musicPlayer.style.width === "0px") {
-                    musicPlayer.style.width = "280px";
-                    musicPlayer.style.height = "86px";
-                    musicIcon.textContent = "❚❚";  // 播放图标
+            // **菜单折叠**
+            let isMenuOpen = false;
+
+            menuToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    menuContent.style.display = "block";
+                    menuToggle.innerText = "✕";  // 点击后按钮变成关闭图标
                 } else {
-                    musicPlayer.style.width = "0";
-                    musicPlayer.style.height = "0";
-                    musicIcon.textContent = "♫";  // 音乐图标
+                    menuContent.style.display = "none";
+                    menuToggle.innerText = "☰";  // 恢复为菜单图标
+                }
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!menuContent.contains(e.target) && e.target !== menuToggle) {
+                    isMenuOpen = false;
+                    menuContent.style.display = "none";
+                    menuToggle.innerText = "☰";  // 恢复为菜单图标
                 }
             });
         });
     </script>
 
     <style>
-        /* 集成控制菜单 */
-        #control-menu {
+        /* 音乐播放器 */
+        #music-container {
+            position: fixed;
+            right: 0;
+            bottom: 100px;
+            width: 330px;
+            height: 86px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px 0 0 8px;
+            box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            cursor: grab;
+        }
+
+        #music-container.collapsed {
+            transform: translateX(290px);
+        }
+
+        #music-toggle {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* 菜单 */
+        #menu-container {
             position: fixed;
             right: 20px;
-            bottom: 20px;
+            bottom: 150px;
             z-index: 1000;
         }
 
@@ -116,13 +165,52 @@
             border-radius: 50%;
             font-size: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         #menu-content {
             position: absolute;
+            top: 50px;
             right: 0;
-            bottom: 50px;
-            display: flex;
-            flex-direction: column;
-            gap: 10
+            display: none;  /* 默认隐藏菜单 */
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #menu-content a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+
+        #menu-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 深色模式 */
+        .dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+
+        #dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+
+</body>
+</html>
