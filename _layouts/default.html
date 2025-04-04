@@ -6,13 +6,11 @@
     {% include nav.html %}
     {% include search.html %}
 
-    <!-- 集成控制菜单 -->
+    <!-- 集成控制菜单 - 优化垂直布局 -->
     <div id="control-menu">
         <button id="menu-toggle">☰</button>
         <div id="menu-content">
-            <!-- 深色模式切换按钮 -->
             <div id="dark-mode-toggle" title="深色模式">🌙</div>
-            <!-- 音乐播放器按钮 -->
             <div id="music-control" title="音乐播放">
                 <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=0&height=66"></iframe>
@@ -33,7 +31,7 @@
             const musicPlayer = document.getElementById("music-player");
             const musicIcon = document.getElementById("music-icon");
 
-            // 控制菜单状态
+            // 控制菜单状态 - 优化为垂直展开
             let isMenuOpen = localStorage.getItem("menu-open") === "true";
             updateMenuState();
 
@@ -46,10 +44,14 @@
 
             function updateMenuState() {
                 if (isMenuOpen) {
-                    menuContent.style.transform = "translateY(0)";
+                    menuContent.style.opacity = "1";
+                    menuContent.style.visibility = "visible";
+                    menuContent.style.transform = "translateY(calc(-100% - 10px))";
                     menuToggle.textContent = "✕";
                 } else {
-                    menuContent.style.transform = "translateY(-100%)"; /* 默认收起 */
+                    menuContent.style.opacity = "0";
+                    menuContent.style.visibility = "hidden";
+                    menuContent.style.transform = "translateY(0)";
                     menuToggle.textContent = "☰";
                 }
             }
@@ -70,6 +72,15 @@
                 document.body.classList.toggle("dark-mode", state);
                 darkModeToggle.textContent = state ? "☀️" : "🌙";
                 localStorage.setItem("dark-mode", state);
+                
+                // 更新播放器样式
+                const player = document.getElementById("music-player");
+                if (player) {
+                    player.contentWindow.postMessage({
+                        type: 'set-theme',
+                        theme: state ? 'dark' : 'light'
+                    }, '*');
+                }
             }
 
             // 自动深色模式（18:00 - 06:00）
@@ -77,82 +88,121 @@
             const shouldBeDark = hour >= 18 || hour < 6;
             if (darkMode === null) darkMode = shouldBeDark ? "true" : "false";
 
-            darkModeToggle.addEventListener("click", function () {
+            darkModeToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
                 darkMode = darkMode === "true" ? "false" : "true";
                 applyDarkMode(darkMode === "true");
             });
 
             applyDarkMode(darkMode === "true");
 
-            // 音乐控制
-            let isMusicExpanded = false;
+            // 音乐控制 - 优化交互
+            let isMusicExpanded = localStorage.getItem("music-expanded") === "true";
             let isPlaying = localStorage.getItem("music-playing") === "true";
 
-            musicControl.addEventListener("click", function () {
+            musicControl.addEventListener("click", function (e) {
+                e.stopPropagation();
                 isMusicExpanded = !isMusicExpanded;
+                updateMusicPlayer();
+                
+                if (isMusicExpanded) {
+                    isPlaying = true;
+                    localStorage.setItem("music-playing", "true");
+                    localStorage.setItem("music-expanded", "true");
+                }
+            });
+
+            function updateMusicPlayer() {
                 if (isMusicExpanded) {
                     musicPlayer.style.width = "280px";
                     musicPlayer.style.height = "86px";
                     musicIcon.textContent = "❚❚";
+                    // 确保播放器在最上层
+                    musicPlayer.style.zIndex = "1001";
                 } else {
                     musicPlayer.style.width = "0";
                     musicPlayer.style.height = "0";
                     musicIcon.textContent = "♫";
                 }
-                
-                // 保存播放状态
-                if (isMusicExpanded && !isPlaying) {
-                    isPlaying = true;
-                    localStorage.setItem("music-playing", "true");
-                }
-            });
+            }
+
+            // 初始化音乐播放器状态
+            updateMusicPlayer();
 
             // 播放状态记忆
             window.addEventListener("message", (event) => {
                 if (event.data.isPlaying !== undefined) {
                     localStorage.setItem("music-playing", event.data.isPlaying);
+                    musicIcon.textContent = event.data.isPlaying ? "❚❚" : "♫";
                 }
             });
+
+            // 响应式调整
+            function handleResize() {
+                if (window.innerWidth <= 768) {
+                    // 移动端布局调整
+                    musicPlayer.style.right = "60px";
+                    musicPlayer.style.bottom = "10px";
+                    musicPlayer.style.maxWidth = "80vw";
+                } else {
+                    // 桌面端布局
+                    musicPlayer.style.right = "80px";
+                    musicPlayer.style.bottom = "20px";
+                    musicPlayer.style.maxWidth = "none";
+                }
+            }
+
+            window.addEventListener("resize", handleResize);
+            handleResize();
         });
     </script>
 
     <style>
-        /* 集成控制菜单 */
+        /* 基础样式 */
+        :root {
+            --control-bg: rgba(0, 0, 0, 0.7);
+            --control-bg-hover: rgba(0, 0, 0, 0.9);
+            --dark-control-bg: rgba(255, 255, 255, 0.2);
+            --dark-control-bg-hover: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 集成控制菜单 - 优化布局 */
         #control-menu {
             position: fixed;
             right: 20px;
             bottom: 20px;
             z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
         }
 
         #menu-toggle {
             width: 40px;
             height: 40px;
-            background: rgba(0, 0, 0, 0.7);
+            background: var(--control-bg);
             color: white;
             border: none;
             border-radius: 50%;
             font-size: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            order: 1; /* 确保按钮在最下方 */
         }
 
         #menu-content {
-            position: absolute;
-            right: 0;
-            bottom: 50px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            transform: translateY(-100%); /* 默认收起 */
-            transition: transform 0.3s ease;
-        }
-
-        #menu-toggle:hover,
-        #dark-mode-toggle:hover,
-        #music-control:hover {
-            background: rgba(0, 0, 0, 0.9);
-            transform: scale(1.1);
+            margin-bottom: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            order: 0; /* 内容在上方 */
         }
 
         /* 控制按钮样式 */
@@ -160,7 +210,7 @@
         #music-control {
             width: 40px;
             height: 40px;
-            background: rgba(0, 0, 0, 0.7);
+            background: var(--control-bg);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -169,6 +219,14 @@
             font-size: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        /* 悬停效果 */
+        #menu-toggle:hover,
+        #dark-mode-toggle:hover,
+        #music-control:hover {
+            background: var(--control-bg-hover);
+            transform: scale(1.1);
         }
 
         /* 音乐播放器 */
@@ -184,21 +242,26 @@
         }
 
         /* 深色模式适配 */
+        .dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+
         .dark-mode #menu-toggle,
         .dark-mode #dark-mode-toggle,
         .dark-mode #music-control {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--dark-control-bg);
             color: #fff;
+        }
+
+        .dark-mode #menu-toggle:hover,
+        .dark-mode #dark-mode-toggle:hover,
+        .dark-mode #music-control:hover {
+            background: var(--dark-control-bg-hover);
         }
 
         .dark-mode #music-player {
             box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-        }
-
-        /* 深色模式 */
-        .dark-mode {
-            background-color: #121212;
-            color: white;
         }
 
         .dark-mode .navbar,
@@ -224,6 +287,5 @@
             }
         }
     </style>
-
 </body>
 </html>
