@@ -9,6 +9,7 @@
     <div id="control-menu">
         <button id="menu-toggle">☰</button>
         <div id="menu-content">
+            <div id="announcement-toggle" title="公告通知">📢</div>
             <div id="dark-mode-toggle" title="深色模式">🌙</div>
             <div id="music-control" title="音乐播放">
                 <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
@@ -18,8 +19,21 @@
         </div>
     </div>
 
+    <!-- 公告弹窗 -->
+    <div id="announcement-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="announcement-content">
+                <!-- Markdown内容将在这里渲染 -->
+            </div>
+        </div>
+    </div>
+
     {{ content }}
     {% include footer.html %}
+
+    <!-- 引入Markdown解析库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -29,6 +43,10 @@
             const musicControl = document.getElementById("music-control");
             const musicPlayer = document.getElementById("music-player");
             const musicIcon = document.getElementById("music-icon");
+            const announcementToggle = document.getElementById("announcement-toggle");
+            const announcementModal = document.getElementById("announcement-modal");
+            const closeModal = document.querySelector(".close-modal");
+            const announcementContent = document.getElementById("announcement-content");
 
             // 控制菜单状态
             let isMenuOpen = localStorage.getItem("menu-open") === "true";
@@ -115,6 +133,52 @@
 
             initMusicPlayer();
 
+            // 公告功能
+            announcementToggle.addEventListener("click", function(e) {
+                e.stopPropagation();
+                loadAnnouncement();
+                announcementModal.style.display = "block";
+                document.body.style.overflow = "hidden"; // 防止背景滚动
+            });
+
+            closeModal.addEventListener("click", function() {
+                announcementModal.style.display = "none";
+                document.body.style.overflow = "auto";
+            });
+
+            // 点击模态框外部关闭
+            window.addEventListener("click", function(event) {
+                if (event.target === announcementModal) {
+                    announcementModal.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }
+            });
+
+            // 加载Markdown公告内容
+            function loadAnnouncement() {
+                // 这里应该是您获取Markdown文件的方式
+                // 示例使用fetch获取公告内容，您需要替换为实际路径
+                fetch('/announcement.md')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('公告文件不存在');
+                        }
+                        return response.text();
+                    })
+                    .then(text => {
+                        if (text.trim() === '') {
+                            announcementContent.innerHTML = '<p class="no-content">暂无公告内容</p>';
+                        } else {
+                            // 使用marked.js解析Markdown
+                            announcementContent.innerHTML = marked.parse(text);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('加载公告失败:', error);
+                        announcementContent.innerHTML = '<p class="no-content">暂无公告内容</p>';
+                    });
+            }
+
             // 响应式调整
             function handleResize() {
                 if (window.innerWidth <= 768) {
@@ -147,6 +211,10 @@
             --control-bg-hover: rgba(0, 0, 0, 0.9);
             --dark-control-bg: rgba(255, 255, 255, 0.2);
             --dark-control-bg-hover: rgba(255, 255, 255, 0.3);
+            --modal-bg: rgba(0, 0, 0, 0.5);
+            --dark-modal-bg: rgba(0, 0, 0, 0.8);
+            --modal-content-bg: #ffffff;
+            --dark-modal-content-bg: #2d2d2d;
         }
 
         #control-menu {
@@ -187,6 +255,7 @@
             order: 0;
         }
 
+        #announcement-toggle,
         #dark-mode-toggle,
         #music-control {
             width: 40px;
@@ -203,6 +272,7 @@
         }
 
         #menu-toggle:hover,
+        #announcement-toggle:hover,
         #dark-mode-toggle:hover,
         #music-control:hover {
             background: var(--control-bg-hover);
@@ -220,12 +290,130 @@
             z-index: 999;
         }
 
+        /* 公告模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--modal-content-bg);
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            animation: modalopen 0.3s;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        #announcement-content {
+            margin-top: 20px;
+            line-height: 1.6;
+            overflow-wrap: break-word;
+        }
+
+        #announcement-content h1,
+        #announcement-content h2,
+        #announcement-content h3 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        #announcement-content p {
+            margin-bottom: 1em;
+        }
+
+        #announcement-content a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        #announcement-content a:hover {
+            text-decoration: underline;
+        }
+
+        #announcement-content ul,
+        #announcement-content ol {
+            margin-bottom: 1em;
+            padding-left: 2em;
+        }
+
+        .no-content {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px 0;
+        }
+
+        /* 动画效果 */
+        @keyframes modalopen {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 深色模式样式 */
         .dark-mode {
             background-color: #121212;
             color: white;
         }
 
+        .dark-mode .modal {
+            background-color: var(--dark-modal-bg);
+        }
+
+        .dark-mode .modal-content {
+            background-color: var(--dark-modal-content-bg);
+            color: #e0e0e0;
+        }
+
+        .dark-mode #announcement-content a {
+            color: #4dabf7;
+        }
+
+        .dark-mode .close-modal {
+            color: #777;
+        }
+
+        .dark-mode .close-modal:hover {
+            color: #ddd;
+        }
+
+        .dark-mode .no-content {
+            color: #aaa;
+        }
+
         .dark-mode #menu-toggle,
+        .dark-mode #announcement-toggle,
         .dark-mode #dark-mode-toggle,
         .dark-mode #music-control {
             background: var(--dark-control-bg);
@@ -233,6 +421,7 @@
         }
 
         .dark-mode #menu-toggle:hover,
+        .dark-mode #announcement-toggle:hover,
         .dark-mode #dark-mode-toggle:hover,
         .dark-mode #music-control:hover {
             background: var(--dark-control-bg-hover);
@@ -242,6 +431,7 @@
             box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
 
+        /* 响应式设计 */
         @media (max-width: 768px) {
             #control-menu {
                 right: 10px;
@@ -252,6 +442,25 @@
                 right: 60px;
                 bottom: 10px;
                 max-width: 80vw;
+            }
+
+            .modal-content {
+                width: 90%;
+                margin: 10% auto;
+                padding: 15px;
+            }
+
+            .close-modal {
+                right: 10px;
+                top: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 95%;
+                margin: 15% auto;
+                padding: 10px;
             }
         }
     </style>
