@@ -1,9 +1,7 @@
-<!DOCTYPE html>
 <html lang="en">
 {% include head.html %}
 
 <body ontouchstart="">
-
     {% include nav.html %}
     {% include search.html %}
 
@@ -17,26 +15,11 @@
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
                 <span id="music-icon">♫</span>
             </div>
-            <!-- 公告按钮 -->
-            <div id="announcement-control" class="announcement-icon" title="公告">
-                <a href="javascript:void(0)" id="announcement-button">
-                    <i class="fa fa-bullhorn"></i> 公告
-                </a>
-            </div>
         </div>
     </div>
 
     {{ content }}
     {% include footer.html %}
-
-    <!-- 公告弹窗 -->
-    <div id="announcement-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3>公告</h3>
-            <div id="announcement-content">加载中...</div>
-        </div>
-    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -155,39 +138,6 @@
                     timeout = setTimeout(func, wait);
                 };
             }
-
-            // 公告部分
-            const announcementButton = document.getElementById("announcement-button");
-            const announcementModal = document.getElementById("announcement-modal");
-            const closeButton = document.querySelector(".close-button");
-            const announcementContent = document.getElementById("announcement-content");
-
-            // 加载公告内容
-            fetch("announcement.md")
-                .then(response => response.text())
-                .then(text => {
-                    announcementContent.innerHTML = marked.parse(text);
-                })
-                .catch(error => {
-                    announcementContent.innerHTML = "<p>无法加载公告内容。</p>";
-                });
-
-            // 点击公告按钮显示弹窗
-            announcementButton.addEventListener("click", function () {
-                announcementModal.style.display = "flex";
-            });
-
-            // 关闭公告弹窗
-            closeButton.addEventListener("click", function () {
-                announcementModal.style.display = "none";
-            });
-
-            // 点击外部关闭公告弹窗
-            window.addEventListener("click", function (e) {
-                if (e.target === announcementModal) {
-                    announcementModal.style.display = "none";
-                }
-            });
         });
     </script>
 
@@ -207,7 +157,6 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 15px; /* 确保选项间有间距 */
         }
 
         #menu-toggle {
@@ -223,22 +172,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            order: 1;
         }
 
         #menu-content {
             display: flex;
             flex-direction: column;
-            gap: 15px; /* 添加等间距 */
+            gap: 10px;
             margin-bottom: 10px;
             opacity: 0;
             visibility: hidden;
             transform: translateY(0);
             transition: all 0.3s ease;
+            order: 0;
         }
 
         #dark-mode-toggle,
-        #music-control,
-        #announcement-control {
+        #music-control {
             width: 40px;
             height: 40px;
             background: var(--control-bg);
@@ -254,8 +204,7 @@
 
         #menu-toggle:hover,
         #dark-mode-toggle:hover,
-        #music-control:hover,
-        #announcement-control:hover {
+        #music-control:hover {
             background: var(--control-bg-hover);
             transform: scale(1.1);
         }
@@ -278,23 +227,33 @@
 
         .dark-mode #menu-toggle,
         .dark-mode #dark-mode-toggle,
-        .dark-mode #music-control,
-        .dark-mode #announcement-control {
+        .dark-mode #music-control {
             background: var(--dark-control-bg);
             color: #fff;
         }
 
         .dark-mode #menu-toggle:hover,
         .dark-mode #dark-mode-toggle:hover,
-        .dark-mode #music-control:hover,
-        .dark-mode #announcement-control:hover {
+        .dark-mode #music-control:hover {
             background: var(--dark-control-bg-hover);
         }
 
         .dark-mode #music-player {
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            #control-menu {
+                right: 10px;
+                bottom: 10px;
+            }
+
+            #music-player {
+                right: 60px;
+                bottom: 10px;
+                max-width: 80vw;
+            }
         }
     </style>
-
 </body>
 </html>
