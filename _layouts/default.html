@@ -89,56 +89,32 @@
 
             // 音乐控制 - 默认自动播放
             let isMusicExpanded = localStorage.getItem("music-expanded") !== "false"; // 默认true
-            let isPlaying = true; // 默认自动播放
 
             // 初始化播放器
             function initMusicPlayer() {
                 if (isMusicExpanded) {
                     musicPlayer.style.width = "280px";
                     musicPlayer.style.height = "86px";
-                    musicIcon.textContent = "❚❚";
                 } else {
                     musicPlayer.style.width = "0";
                     musicPlayer.style.height = "0";
                 }
-                
-                // 自动播放处理
-                setTimeout(() => {
-                    const iframeDoc = musicPlayer.contentDocument || musicPlayer.contentWindow.document;
-                    if (iframeDoc.readyState === 'complete') {
-                        musicPlayer.contentWindow.postMessage({ command: 'play' }, '*');
-                    }
-                }, 1000);
             }
 
             musicControl.addEventListener("click", function (e) {
                 e.stopPropagation();
                 isMusicExpanded = !isMusicExpanded;
                 localStorage.setItem("music-expanded", isMusicExpanded);
-                
                 if (isMusicExpanded) {
                     musicPlayer.style.width = "280px";
                     musicPlayer.style.height = "86px";
-                    musicIcon.textContent = "♫";
-                    // 确保播放器在最上层
-                    musicPlayer.style.zIndex = "1001";
                 } else {
                     musicPlayer.style.width = "0";
                     musicPlayer.style.height = "0";
                 }
             });
 
-            // 初始化音乐播放器
             initMusicPlayer();
-
-            // 播放状态同步
-            window.addEventListener("message", (event) => {
-                if (event.data.isPlaying !== undefined) {
-                    isPlaying = event.data.isPlaying;
-                    musicIcon.textContent = isPlaying ? "❚❚" : "♫";
-                    localStorage.setItem("music-playing", isPlaying);
-                }
-            });
 
             // 响应式调整
             function handleResize() {
@@ -156,20 +132,17 @@
             window.addEventListener("resize", debounce(handleResize, 200));
             handleResize();
 
-            // 防抖函数
             function debounce(func, wait) {
                 let timeout;
-                return function() {
-                    const context = this, args = arguments;
+                return function () {
                     clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(context, args), wait);
+                    timeout = setTimeout(func, wait);
                 };
             }
         });
     </script>
 
     <style>
-        /* 基础样式 */
         :root {
             --control-bg: rgba(0, 0, 0, 0.7);
             --control-bg-hover: rgba(0, 0, 0, 0.9);
@@ -177,7 +150,6 @@
             --dark-control-bg-hover: rgba(255, 255, 255, 0.3);
         }
 
-        /* 集成控制菜单 */
         #control-menu {
             position: fixed;
             right: 20px;
@@ -216,7 +188,6 @@
             order: 0;
         }
 
-        /* 控制按钮样式 */
         #dark-mode-toggle,
         #music-control {
             width: 40px;
@@ -232,7 +203,6 @@
             transition: all 0.3s ease;
         }
 
-        /* 悬停效果 */
         #menu-toggle:hover,
         #dark-mode-toggle:hover,
         #music-control:hover {
@@ -240,7 +210,6 @@
             transform: scale(1.1);
         }
 
-        /* 音乐播放器 */
         #music-player {
             position: fixed;
             right: 80px;
@@ -252,7 +221,6 @@
             z-index: 999;
         }
 
-        /* 深色模式适配 */
         .dark-mode {
             background-color: #121212;
             color: white;
@@ -275,7 +243,6 @@
             box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
 
-        /* 移动端优化 */
         @media (max-width: 768px) {
             #control-menu {
                 right: 10px;
