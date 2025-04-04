@@ -11,7 +11,7 @@ baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 # Publish posts or collection documents with a future date.
 future: true
 # 公告文件路径（相对于站点根目录）
-announcement_path: "_posts/2024-05-20-am.md"
+announcement_path: "/_posts/2024-05-20-am.md"
 # SNS settings
 RSS: false
 # weibo_username: 85767361
