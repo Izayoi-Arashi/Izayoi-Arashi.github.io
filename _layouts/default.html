@@ -160,26 +160,21 @@
             // 加载Markdown公告内容
     function loadAnnouncement() {
     fetch("{{ site.announcement_path }}")
-        .then(response => {
-            if (!response.ok) throw new Error('文件路径错误: ' + response.url);
-            return response.text();
-        })
-        .then(text => {
-            // 过滤掉可能存在的Front Matter
-            const content = text.replace(/^---[\s\S]*?---/, '').trim();
-            announcementContent.innerHTML = content ? 
-                marked.parse(content) : 
-                '<p class="no-content">暂无公告</p>';
-        })
-        .catch(error => {
-            announcementContent.innerHTML = `
-                <p class="no-content">
-                    加载失败：${error.message}<br>
-                    <small>路径：{{ site.announcement_path }}</small>
-                </p>
-            `;
-        });
-}
+      .then(response => {
+        if (!response.ok) throw new Error('路径错误: ' + response.url);
+        return response.text();
+      })
+      .then(text => {
+        document.getElementById("announcement-content").innerHTML = 
+          marked.parse(text.replace(/^---[\s\S]*?---/, '').trim());
+        document.getElementById("announcement-modal").style.display = 'block';
+      })
+      .catch(error => {
+        document.getElementById("announcement-content").innerHTML = 
+          `<p style="color:red">加载失败: ${error.message}</p>`;
+        document.getElementById("announcement-modal").style.display = 'block';
+      });
+  }
 
             // 响应式调整
             function handleResize() {
