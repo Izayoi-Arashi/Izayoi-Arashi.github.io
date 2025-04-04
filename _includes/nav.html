@@ -54,81 +54,96 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var modal = document.getElementById("announcement-modal");
-        var btn = document.getElementById("announcement-button");
-        var closeBtn = document.querySelector(".close-button");
-        var contentDiv = document.getElementById("announcement-content");
-
-        btn.addEventListener("click", function () {
-            modal.style.display = "flex";
-
-            // 加载公告 Markdown 内容
-            fetch("announcement.md")
-                .then(response => response.text())
-                .then(text => {
-                    contentDiv.innerHTML = marked.parse(text);
-                })
-                .catch(error => {
-                    contentDiv.innerHTML = "<p>无法加载公告内容。</p>";
-                });
-        });
-
-        closeBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-        });
-
-        // 点击窗口外部关闭
-        window.addEventListener("click", function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        });
-    });
-</script>
-
+<!-- CSS 部分 -->
 <style>
-    /* 公告弹窗样式 */
-    .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-    }
+/* 公告弹窗样式 */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;  /* 默认较高的 z-index */
+}
 
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
     .modal-content {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        width: 90%;
-        max-width: 500px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        position: relative;
+        width: 95%;
     }
 
-    .modal-content h3 {
-        margin-top: 0;
+    /* 在移动端调整公告弹窗的 z-index */
+    .modal-overlay {
+        z-index: 10500; /* 移动端时稍微高于导航栏菜单 */
     }
 
-    .close-button {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
-        cursor: pointer;
+    /* 当弹窗打开时，提高弹窗的 z-index，确保它在菜单按钮之上 */
+    .modal-overlay.open {
+        z-index: 9999; /* 弹窗的 z-index 低于菜单，确保菜单可用 */
     }
-
-    /* 移动端适配 */
-    @media (max-width: 768px) {
-        .modal-content {
-            width: 95%;
-        }
-    }
+}
 </style>
+
+<!-- JavaScript 部分 -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("announcement-modal");
+    var btn = document.getElementById("announcement-button");
+    var closeBtn = document.querySelector(".close-button");
+    var contentDiv = document.getElementById("announcement-content");
+
+    btn.addEventListener("click", function () {
+        modal.style.display = "flex";
+        modal.classList.add("open");  // 弹窗打开时添加 open 类
+
+        // 加载公告 Markdown 内容
+        fetch("announcement.md")
+            .then(response => response.text())
+            .then(text => {
+                contentDiv.innerHTML = marked.parse(text);
+            })
+            .catch(error => {
+                contentDiv.innerHTML = "<p>无法加载公告内容。</p>";
+            });
+    });
+
+    closeBtn.addEventListener("click", function () {
+        modal.style.display = "none";
+        modal.classList.remove("open");  // 关闭时移除 open 类
+    });
+
+    // 点击窗口外部关闭
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            modal.classList.remove("open");  // 关闭时移除 open 类
+        }
+    });
+});
+</script>
