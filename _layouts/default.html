@@ -1,4 +1,20 @@
-<!-- 🎵 音乐播放器折叠组件 -->
+<!DOCTYPE html>
+<html lang="en">
+
+{% include head.html %}
+
+<body ontouchstart="">
+
+    {% include nav.html %}
+    {% include search.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+
+    <img src="/img/icon_wechat.png" width="0" height="0" />
+
+   <!-- 🎵 音乐播放器折叠组件 -->
 <div class="music-widget" id="musicWidget">
     <div class="music-toggle-btn" id="musicToggleBtn" onclick="toggleMusicWidget()">&#9654;</div>
     <div class="music-player-frame" id="musicPlayerFrame">
@@ -121,6 +137,15 @@
 
         // 自动启用深色模式（19:00 ~ 6:00）
         const hour = new Date().getHours();
+        const isNight = hour >= 19 || hour < 6;
+        if (isNight) document.documentElement.classList.add('dark-mode');
+    });
+</script>
+
+</body>
+
+</html>
+
         const isNight = hour >= 19 || hour < 6;
         if (isNight) document.documentElement.classList.add('dark-mode');
     });
