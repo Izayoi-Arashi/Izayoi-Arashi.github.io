@@ -67,7 +67,7 @@
     background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-    z-index: 10000;  /* 默认较高的 z-index */
+    z-index: 10500;  /* 默认较高的 z-index，确保弹窗位于顶部 */
 }
 
 .modal-content {
@@ -103,7 +103,7 @@
         z-index: 10500; /* 移动端时稍微高于导航栏菜单 */
     }
 
-    /* 当弹窗打开时，提高弹窗的 z-index，确保它在菜单按钮之上 */
+    /* 当弹窗打开时，将弹窗的 z-index 调整为更高 */
     .modal-overlay.open {
         z-index: 9999; /* 弹窗的 z-index 低于菜单，确保菜单可用 */
     }
