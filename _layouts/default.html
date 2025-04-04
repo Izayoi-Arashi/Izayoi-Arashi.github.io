@@ -10,7 +10,9 @@
     <div id="control-menu">
         <button id="menu-toggle">☰</button>
         <div id="menu-content">
+            <!-- 深色模式切换按钮 -->
             <div id="dark-mode-toggle" title="深色模式">🌙</div>
+            <!-- 音乐播放器按钮 -->
             <div id="music-control" title="音乐播放">
                 <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=0&height=66"></iframe>
@@ -47,7 +49,7 @@
                     menuContent.style.transform = "translateY(0)";
                     menuToggle.textContent = "✕";
                 } else {
-                    menuContent.style.transform = "translateY(-100%)";
+                    menuContent.style.transform = "translateY(-100%)"; /* 默认收起 */
                     menuToggle.textContent = "☰";
                 }
             }
