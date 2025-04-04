@@ -158,24 +158,24 @@
             });
 
             // 加载Markdown公告内容
-           function loadAnnouncement() {
-    fetch("{{ site.announcement_path }}")  // 自动读取 _config.yml 配置
+    function loadAnnouncement() {
+    fetch("{{ site.announcement_path }}")
         .then(response => {
-            if (!response.ok) throw new Error('文件不存在: ' + "{{ site.announcement_path }}");
+            if (!response.ok) throw new Error('文件路径错误: ' + response.url);
             return response.text();
         })
         .then(text => {
-            const content = text.trim();
+            // 过滤掉可能存在的Front Matter
+            const content = text.replace(/^---[\s\S]*?---/, '').trim();
             announcementContent.innerHTML = content ? 
                 marked.parse(content) : 
                 '<p class="no-content">暂无公告</p>';
         })
         .catch(error => {
-            console.error('加载失败:', error);
             announcementContent.innerHTML = `
                 <p class="no-content">
-                    公告加载失败，请检查文件路径：<br>
-                    <code>{{ site.announcement_path }}</code>
+                    加载失败：${error.message}<br>
+                    <small>路径：{{ site.announcement_path }}</small>
                 </p>
             `;
         });
