@@ -48,6 +48,9 @@
             const closeModal = document.querySelector(".close-modal");
             const announcementContent = document.getElementById("announcement-content");
 
+            // 从Jekyll配置中获取公告文件路径，如果没有配置则使用默认路径
+            const announcementPath = "{{ site.announcement_path | default: '/announcements/announcement.md' }}";
+
             // 控制菜单状态
             let isMenuOpen = localStorage.getItem("menu-open") === "true";
             updateMenuState();
@@ -156,9 +159,7 @@
 
             // 加载Markdown公告内容
             function loadAnnouncement() {
-                // 这里应该是您获取Markdown文件的方式
-                // 示例使用fetch获取公告内容，您需要替换为实际路径
-                fetch('_posts/2025-03-1-aboutme.markdown')
+                fetch(announcementPath)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('公告文件不存在');
