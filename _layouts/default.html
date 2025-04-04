@@ -159,26 +159,23 @@
 
             // 加载Markdown公告内容
             function loadAnnouncement() {
-                fetch(announcementPath)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('公告文件不存在');
-                        }
-                        return response.text();
-                    })
-                    .then(text => {
-                        if (text.trim() === '') {
-                            announcementContent.innerHTML = '<p class="no-content">暂无公告内容</p>';
-                        } else {
-                            // 使用marked.js解析Markdown
-                            announcementContent.innerHTML = marked.parse(text);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('加载公告失败:', error);
-                        announcementContent.innerHTML = '<p class="no-content">暂无公告内容</p>';
-                    });
-            }
+    // 确保路径与 _config.yml 一致
+    fetch("{{ site.announcement_path | default: '/_posts/latest-announcement.md' }}")
+        .then(response => {
+            if (!response.ok) throw new Error('公告加载失败');
+            return response.text();
+        })
+        .then(text => {
+            // 过滤掉可能的 Front Matter
+            const cleanText = text.replace(/^---[\s\S]*?---/, '').trim();
+            announcementContent.innerHTML = cleanText ? marked.parse(cleanText) : 
+                '<p class="no-content">暂无公告内容</p>';
+        })
+        .catch(error => {
+            console.error('加载公告失败:', error);
+            announcementContent.innerHTML = '<p class="no-content">公告加载失败</p>';
+        });
+}
 
             // 响应式调整
             function handleResize() {
