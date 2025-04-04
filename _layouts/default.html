@@ -158,7 +158,7 @@
             function loadAnnouncement() {
                 // 这里应该是您获取Markdown文件的方式
                 // 示例使用fetch获取公告内容，您需要替换为实际路径
-                fetch('/announcement.md')
+                fetch('_posts/2025-03-1-aboutme.markdown')
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('公告文件不存在');
