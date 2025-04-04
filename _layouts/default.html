@@ -103,12 +103,12 @@
                 }
                 
                 // 自动播放处理
-                // setTimeout(() => {
-                //     const iframeDoc = musicPlayer.contentDocument || musicPlayer.contentWindow.document;
-                //     if (iframeDoc.readyState === 'complete') {
-                //         musicPlayer.contentWindow.postMessage({ command: 'play' }, '*');
-                //     }
-                // }, 1000);
+                setTimeout(() => {
+                    const iframeDoc = musicPlayer.contentDocument || musicPlayer.contentWindow.document;
+                    if (iframeDoc.readyState === 'complete') {
+                        musicPlayer.contentWindow.postMessage({ command: 'play' }, '*');
+                    }
+                }, 1000);
             }
 
             musicControl.addEventListener("click", function (e) {
