@@ -1,105 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-
-{% include head.html %}
-
-<!-- hack iOS CSS :active style -->
-<body ontouchstart="">
-
-    {% include nav.html %}
-    {% include search.html %}
-
-    {{ content }}
-
-    {% include footer.html %}
-
-    <!-- Image to hack wechat -->
-    <img src="/img/icon_wechat.png" width="0" height="0" />
-    <!-- Migrate from head to bottom, no longer block render and still work -->
-
-    <!-- 🎵 音乐播放器折叠组件 -->
-    <div class="music-widget" id="musicWidget">
-        <div class="music-toggle-btn" onclick="toggleMusicWidget()">🎵</div>
-        <div class="music-player-frame" id="musicPlayerFrame">
-            <iframe id="musicPlayer" frameborder="no" border="0" marginwidth="0" marginheight="0"
-                width="100%" height="86"
-                src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
-        </div>
+<!-- 🎵 音乐播放器折叠组件 -->
+<div class="music-widget" id="musicWidget">
+    <div class="music-toggle-btn" id="musicToggleBtn" onclick="toggleMusicWidget()">&#9654;</div>
+    <div class="music-player-frame" id="musicPlayerFrame">
+        <iframe id="musicPlayer" frameborder="no" border="0" marginwidth="0" marginheight="0"
+            width="100%" height="86"
+            src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
     </div>
+</div>
 
-    <!-- 🎨 音乐播放器样式 -->
-    <style>
+<style>
+    :root {
+        --music-bg: white;
+        --music-btn-bg: #ff5e5e;
+        --music-btn-color: white;
+    }
+
+    .dark-mode {
+        --music-bg: #222;
+        --music-btn-bg: #444;
+        --music-btn-color: #eee;
+    }
+
+    .music-widget {
+        position: fixed;
+        top: 40%;
+        right: -280px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        transition: right 0.3s ease;
+    }
+
+    .music-widget.open {
+        right: 0;
+    }
+
+    .music-toggle-btn {
+        background-color: var(--music-btn-bg);
+        color: var(--music-btn-color);
+        border-radius: 6px 0 0 6px;
+        width: 30px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        user-select: none;
+    }
+
+    .music-player-frame {
+        width: 330px;
+        overflow: hidden;
+        background: var(--music-bg);
+        border-radius: 10px 0 0 10px;
+        box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    @media (max-width: 767px) {
         .music-widget {
-            position: fixed;
-            top: 40%;
-            right: 0;
-            z-index: 9999;
-            display: flex;
+            top: auto;
+            bottom: 16px;
+            right: -220px;
             flex-direction: row-reverse;
-            align-items: center;
-            transition: right 0.3s ease;
+        }
+
+        .music-widget.open {
+            right: 0;
         }
 
         .music-toggle-btn {
-            background-color: #ff5e5e;
-            color: white;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            margin-left: 6px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            width: 28px;
+            height: 50px;
+            font-size: 18px;
         }
 
         .music-player-frame {
-            width: 0;
-            overflow: hidden;
-            transition: width 0.3s ease;
-            background: white;
-            border-radius: 10px 0 0 10px;
-            box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            height: 66px;
+        }
+    }
+</style>
+
+<script>
+    const widget = document.getElementById('musicWidget');
+    const btn = document.getElementById('musicToggleBtn');
+
+    function toggleMusicWidget(explicitState = null) {
+        const isOpen = widget.classList.contains('open');
+        const newState = explicitState !== null ? explicitState : !isOpen;
+
+        if (newState) {
+            widget.classList.add('open');
+            btn.innerHTML = '&#9664;';
+            localStorage.setItem('musicOpen', 'true');
+        } else {
+            widget.classList.remove('open');
+            btn.innerHTML = '&#9654;';
+            localStorage.setItem('musicOpen', 'false');
+        }
+    }
+
+    // 点击空白处自动收起
+    document.addEventListener('click', (e) => {
+        const isInside = widget.contains(e.target);
+        if (!isInside) toggleMusicWidget(false);
+    });
+
+    // 保持播放状态
+    window.addEventListener('load', () => {
+        const saved = localStorage.getItem('musicOpen');
+        if (saved === 'true') {
+            toggleMusicWidget(true);
         }
 
-        .music-widget.open .music-player-frame {
-            width: 330px;
-        }
-
-        @media (max-width: 767px) {
-            .music-widget {
-                top: auto;
-                bottom: 12px;
-                flex-direction: row-reverse;
-            }
-
-            .music-toggle-btn {
-                width: 38px;
-                height: 38px;
-                font-size: 18px;
-            }
-
-            .music-player-frame {
-                height: 66px;
-            }
-
-            .music-widget.open .music-player-frame {
-                width: 250px;
-            }
-        }
-    </style>
-
-    <!-- ⚙️ 播放器交互控制 -->
-    <script>
-        function toggleMusicWidget() {
-            const widget = document.getElementById('musicWidget');
-            widget.classList.toggle('open');
-        }
-    </script>
-
-</body>
-
-</html>
-
+        // 自动启用深色模式（19:00 ~ 6:00）
+        const hour = new Date().getHours();
+        const isNight = hour >= 19 || hour < 6;
+        if (isNight) document.documentElement.classList.add('dark-mode');
+    });
+</script>
