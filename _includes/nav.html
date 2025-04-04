@@ -1,166 +1,97 @@
-<!-- 导航栏 -->
+<!-- Navigation -->
 {% if page.nav-style == "invert" or page.header-style == "text" %}
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
-{% else %}
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-{% endif %}
-    <div class="container-fluid">
-        <!-- 品牌和移动端切换按钮 -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">切换导航</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
-        </div>
-
-        <!-- 导航链接 -->
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ site.baseurl }}/">首页</a></li>
-                    {% for page in site.pages %}
-                    {% if page.title and page.hide-in-nav != true %}
-                    <li><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                    <!-- 搜索按钮 -->
-                    <li class="search-icon">
-                        <a href="javascript:void(0)">
-                            <i class="fa fa-search"></i>
-                        </a>
-                    </li>
-                    <!-- 公告按钮 -->
-                    <li class="announcement-icon">
-                        <a href="javascript:void(0)" id="announcement-button" aria-label="查看公告">
-                            <i class="fa fa-bullhorn"></i>
-                        </a>
-                    </li>
-                </ul>
+    {% else %}
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        {% endif %}
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
             </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{{ site.baseurl }}/">Home</a>
+                        </li>
+                        {% for page in site.pages %}
+                        {% if page.title and page.hide-in-nav != true %}
+                        <li>
+                            <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-    </div>
-</nav>
+        <!-- /.container -->
+    </nav>
 
-<!-- 公告弹窗 -->
-<div id="announcement-modal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-content" role="dialog">
-        <span class="close-button" aria-label="关闭弹窗">&times;</span>
-        <h3>公告</h3>
-        <div id="announcement-content">加载中...</div>
-    </div>
-</div>
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
 
-<!-- 样式 -->
-<style>
-/* 公告弹窗样式 */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.modal-overlay.show {
-    opacity: 1;
-    display: flex;
-}
-
-.modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
-}
-
-.modal-overlay.show .modal-content {
-    transform: translateY(0);
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-}
-</style>
-
-<!-- JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const modal = document.getElementById("announcement-modal");
-    const btn = document.getElementById("announcement-button");
-    const closeBtn = document.querySelector(".close-button");
-    const contentDiv = document.getElementById("announcement-content");
-
-    // 打开弹窗
-    btn.addEventListener("click", function() {
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden"; // 防止背景滚动
-        
-        // 加载公告内容
-        fetch("announcement.md")
-            .then(response => {
-                if (!response.ok) throw new Error("网络响应不正常");
-                return response.text();
-            })
-            .then(text => {
-                contentDiv.innerHTML = marked.parse(text);
-            })
-            .catch(error => {
-                console.error("加载公告失败:", error);
-                contentDiv.innerHTML = `
-                    <p>⚠️ 无法加载公告内容</p>
-                    <p>错误详情: ${error.message}</p>
-                    <p>请刷新页面或稍后再试</p>
-                `;
-            });
-    });
-
-    // 关闭弹窗
-    function closeModal() {
-        modal.classList.remove("show");
-        document.body.style.overflow = "";
-    }
-
-    closeBtn.addEventListener("click", closeModal);
-
-    // 点击外部关闭
-    modal.addEventListener("click", function(e) {
-        if (e.target === modal) closeModal();
-    });
-
-    // ESC键关闭
-    document.addEventListener("keydown", function(e) {
-        if (e.key === "Escape" && modal.classList.contains("show")) {
-            closeModal();
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
         }
-    });
-});
-</script>
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
