@@ -20,9 +20,8 @@
             <!-- 公告按钮 -->
             <div id="announcement-control" class="announcement-icon" title="公告">
                 <a href="javascript:void(0)" id="announcement-button">
-                    <i class="fa fa-bullhorn"></i>
+                    <i class="fa fa-bullhorn"></i> 公告
                 </a>
-                <div id="announcement-badge" class="badge"></div> <!-- 红点角标 -->
             </div>
         </div>
     </div>
@@ -159,7 +158,6 @@
 
             // 公告部分
             const announcementButton = document.getElementById("announcement-button");
-            const announcementBadge = document.getElementById("announcement-badge");
             const announcementModal = document.getElementById("announcement-modal");
             const closeButton = document.querySelector(".close-button");
             const announcementContent = document.getElementById("announcement-content");
@@ -168,11 +166,6 @@
             fetch("announcement.md")
                 .then(response => response.text())
                 .then(text => {
-                    if (text.trim() !== "") {
-                        announcementBadge.style.display = "block"; // 显示红点角标
-                    } else {
-                        announcementBadge.style.display = "none"; // 没有内容不显示红点
-                    }
                     announcementContent.innerHTML = marked.parse(text);
                 })
                 .catch(error => {
@@ -214,6 +207,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            gap: 15px; /* 确保选项间有间距 */
         }
 
         #menu-toggle {
@@ -234,7 +228,7 @@
         #menu-content {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px; /* 添加等间距 */
             margin-bottom: 10px;
             opacity: 0;
             visibility: hidden;
@@ -243,7 +237,8 @@
         }
 
         #dark-mode-toggle,
-        #music-control {
+        #music-control,
+        #announcement-control {
             width: 40px;
             height: 40px;
             background: var(--control-bg);
@@ -254,11 +249,13 @@
             justify-content: center;
             font-size: 20px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         #menu-toggle:hover,
         #dark-mode-toggle:hover,
-        #music-control:hover {
+        #music-control:hover,
+        #announcement-control:hover {
             background: var(--control-bg-hover);
             transform: scale(1.1);
         }
@@ -274,22 +271,6 @@
             z-index: 999;
         }
 
-        /* 红点角标 */
-        .announcement-icon {
-            position: relative;
-        }
-
-        .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 10px;
-            height: 10px;
-            background-color: red;
-            border-radius: 50%;
-            display: none;
-        }
-
         .dark-mode {
             background-color: #121212;
             color: white;
@@ -297,68 +278,21 @@
 
         .dark-mode #menu-toggle,
         .dark-mode #dark-mode-toggle,
-        .dark-mode #music-control {
+        .dark-mode #music-control,
+        .dark-mode #announcement-control {
             background: var(--dark-control-bg);
             color: #fff;
         }
 
         .dark-mode #menu-toggle:hover,
         .dark-mode #dark-mode-toggle:hover,
-        .dark-mode #music-control:hover {
+        .dark-mode #music-control:hover,
+        .dark-mode #announcement-control:hover {
             background: var(--dark-control-bg-hover);
         }
 
         .dark-mode #music-player {
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-        }
-
-        /* 公告弹窗样式 */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-        }
-
-        .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        .modal-content h3 {
-            margin-top: 0;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            #control-menu {
-                right: 10px;
-                bottom: 10px;
-            }
-
-            #music-player {
-                right: 60px;
-                bottom: 10px;
-                max-width: 80vw;
-            }
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
         }
     </style>
 
