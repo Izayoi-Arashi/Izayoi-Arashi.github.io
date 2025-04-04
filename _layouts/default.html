@@ -44,11 +44,11 @@
 
             function updateMenuState() {
                 if (isMenuOpen) {
-                    menuContent.style.transform = "translateY(0)";
-                    menuToggle.textContent = "✕";
+                    menuContent.style.display = "flex";  // 菜单内容显示
+                    menuToggle.textContent = "✕";  // 修改按钮为关闭图标
                 } else {
-                    menuContent.style.transform = "translateY(-100%)";
-                    menuToggle.textContent = "☰";
+                    menuContent.style.display = "none";  // 菜单内容隐藏
+                    menuToggle.textContent = "☰";  // 恢复为菜单图标
                 }
             }
 
@@ -82,33 +82,17 @@
 
             applyDarkMode(darkMode === "true");
 
-            // 音乐控制
-            let isMusicExpanded = false;
-            let isPlaying = localStorage.getItem("music-playing") === "true";
-
+            // 移除播放器按钮的动态变化
             musicControl.addEventListener("click", function () {
-                isMusicExpanded = !isMusicExpanded;
-                if (isMusicExpanded) {
+                // 这里只做播放器的打开或关闭，不再动态变化
+                if (musicPlayer.style.width === "0px") {
                     musicPlayer.style.width = "280px";
                     musicPlayer.style.height = "86px";
-                    musicIcon.textContent = "❚❚";
+                    musicIcon.textContent = "❚❚";  // 播放图标
                 } else {
                     musicPlayer.style.width = "0";
                     musicPlayer.style.height = "0";
-                    musicIcon.textContent = "♫";
-                }
-                
-                // 保存播放状态
-                if (isMusicExpanded && !isPlaying) {
-                    isPlaying = true;
-                    localStorage.setItem("music-playing", "true");
-                }
-            });
-
-            // 播放状态记忆
-            window.addEventListener("message", (event) => {
-                if (event.data.isPlaying !== undefined) {
-                    localStorage.setItem("music-playing", event.data.isPlaying);
+                    musicIcon.textContent = "♫";  // 音乐图标
                 }
             });
         });
@@ -141,87 +125,4 @@
             bottom: 50px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        #menu-toggle:hover,
-        #dark-mode-toggle:hover,
-        #music-control:hover {
-            background: rgba(0, 0, 0, 0.9);
-            transform: scale(1.1);
-        }
-
-        /* 控制按钮样式 */
-        #dark-mode-toggle,
-        #music-control {
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* 音乐播放器 */
-        #music-player {
-            position: fixed;
-            right: 80px;
-            bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            z-index: 999;
-        }
-
-        /* 深色模式适配 */
-        .dark-mode #menu-toggle,
-        .dark-mode #dark-mode-toggle,
-        .dark-mode #music-control {
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-        }
-
-        .dark-mode #music-player {
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-        }
-
-        /* 深色模式 */
-        .dark-mode {
-            background-color: #121212;
-            color: white;
-        }
-
-        .dark-mode .navbar,
-        .dark-mode .footer {
-            background-color: #1f1f1f;
-        }
-
-        .dark-mode a {
-            color: #bb86fc;
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            #control-menu {
-                right: 10px;
-                bottom: 10px;
-            }
-
-            #music-player {
-                right: 60px;
-                bottom: 10px;
-                max-width: 80vw;
-            }
-        }
-    </style>
-
-</body>
-</html>
+            gap: 10
