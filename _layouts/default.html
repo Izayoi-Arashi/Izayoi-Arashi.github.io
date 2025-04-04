@@ -3,6 +3,7 @@
 {% include head.html %}
 
 <body ontouchstart="">
+
     {% include nav.html %}
     {% include search.html %}
 
@@ -16,11 +17,27 @@
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
                 <span id="music-icon">♫</span>
             </div>
+            <!-- 公告按钮 -->
+            <div id="announcement-control" class="announcement-icon" title="公告">
+                <a href="javascript:void(0)" id="announcement-button">
+                    <i class="fa fa-bullhorn"></i>
+                </a>
+                <div id="announcement-badge" class="badge"></div> <!-- 红点角标 -->
+            </div>
         </div>
     </div>
 
     {{ content }}
     {% include footer.html %}
+
+    <!-- 公告弹窗 -->
+    <div id="announcement-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>公告</h3>
+            <div id="announcement-content">加载中...</div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -139,6 +156,45 @@
                     timeout = setTimeout(func, wait);
                 };
             }
+
+            // 公告部分
+            const announcementButton = document.getElementById("announcement-button");
+            const announcementBadge = document.getElementById("announcement-badge");
+            const announcementModal = document.getElementById("announcement-modal");
+            const closeButton = document.querySelector(".close-button");
+            const announcementContent = document.getElementById("announcement-content");
+
+            // 加载公告内容
+            fetch("announcement.md")
+                .then(response => response.text())
+                .then(text => {
+                    if (text.trim() !== "") {
+                        announcementBadge.style.display = "block"; // 显示红点角标
+                    } else {
+                        announcementBadge.style.display = "none"; // 没有内容不显示红点
+                    }
+                    announcementContent.innerHTML = marked.parse(text);
+                })
+                .catch(error => {
+                    announcementContent.innerHTML = "<p>无法加载公告内容。</p>";
+                });
+
+            // 点击公告按钮显示弹窗
+            announcementButton.addEventListener("click", function () {
+                announcementModal.style.display = "flex";
+            });
+
+            // 关闭公告弹窗
+            closeButton.addEventListener("click", function () {
+                announcementModal.style.display = "none";
+            });
+
+            // 点击外部关闭公告弹窗
+            window.addEventListener("click", function (e) {
+                if (e.target === announcementModal) {
+                    announcementModal.style.display = "none";
+                }
+            });
         });
     </script>
 
@@ -173,7 +229,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            order: 1;
         }
 
         #menu-content {
@@ -185,7 +240,6 @@
             visibility: hidden;
             transform: translateY(0);
             transition: all 0.3s ease;
-            order: 0;
         }
 
         #dark-mode-toggle,
@@ -200,7 +254,6 @@
             justify-content: center;
             font-size: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         #menu-toggle:hover,
@@ -219,6 +272,22 @@
             transition: all 0.3s ease;
             overflow: hidden;
             z-index: 999;
+        }
+
+        /* 红点角标 */
+        .announcement-icon {
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            display: none;
         }
 
         .dark-mode {
@@ -243,6 +312,42 @@
             box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
 
+        /* 公告弹窗样式 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             #control-menu {
                 right: 10px;
@@ -256,5 +361,6 @@
             }
         }
     </style>
+
 </body>
 </html>
