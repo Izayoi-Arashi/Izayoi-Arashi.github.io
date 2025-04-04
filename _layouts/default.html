@@ -12,7 +12,7 @@
         <div id="menu-content">
             <div id="dark-mode-toggle" title="深色模式">🌙</div>
             <div id="music-control" title="音乐播放">
-                <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
+                <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="280" height="86"
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=0&height=66"></iframe>
                 <span id="music-icon">♫</span>
             </div>
@@ -28,7 +28,6 @@
             const menuContent = document.getElementById("menu-content");
             const darkModeToggle = document.getElementById("dark-mode-toggle");
             const musicControl = document.getElementById("music-control");
-            const musicPlayer = document.getElementById("music-player");
             const musicIcon = document.getElementById("music-icon");
 
             // 控制菜单状态
@@ -44,10 +43,12 @@
 
             function updateMenuState() {
                 if (isMenuOpen) {
-                    menuContent.style.transform = "translateX(0)";
+                    menuContent.style.transform = "scaleY(1)";
+                    menuContent.style.opacity = "1";
                     menuToggle.textContent = "✕";
                 } else {
-                    menuContent.style.transform = "translateX(100%)";
+                    menuContent.style.transform = "scaleY(0)";
+                    menuContent.style.opacity = "0";
                     menuToggle.textContent = "☰";
                 }
             }
@@ -82,35 +83,6 @@
 
             applyDarkMode(darkMode === "true");
 
-            // 音乐控制
-            let isMusicExpanded = false;
-            let isPlaying = localStorage.getItem("music-playing") === "true";
-
-            musicControl.addEventListener("click", function () {
-                isMusicExpanded = !isMusicExpanded;
-                if (isMusicExpanded) {
-                    musicPlayer.style.width = "280px";
-                    musicPlayer.style.height = "86px";
-                    musicIcon.textContent = "❚❚";
-                } else {
-                    musicPlayer.style.width = "0";
-                    musicPlayer.style.height = "0";
-                    musicIcon.textContent = "♫";
-                }
-                
-                // 保存播放状态
-                if (isMusicExpanded && !isPlaying) {
-                    isPlaying = true;
-                    localStorage.setItem("music-playing", "true");
-                }
-            });
-
-            // 播放状态记忆
-            window.addEventListener("message", (event) => {
-                if (event.data.isPlaying !== undefined) {
-                    localStorage.setItem("music-playing", event.data.isPlaying);
-                }
-            });
         });
     </script>
 
@@ -142,8 +114,10 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transform: scaleY(0);
+            opacity: 0;
+            transform-origin: top;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
         #menu-toggle:hover,
@@ -209,3 +183,4 @@
     </style>
 </body>
 </html>
+
