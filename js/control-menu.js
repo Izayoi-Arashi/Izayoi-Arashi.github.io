@@ -1,201 +1,190 @@
-/**
- * 主应用初始化
- */
-class App {
-  constructor() {
-    this.elements = {
-      menuToggle: document.getElementById("menu-toggle"),
-      menuContent: document.getElementById("menu-content"),
-      darkModeToggle: document.getElementById("dark-mode-toggle"),
-      musicControl: document.getElementById("music-control"),
-      musicPlayer: document.getElementById("music-player"),
-      announcementToggle: document.getElementById("announcement-toggle"),
-      announcementModal: document.getElementById("announcement-modal"),
-      announcementContent: document.getElementById("announcement-content")
-    };
-    
-    this.state = {
-      isMenuOpen: localStorage.getItem("menu-open") === "true",
-      darkMode: localStorage.getItem("dark-mode") || 
-                (new Date().getHours() >= 18 || new Date().getHours() < 6 ? "true" : "false"),
-      musicExpanded: localStorage.getItem("music-expanded") !== "false"
-    };
-  }
+// 确保 marked.js 已加载
+function checkMarked() {
+  return new Promise((resolve) => {
+    if (window.marked) return resolve();
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+    script.onload = resolve;
+    document.head.appendChild(script);
+  });
+}
 
-  init() {
-    this.initMenu();
-    this.initDarkMode();
-    this.initMusicPlayer();
-    this.initAnnouncement();
-    this.initResizeHandler();
-  }
+document.addEventListener("DOMContentLoaded", async function () {
+  // 等待必要资源
+  await checkMarked();
 
-  initMenu() {
-    if (!this.elements.menuToggle) return;
-    
-    this.updateMenuState();
-    
-    this.elements.menuToggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      this.state.isMenuOpen = !this.state.isMenuOpen;
-      localStorage.setItem("menu-open", this.state.isMenuOpen);
-      this.updateMenuState();
-    });
+  // 原始DOM引用保持不变
+  const menuToggle = document.getElementById("menu-toggle");
+  const menuContent = document.getElementById("menu-content");
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const musicControl = document.getElementById("music-control");
+  const musicPlayer = document.getElementById("music-player");
+  const musicIcon = document.getElementById("music-icon");
+  const announcementToggle = document.getElementById("announcement-toggle");
+  const announcementModal = document.getElementById("announcement-modal");
+  const closeModal = document.querySelector(".close-modal");
+  const announcementContent = document.getElementById("announcement-content");
 
-    document.addEventListener("click", (e) => {
-      if (!this.elements.menuContent.contains(e.target) && 
-          e.target !== this.elements.menuToggle) {
-        this.state.isMenuOpen = false;
-        localStorage.setItem("menu-open", this.state.isMenuOpen);
-        this.updateMenuState();
-      }
-    });
-  }
+  // 菜单状态控制（完全保留原始逻辑）
+  let isMenuOpen = localStorage.getItem("menu-open") === "true";
+  updateMenuState();
 
-  updateMenuState() {
-    if (this.state.isMenuOpen) {
-      this.elements.menuContent.style.opacity = "1";
-      this.elements.menuContent.style.visibility = "visible";
-      this.elements.menuContent.style.transform = "translateY(calc(-100% - 10px))";
-      this.elements.menuToggle.textContent = "✕";
+  function updateMenuState() {
+    if (isMenuOpen) {
+      menuContent.style.opacity = "1";
+      menuContent.style.visibility = "visible";
+      menuContent.style.transform = "translateY(calc(-100% - 10px))";
+      menuToggle.textContent = "✕";
     } else {
-      this.elements.menuContent.style.opacity = "0";
-      this.elements.menuContent.style.visibility = "hidden";
-      this.elements.menuContent.style.transform = "translateY(0)";
-      this.elements.menuToggle.textContent = "☰";
+      menuContent.style.opacity = "0";
+      menuContent.style.visibility = "hidden";
+      menuContent.style.transform = "translateY(0)";
+      menuToggle.textContent = "☰";
     }
   }
 
-  initDarkMode() {
-    if (!this.elements.darkModeToggle) return;
-    
-    this.applyDarkMode(this.state.darkMode === "true");
-    
-    this.elements.darkModeToggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      this.state.darkMode = this.state.darkMode === "true" ? "false" : "true";
-      this.applyDarkMode(this.state.darkMode === "true");
-    });
+  menuToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+    isMenuOpen = !isMenuOpen;
+    localStorage.setItem("menu-open", isMenuOpen);
+    updateMenuState();
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!menuContent.contains(e.target) && e.target !== menuToggle) {
+      isMenuOpen = false;
+      localStorage.setItem("menu-open", isMenuOpen);
+      updateMenuState();
+    }
+  });
+
+  // 深色模式（完全保留原始逻辑）
+  let darkMode = localStorage.getItem("dark-mode");
+
+  function applyDarkMode(state) {
+    document.body.classList.toggle("dark-mode", state);
+    darkModeToggle.textContent = state ? "☀️" : "🌙";
+    localStorage.setItem("dark-mode", state);
   }
 
-  applyDarkMode(enabled) {
-    document.body.classList.toggle("dark-mode", enabled);
-    this.elements.darkModeToggle.textContent = enabled ? "☀️" : "🌙";
-    localStorage.setItem("dark-mode", enabled);
-  }
+  const hour = new Date().getHours();
+  const shouldBeDark = hour >= 18 || hour < 6;
+  if (darkMode === null) darkMode = shouldBeDark ? "true" : "false";
 
-  initMusicPlayer() {
-    if (!this.elements.musicControl) return;
-    
-    this.updateMusicPlayer();
-    
-    this.elements.musicControl.addEventListener("click", (e) => {
-      e.stopPropagation();
-      this.state.musicExpanded = !this.state.musicExpanded;
-      localStorage.setItem("music-expanded", this.state.musicExpanded);
-      this.updateMusicPlayer();
-    });
-  }
+  darkModeToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+    darkMode = darkMode === "true" ? "false" : "true";
+    applyDarkMode(darkMode === "true");
+  });
 
-  updateMusicPlayer() {
-    if (this.state.musicExpanded) {
-      this.elements.musicPlayer.style.width = "280px";
-      this.elements.musicPlayer.style.height = "86px";
+  applyDarkMode(darkMode === "true");
+
+  // 音乐控制（完全保留原始逻辑）
+  let isMusicExpanded = localStorage.getItem("music-expanded") !== "false";
+
+  function initMusicPlayer() {
+    if (isMusicExpanded) {
+      musicPlayer.style.width = "280px";
+      musicPlayer.style.height = "86px";
     } else {
-      this.elements.musicPlayer.style.width = "0";
-      this.elements.musicPlayer.style.height = "0";
+      musicPlayer.style.width = "0";
+      musicPlayer.style.height = "0";
     }
   }
 
-  initAnnouncement() {
-    if (!this.elements.announcementToggle) return;
+  musicControl.addEventListener("click", function (e) {
+    e.stopPropagation();
+    isMusicExpanded = !isMusicExpanded;
+    localStorage.setItem("music-expanded", isMusicExpanded);
+    initMusicPlayer();
+  });
+
+  initMusicPlayer();
+
+  // 公告功能改造重点
+  function getCorrectAnnouncementPath() {
+    // 获取Jekyll配置的路径
+    const rawPath = "{{ site.announcement_path | default: '/announcements/am.md' }}";
     
-    // 事件委托处理所有弹窗交互
-    document.body.addEventListener("click", (e) => {
-      if (e.target.closest("#announcement-toggle")) {
-        e.preventDefault();
-        this.loadAnnouncement();
-      }
-      
-      if (e.target.closest(".close-modal") || e.target === this.elements.announcementModal) {
-        this.elements.announcementModal.style.display = "none";
-        document.body.style.overflow = "auto";
-      }
-    });
+    // 已经是绝对路径或完整URL
+    if (rawPath.startsWith('http') || rawPath.startsWith('/')) {
+      return "{{ site.url }}{{ site.baseurl }}" + rawPath;
+    }
+    
+    // 处理相对路径（计算当前页面深度）
+    const depth = window.location.pathname.split('/').filter(Boolean).length - 1;
+    return '../'.repeat(depth) + rawPath;
   }
 
-  async loadAnnouncement() {
+  async function loadAnnouncement() {
     try {
-      // 动态生成绝对路径
-      const path = "{{ site.announcement_path | default: '/announcements/am.md' }}";
-      const baseUrl = "{{ site.url }}{{ site.baseurl }}";
-      const announcementUrl = `${baseUrl}${path}?t=${Date.now()}`;
+      const url = getCorrectAnnouncementPath() + `?t=${Date.now()}`;
+      const response = await fetch(url);
       
-      const response = await fetch(announcementUrl);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
       let text = await response.text();
       text = text.replace(/^---[\s\S]*?---/, '').trim();
       
-      this.elements.announcementContent.innerHTML = text 
-        ? marked.parse(text) 
-        : '<p class="no-content">暂无公告内容</p>';
+      announcementContent.innerHTML = text ? 
+        marked.parse(text) : 
+        '<p class="no-content">暂无公告</p>';
       
-      this.elements.announcementModal.style.display = "block";
+      announcementModal.style.display = "block";
       document.body.style.overflow = "hidden";
     } catch (error) {
-      console.error("公告加载失败:", error);
-      this.elements.announcementContent.innerHTML = `
+      console.error('公告加载失败:', error);
+      announcementContent.innerHTML = `
         <div class="alert-error">
           <strong>⚠️ 加载失败</strong>
           <p>${error.message}</p>
-          <button class="retry-btn">点击重试</button>
+          <small>路径: ${getCorrectAnnouncementPath()}</small>
+          <button onclick="location.reload()" style="margin-top:10px;">刷新重试</button>
         </div>
       `;
-      this.elements.announcementModal.style.display = "block";
-      
-      // 添加重试按钮事件
-      document.querySelector(".retry-btn")?.addEventListener("click", () => {
-        this.loadAnnouncement();
-      });
+      announcementModal.style.display = "block";
     }
   }
 
-  initResizeHandler() {
-    const debounce = (func, wait) => {
-      let timeout;
-      return () => {
-        clearTimeout(timeout);
-        timeout = setTimeout(func, wait);
-      };
-    };
+  // 事件绑定（保持原始交互逻辑）
+  announcementToggle.addEventListener("click", function(e) {
+    e.stopPropagation();
+    loadAnnouncement();
+  });
 
-    const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        this.elements.musicPlayer.style.right = "60px";
-        this.elements.musicPlayer.style.bottom = "10px";
-        this.elements.musicPlayer.style.maxWidth = "80vw";
-      } else {
-        this.elements.musicPlayer.style.right = "80px";
-        this.elements.musicPlayer.style.bottom = "20px";
-        this.elements.musicPlayer.style.maxWidth = "none";
-      }
-    };
+  closeModal.addEventListener("click", function() {
+    announcementModal.style.display = "none";
+    document.body.style.overflow = "auto";
+  });
 
-    window.addEventListener("resize", debounce(handleResize, 200));
-    handleResize();
+  window.addEventListener("click", function(event) {
+    if (event.target === announcementModal) {
+      announcementModal.style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+  });
+
+  // 响应式调整（完全保留原始逻辑）
+  function handleResize() {
+    if (window.innerWidth <= 768) {
+      musicPlayer.style.right = "60px";
+      musicPlayer.style.bottom = "10px";
+      musicPlayer.style.maxWidth = "80vw";
+    } else {
+      musicPlayer.style.right = "80px";
+      musicPlayer.style.bottom = "20px";
+      musicPlayer.style.maxWidth = "none";
+    }
   }
-}
 
-// 启动应用
-document.addEventListener("DOMContentLoaded", () => {
-  // 确保marked.js已加载
-  if (!window.marked) {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
-    script.onload = () => new App().init();
-    document.head.appendChild(script);
-  } else {
-    new App().init();
+  function debounce(func, wait) {
+    let timeout;
+    return function () {
+      clearTimeout(timeout);
+      timeout = setTimeout(func, wait);
+    };
   }
+
+  window.addEventListener("resize", debounce(handleResize, 200));
+  handleResize();
 });
