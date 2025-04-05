@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function loadAnnouncement() {
-        const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+        const announcementUrl = window.location.origin + "/announcements/announcement.md?t=" + Date.now();
 
         fetch(announcementUrl)
             .then(response => {
