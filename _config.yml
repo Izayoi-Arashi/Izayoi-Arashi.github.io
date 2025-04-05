@@ -10,8 +10,14 @@ baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 
 # Publish posts or collection documents with a future date.
 future: true
+
 # 公告文件路径（相对于站点根目录）
-announcement_path: "announcements/am.md"  # 绝对路径（GitHub Pages必须）
+# _config.yml 必须包含
+url: "https://arashiizayoi.xin"  # 您的完整域名
+baseurl: ""  # 如果是项目仓库填写如 "/repo"
+# 公告路径保持标准
+announcement_path: "/announcements/am.md"
+
 # SNS settings
 RSS: false
 # weibo_username: 85767361
