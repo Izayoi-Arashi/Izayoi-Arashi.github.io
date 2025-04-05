@@ -168,7 +168,7 @@
     
     fetch(announcementUrl)
         .then(response => {
-            if (!response.ok) throw new Error(HTTP ${response.status});
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             return response.text();
         })
         .then(text => {
@@ -177,13 +177,13 @@
                 content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
         })
         .catch(error => {
-            announcementContent.innerHTML = 
+            announcementContent.innerHTML = `
                 <div class="alert-error">
                     <strong>⚠️ 加载失败</strong>
                     <p>${error.message}</p>
                     <small>尝试访问: ${announcementUrl}</small>
                 </div>
-            ;
+            `;
         })
         .finally(() => {
             announcementModal.style.display = "block";
