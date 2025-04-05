@@ -16,8 +16,7 @@ future: true
 url: "https://arashiizayoi.xin"  # 您的完整域名
 baseurl: ""  # 如果是项目仓库填写如 "/repo"
 # 公告路径保持标准
-announcement_path: "/announcements/am.md"
-
+announcement_path: "announcements/am.md"
 # SNS settings
 RSS: false
 # weibo_username: 85767361
