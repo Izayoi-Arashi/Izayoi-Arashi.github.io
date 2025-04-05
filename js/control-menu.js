@@ -105,8 +105,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function loadAnnouncement() {
-        // 直接使用绝对路径
-        const announcementUrl = "/announcements/announcement.md?t=" + Date.now();
+        // 直接使用相对路径
+        const announcementUrl = "/announcements/am.md?t=" + Date.now();
         fetch(announcementUrl)
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
