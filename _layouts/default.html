@@ -5,7 +5,7 @@
     {% include nav.html %}
     {% include search.html %}
 
-    <!-- 控制菜单 -->
+    <!-- 集成控制菜单 -->
     <div id="control-menu">
         <button id="menu-toggle">☰</button>
         <div id="menu-content">
@@ -32,11 +32,188 @@
     {{ content }}
     {% include footer.html %}
 
-    <!-- 引入 Markdown 解析库 -->
+    <!-- 引入Markdown解析库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- 引入分离后的 CSS 和 JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuToggle = document.getElementById("menu-toggle");
+            const menuContent = document.getElementById("menu-content");
+            const darkModeToggle = document.getElementById("dark-mode-toggle");
+            const musicControl = document.getElementById("music-control");
+            const musicPlayer = document.getElementById("music-player");
+            const musicIcon = document.getElementById("music-icon");
+            const announcementToggle = document.getElementById("announcement-toggle");
+            const announcementModal = document.getElementById("announcement-modal");
+            const closeModal = document.querySelector(".close-modal");
+            const announcementContent = document.getElementById("announcement-content");
+
+            // 从Jekyll配置中获取公告文件路径，如果没有配置则使用默认路径
+            const announcementPath = "{{ site.announcement_path | default: '/announcements/announcement.md' }}";
+
+            // 控制菜单状态
+            let isMenuOpen = localStorage.getItem("menu-open") === "true";
+            updateMenuState();
+
+            menuToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                isMenuOpen = !isMenuOpen;
+                localStorage.setItem("menu-open", isMenuOpen);
+                updateMenuState();
+            });
+
+            function updateMenuState() {
+                if (isMenuOpen) {
+                    menuContent.style.opacity = "1";
+                    menuContent.style.visibility = "visible";
+                    menuContent.style.transform = "translateY(calc(-100% - 10px))";
+                    menuToggle.textContent = "✕";
+                } else {
+                    menuContent.style.opacity = "0";
+                    menuContent.style.visibility = "hidden";
+                    menuContent.style.transform = "translateY(0)";
+                    menuToggle.textContent = "☰";
+                }
+            }
+
+            // 点击外部关闭菜单
+            document.addEventListener("click", function (e) {
+                if (!menuContent.contains(e.target) && e.target !== menuToggle) {
+                    isMenuOpen = false;
+                    localStorage.setItem("menu-open", isMenuOpen);
+                    updateMenuState();
+                }
+            });
+
+            // 深色模式
+            let darkMode = localStorage.getItem("dark-mode");
+
+            function applyDarkMode(state) {
+                document.body.classList.toggle("dark-mode", state);
+                darkModeToggle.textContent = state ? "☀️" : "🌙";
+                localStorage.setItem("dark-mode", state);
+            }
+
+            // 自动深色模式（18:00 - 06:00）
+            const hour = new Date().getHours();
+            const shouldBeDark = hour >= 18 || hour < 6;
+            if (darkMode === null) darkMode = shouldBeDark ? "true" : "false";
+
+            darkModeToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                darkMode = darkMode === "true" ? "false" : "true";
+                applyDarkMode(darkMode === "true");
+            });
+
+            applyDarkMode(darkMode === "true");
+
+            // 音乐控制 - 默认自动播放
+            let isMusicExpanded = localStorage.getItem("music-expanded") !== "false"; // 默认true
+
+            // 初始化播放器
+            function initMusicPlayer() {
+                if (isMusicExpanded) {
+                    musicPlayer.style.width = "280px";
+                    musicPlayer.style.height = "86px";
+                } else {
+                    musicPlayer.style.width = "0";
+                    musicPlayer.style.height = "0";
+                }
+            }
+
+            musicControl.addEventListener("click", function (e) {
+                e.stopPropagation();
+                isMusicExpanded = !isMusicExpanded;
+                localStorage.setItem("music-expanded", isMusicExpanded);
+                if (isMusicExpanded) {
+                    musicPlayer.style.width = "280px";
+                    musicPlayer.style.height = "86px";
+                } else {
+                    musicPlayer.style.width = "0";
+                    musicPlayer.style.height = "0";
+                }
+            });
+
+            initMusicPlayer();
+
+            // 公告功能
+            announcementToggle.addEventListener("click", function(e) {
+                e.stopPropagation();
+                loadAnnouncement();
+                announcementModal.style.display = "block";
+                document.body.style.overflow = "hidden"; // 防止背景滚动
+            });
+
+            closeModal.addEventListener("click", function() {
+                announcementModal.style.display = "none";
+                document.body.style.overflow = "auto";
+            });
+
+            // 点击模态框外部关闭
+            window.addEventListener("click", function(event) {
+                if (event.target === announcementModal) {
+                    announcementModal.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }
+            });
+
+            // 加载Markdown公告内容
+    function loadAnnouncement() {
+    // 方法1：使用Jekyll生成的绝对路径（最优解）
+    const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+    
+    // 方法2：纯前端计算根路径（备用方案）
+    // const rootPath = window.location.origin + "{{ site.baseurl }}";
+    // const announcementUrl = rootPath + "/announcements/am.md?t=" + Date.now();
+    
+    fetch(announcementUrl)
+        .then(response => {
+            if (!response.ok) throw new Error(HTTP ${response.status});
+            return response.text();
+        })
+        .then(text => {
+            const content = text.replace(/^---[\s\S]*?---/, '').trim();
+            announcementContent.innerHTML = 
+                content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+        })
+        .catch(error => {
+            announcementContent.innerHTML = 
+                <div class="alert-error">
+                    <strong>⚠️ 加载失败</strong>
+                    <p>${error.message}</p>
+                    <small>尝试访问: ${announcementUrl}</small>
+                </div>
+            ;
+        })
+        .finally(() => {
+            announcementModal.style.display = "block";
+        });
+}
+            // 响应式调整
+            function handleResize() {
+                if (window.innerWidth <= 768) {
+                    musicPlayer.style.right = "60px";
+                    musicPlayer.style.bottom = "10px";
+                    musicPlayer.style.maxWidth = "80vw";
+                } else {
+                    musicPlayer.style.right = "80px";
+                    musicPlayer.style.bottom = "20px";
+                    musicPlayer.style.maxWidth = "none";
+                }
+            }
+
+            window.addEventListener("resize", debounce(handleResize, 200));
+            handleResize();
+
+            function debounce(func, wait) {
+                let timeout;
+                return function () {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(func, wait);
+                };
+            }
+        });
+    </script>
     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
-    <script src="{{ '/js/control-menu.js' | relative_url }}"></script>
-</body>
+    </body>
 </html>
