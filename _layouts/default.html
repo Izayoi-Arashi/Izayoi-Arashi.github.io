@@ -86,26 +86,46 @@
             });
 
             // 深色模式
-            let darkMode = localStorage.getItem("dark-mode");
+            // 深色模式
+let darkMode = localStorage.getItem("dark-mode");
+const autoDarkMode = localStorage.getItem("dark-mode-auto");
+const hour = new Date().getHours();
+const shouldBeDark = hour >= 18 || hour < 6;
 
-            function applyDarkMode(state) {
-                document.body.classList.toggle("dark-mode", state);
-                darkModeToggle.textContent = state ? "☀️" : "🌙";
-                localStorage.setItem("dark-mode", state);
-            }
+function applyDarkMode(state) {
+    document.body.classList.toggle("dark-mode", state);
+    darkModeToggle.textContent = state ? "☀️" : "🌙";
+    localStorage.setItem("dark-mode", state);
+}
 
-            // 自动深色模式（18:00 - 06:00）
-            const hour = new Date().getHours();
-            const shouldBeDark = hour >= 18 || hour < 6;
-            if (darkMode === null) darkMode = shouldBeDark ? "true" : "false";
+// 初次访问时自动判断
+if (darkMode === null) {
+    applyDarkMode(shouldBeDark);
+    localStorage.setItem("dark-mode-auto", "true"); // 启用自动切换
+} else {
+    applyDarkMode(darkMode === "true");
+}
 
-            darkModeToggle.addEventListener("click", function (e) {
-                e.stopPropagation();
-                darkMode = darkMode === "true" ? "false" : "true";
-                applyDarkMode(darkMode === "true");
-            });
+// 用户点击切换深色模式按钮
+darkModeToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+    darkMode = darkMode === "true" ? "false" : "true";
+    applyDarkMode(darkMode === "true");
+    localStorage.setItem("dark-mode-auto", "false"); // 用户手动切换后关闭自动切换
+});
 
-            applyDarkMode(darkMode === "true");
+// 如果开启了自动模式，每小时检查一次当前时间，自动切换模式
+if (localStorage.getItem("dark-mode-auto") === "true") {
+    setInterval(() => {
+        const hourNow = new Date().getHours();
+        const nowShouldBeDark = hourNow >= 18 || hourNow < 6;
+        const isDarkNow = document.body.classList.contains("dark-mode");
+        if (nowShouldBeDark !== isDarkNow) {
+            applyDarkMode(nowShouldBeDark);
+        }
+    }, 60 * 60 * 1000); // 每小时检查一次
+}
+
 
             // 音乐控制 - 默认自动播放
             let isMusicExpanded = localStorage.getItem("music-expanded") !== "false"; // 默认true
