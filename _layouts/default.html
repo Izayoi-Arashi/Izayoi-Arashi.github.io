@@ -81,15 +81,11 @@
     }
 
     menuToggle.addEventListener("click", function (e) {
-  e.stopPropagation();
-  isMenuOpen = !isMenuOpen;
-  localStorage.setItem("menu-open", isMenuOpen);
-  if (isMenuOpen) {
-    document.getElementById("control-menu").classList.add("expanded");
-  } else {
-    document.getElementById("control-menu").classList.remove("expanded");
-  }
-});
+        e.stopPropagation();
+        isMenuOpen = !isMenuOpen;
+        localStorage.setItem("menu-open", isMenuOpen);
+        updateMenuState();
+    });
 
     // 深色模式
     function applyDarkMode(state) {
