@@ -26,12 +26,12 @@
   position: fixed;
   right: 20px;
   bottom: 20px;
-  z-index: 1000;
+  z-index: 1000; /* 保证按钮在最上层 */
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
   gap: var(--menu-gap);
-  pointer-events: none;
+  pointer-events: none; /* 禁止菜单内容区域触发点击 */
 }
 
 /* 统一按钮样式 */
@@ -49,7 +49,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--control-shadow);
-  pointer-events: auto;
+  pointer-events: auto; /* 允许按钮触发点击事件 */
   margin: 0;
 }
 
@@ -64,16 +64,15 @@
   flex-direction: column;
   gap: var(--menu-gap);
   opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: var(--control-transition);
-  pointer-events: auto;
+  max-height: 0; /* 初始状态下设置为 0，防止显示 */
+  overflow: hidden; /* 隐藏超出部分 */
+  transition: max-height 0.3s ease, opacity 0.3s ease; /* 通过最大高度和透明度过渡 */
+  z-index: 999; /* 确保菜单内容位于按钮下方 */
 }
 
 #control-menu.expanded #menu-content {
   opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  max-height: 300px; /* 最大高度，可以根据菜单项的数量调整 */
 }
 
 /* ===== 深色模式 ===== */
@@ -90,15 +89,6 @@
 .dark-mode .control-button:hover {
   background: var(--dark-control-bg-hover);
 }
-
-.dark-mode #petals-toggle::after {
-  background: radial-gradient(circle, rgba(255,182,193,0.4) 0%, transparent 70%);
-}
-
-.dark-mode .falling-petals .petal {
-  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-}
-
 /* ===== 公告部分深色模式样式 ===== */
 .dark-mode #announcement-modal {
   background: var(--dark-modal-bg); /* 深色模式下的背景 */
