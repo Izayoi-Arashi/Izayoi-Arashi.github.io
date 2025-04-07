@@ -5,7 +5,7 @@
     {% include nav.html %}
     {% include search.html %}
 
-    <!-- 集成控制菜单 -->
+    <!-- 控制菜单结构保持不变 -->
     <div id="control-menu">
         <button id="menu-toggle" class="control-button">☰</button>
         <div id="menu-content">
@@ -16,8 +16,7 @@
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
                 <span id="music-icon">♫</span>
             </div>
-            <!-- 更新花瓣按钮样式，使其与其他按钮一致 -->
-            <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div> 
+            <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
         </div>
     </div>
 
@@ -34,11 +33,11 @@
     {{ content }}
     {% include footer.html %}
 
-    <!-- 引入Markdown解析库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // DOM元素引用
             const menuToggle = document.getElementById("menu-toggle");
             const menuContent = document.getElementById("menu-content");
             const darkModeToggle = document.getElementById("dark-mode-toggle");
@@ -49,28 +48,28 @@
             const announcementModal = document.getElementById("announcement-modal");
             const closeModal = document.querySelector(".close-modal");
             const announcementContent = document.getElementById("announcement-content");
-            const petalsToggle = document.getElementById("petals-toggle");  // 获取花瓣开关按钮
-            let petalsEnabled = localStorage.getItem("petals-enabled") === "true";  // 默认启用
+            const petalsToggle = document.getElementById("petals-toggle");
 
-            // 从Jekyll配置中获取公告文件路径，如果没有配置则使用默认路径
-            const announcementPath = "{{ site.announcement_path | default: '/announcements/announcement.md' }}";
-
-            // 控制菜单状态
+            // 状态变量
             let isMenuOpen = localStorage.getItem("menu-open") === "true";
-            updateMenuState();
+            let darkMode = localStorage.getItem("dark-mode");
+            let isMusicExpanded = localStorage.getItem("music-expanded") !== "false";
+            let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
 
-            menuToggle.addEventListener("click", function (e) {
-                e.stopPropagation();
-                isMenuOpen = !isMenuOpen;
-                localStorage.setItem("menu-open", isMenuOpen);
+            // 初始化函数
+            function init() {
                 updateMenuState();
-            });
+                applyDarkMode(darkMode === "true");
+                initMusicPlayer();
+                if (petalsEnabled) startPetals();
+            }
 
+            // 菜单控制
             function updateMenuState() {
                 if (isMenuOpen) {
                     menuContent.style.opacity = "1";
                     menuContent.style.visibility = "visible";
-                    menuContent.style.transform = "translateY(calc(-100% - 10px))";
+                    menuContent.style.transform = "translateY(calc(-100% - var(--menu-gap)))";
                     menuToggle.textContent = "✕";
                 } else {
                     menuContent.style.opacity = "0";
@@ -80,25 +79,20 @@
                 }
             }
 
-            // 点击外部关闭菜单
-            document.addEventListener("click", function (e) {
-                if (!menuContent.contains(e.target) && e.target !== menuToggle) {
-                    isMenuOpen = false;
-                    localStorage.setItem("menu-open", isMenuOpen);
-                    updateMenuState();
-                }
+            menuToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                isMenuOpen = !isMenuOpen;
+                localStorage.setItem("menu-open", isMenuOpen);
+                updateMenuState();
             });
 
             // 深色模式
-            let darkMode = localStorage.getItem("dark-mode");
-
             function applyDarkMode(state) {
                 document.body.classList.toggle("dark-mode", state);
                 darkModeToggle.textContent = state ? "☀️" : "🌙";
                 localStorage.setItem("dark-mode", state);
             }
 
-            // 自动深色模式（18:00 - 06:00）
             const hour = new Date().getHours();
             const shouldBeDark = hour >= 18 || hour < 6;
             if (darkMode === null) darkMode = shouldBeDark ? "true" : "false";
@@ -109,59 +103,30 @@
                 applyDarkMode(darkMode === "true");
             });
 
-            applyDarkMode(darkMode === "true");
-
-            // 音乐控制 - 默认自动播放
-            let isMusicExpanded = localStorage.getItem("music-expanded") !== "false"; // 默认true
-
-            // 初始化播放器
+            // 音乐控制
             function initMusicPlayer() {
-                if (isMusicExpanded) {
-                    musicPlayer.style.width = "280px";
-                    musicPlayer.style.height = "86px";
-                } else {
-                    musicPlayer.style.width = "0";
-                    musicPlayer.style.height = "0";
-                }
+                musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
+                musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
+                musicPlayer.style.position = "fixed";
+                musicPlayer.style.right = "80px";
+                musicPlayer.style.bottom = "20px";
+                musicPlayer.style.transition = "all 0.3s ease";
             }
 
             musicControl.addEventListener("click", function (e) {
                 e.stopPropagation();
                 isMusicExpanded = !isMusicExpanded;
                 localStorage.setItem("music-expanded", isMusicExpanded);
-                if (isMusicExpanded) {
-                    musicPlayer.style.width = "280px";
-                    musicPlayer.style.height = "86px";
-                } else {
-                    musicPlayer.style.width = "0";
-                    musicPlayer.style.height = "0";
-                }
+                musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
+                musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
             });
-
-            initMusicPlayer();
 
             // 公告功能
             announcementToggle.addEventListener("click", function(e) {
                 e.stopPropagation();
                 loadAnnouncement();
-                announcementModal.style.display = "block";
-                document.body.style.overflow = "hidden"; // 防止背景滚动
             });
 
-            closeModal.addEventListener("click", function() {
-                announcementModal.style.display = "none";
-                document.body.style.overflow = "auto";
-            });
-
-            // 点击模态框外部关闭
-            window.addEventListener("click", function(event) {
-                if (event.target === announcementModal) {
-                    announcementModal.style.display = "none";
-                    document.body.style.overflow = "auto";
-                }
-            });
-
-            // 加载Markdown公告内容
             function loadAnnouncement() {
                 const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
                 fetch(announcementUrl)
@@ -173,46 +138,37 @@
                         const content = text.replace(/^---[\s\S]*?---/, '').trim();
                         announcementContent.innerHTML = 
                             content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                        announcementModal.style.display = "block";
+                        document.body.style.overflow = "hidden";
                     })
                     .catch(error => {
                         announcementContent.innerHTML = `
                             <div class="alert-error">
                                 <strong>⚠️ 加载失败</strong>
                                 <p>${error.message}</p>
-                                <small>尝试访问: ${announcementUrl}</small>
                             </div>
                         `;
-                    })
-                    .finally(() => {
                         announcementModal.style.display = "block";
                     });
             }
 
-            // 响应式调整
-            function handleResize() {
-                if (window.innerWidth <= 768) {
-                    musicPlayer.style.right = "60px";
-                    musicPlayer.style.bottom = "10px";
-                    musicPlayer.style.maxWidth = "80vw";
-                } else {
-                    musicPlayer.style.right = "80px";
-                    musicPlayer.style.bottom = "20px";
-                    musicPlayer.style.maxWidth = "none";
+            closeModal.addEventListener("click", function() {
+                announcementModal.style.display = "none";
+                document.body.style.overflow = "auto";
+            });
+
+            window.addEventListener("click", function(event) {
+                if (event.target === announcementModal) {
+                    announcementModal.style.display = "none";
+                    document.body.style.overflow = "auto";
                 }
-            }
+            });
 
-            window.addEventListener("resize", debounce(handleResize, 200));
-            handleResize();
-
-            // 花瓣飘落效果
-    function togglePetalsEffect() {
+            // 花瓣效果
+            function togglePetalsEffect() {
                 petalsEnabled = !petalsEnabled;
                 localStorage.setItem("petals-enabled", petalsEnabled);
-                if (petalsEnabled) {
-                    startPetals();
-                } else {
-                    stopPetals();
-                }
+                petalsEnabled ? startPetals() : stopPetals();
             }
 
             petalsToggle.addEventListener("click", function (e) {
@@ -220,37 +176,48 @@
                 togglePetalsEffect();
             });
 
-            if (petalsEnabled) {
-                startPetals();
-            }
-
-            // 启动花瓣效果
             function startPetals() {
-                const numberOfPetals = 20;
-                const petalsContainer = document.createElement('div');
-                petalsContainer.classList.add('falling-petals');
-                document.body.appendChild(petalsContainer);
+                stopPetals(); // 先清除现有花瓣
 
-                for (let i = 0; i < numberOfPetals; i++) {
+                const container = document.createElement('div');
+                container.className = 'falling-petals';
+                document.body.appendChild(container);
+
+                for (let i = 0; i < 20; i++) {
                     const petal = document.createElement('div');
-                    petal.classList.add('petal');
-                    petalsContainer.appendChild(petal);
-
-                    // 设置随机样式
-                    petal.style.animationDuration = `${Math.random() * 5 + 4}s`; // 随机时长
-                    petal.style.animationDelay = `${Math.random() * 5}s`; // 随机延迟
-                    petal.style.left = `${Math.random() * 100}vw`; // 随机位置
+                    petal.className = 'petal';
+                    petal.style.cssText = `
+                        animation-duration: ${Math.random() * 5 + 4}s;
+                        animation-delay: ${Math.random() * 5}s;
+                        left: ${Math.random() * 100}vw;
+                        ${document.body.classList.contains('dark-mode') ? 
+                            'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
+                            'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
+                    `;
+                    container.appendChild(petal);
                 }
             }
 
-            // 停止花瓣效果
             function stopPetals() {
-                const petalsContainer = document.querySelector('.falling-petals');
-                if (petalsContainer) {
-                    petalsContainer.remove();
+                const existing = document.querySelector('.falling-petals');
+                if (existing) existing.remove();
+            }
+
+            // 响应式调整
+            function handleResize() {
+                if (window.innerWidth <= 768) {
+                    musicPlayer.style.right = "60px";
+                    musicPlayer.style.bottom = "15px";
+                } else {
+                    musicPlayer.style.right = "80px";
+                    musicPlayer.style.bottom = "20px";
                 }
             }
-            // 防抖函数
+
+            window.addEventListener('resize', debounce(handleResize, 200));
+            handleResize();
+
+            // 工具函数
             function debounce(func, wait) {
                 let timeout;
                 return function () {
@@ -258,6 +225,9 @@
                     timeout = setTimeout(func, wait);
                 };
             }
+
+            // 初始化所有功能
+            init();
         });
     </script>
     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
