@@ -6,6 +6,7 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <!-- SNS Link -->
                 {% include sns-links.html center=true %}
+                <div id="uptime" class="copyright text-muted">网站运行时间：0天0小时0分0秒</div>
                 <p class="copyright text-muted">
                     Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}
                     <br>
@@ -15,8 +16,7 @@
                         height="20px"
                         src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">
                     </iframe>
-                </p>
-                   <div id="uptime" class="copyright text-muted">网站运行时间：0天0小时0分0秒</div>
+                </p>           
             </div>
         </div>
     </div>
@@ -330,3 +330,27 @@
         });
     });
 </script>
+ <script>
+        // 网站上线时间（根据实际情况修改）
+        const startTime = new Date('2025-01-01T00:00:00');
+
+        function updateUptime() {
+            const now = new Date(); // 当前时间
+            const diff = now - startTime; // 时间差（毫秒）
+
+            // 将毫秒转换为天、小时、分钟、秒
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // 更新显示内容
+            document.getElementById('uptime').innerHTML = `网站运行时间：${days}天${hours}小时${minutes}分${seconds}秒`;
+        }
+
+        // 每秒更新一次
+        setInterval(updateUptime, 1000);
+
+        // 页面加载时立即更新一次
+        updateUptime();
+    </script>
