@@ -99,7 +99,7 @@
   background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
-/* 公告弹窗样式 */
+/* 公告弹窗遮罩 */
 .modal {
     display: flex;
     justify-content: center;
@@ -109,7 +109,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--modal-bg); /* 背景遮罩色 */
+    background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
     z-index: 10000;
     opacity: 0;
     visibility: hidden;
@@ -118,10 +118,10 @@
 
 /* 弹窗内容 */
 .modal-content {
-    background-color: var(--modal-content-bg);
+    background-color: #fff;
     border-radius: 10px;
-    width: 80%;  /* 弹窗宽度 */
-    max-width: 600px;  /* 最大宽度 */
+    width: 90%;  /* 弹窗宽度占屏幕的90% */
+    max-width: 600px;  /* 弹窗最大宽度 */
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -130,7 +130,7 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* 弹窗显示时 */
+/* 弹窗显示时的样式 */
 .modal.show {
     opacity: 1;
     visibility: visible;
@@ -157,6 +157,15 @@
 .close-modal:hover {
     color: red;
 }
+
+/* 响应式调整（确保移动端也能显示） */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;  /* 在移动端弹窗宽度占屏幕的95% */
+        padding: 15px;
+    }
+}
+
 
 
 /* ===== 公告部分深色模式样式 ===== */
