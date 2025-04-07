@@ -49,12 +49,13 @@
 
 #announcement-toggle,
 #dark-mode-toggle,
-#music-control {
+#music-control,
+#petals-toggle {
     width: 40px;
     height: 40px;
     background: var(--control-bg);
     color: white;
-    border-radius: 50%;
+    border-radius: 50%; /* 圆形 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,7 +67,8 @@
 #menu-toggle:hover,
 #announcement-toggle:hover,
 #dark-mode-toggle:hover,
-#music-control:hover {
+#music-control:hover,
+#petals-toggle:hover {
     background: var(--control-bg-hover);
     transform: scale(1.1);
 }
@@ -207,7 +209,8 @@
 .dark-mode #menu-toggle,
 .dark-mode #announcement-toggle,
 .dark-mode #dark-mode-toggle,
-.dark-mode #music-control {
+.dark-mode #music-control,
+.dark-mode #petals-toggle {
     background: var(--dark-control-bg);
     color: #fff;
 }
@@ -215,7 +218,8 @@
 .dark-mode #menu-toggle:hover,
 .dark-mode #announcement-toggle:hover,
 .dark-mode #dark-mode-toggle:hover,
-.dark-mode #music-control:hover {
+.dark-mode #music-control:hover,
+.dark-mode #petals-toggle:hover {
     background: var(--dark-control-bg-hover);
 }
 
@@ -265,7 +269,7 @@
     font-size: 20px;
     background: var(--control-bg);
     color: white;
-    border-radius: 5px;
+    border-radius: 50%; /* 圆形 */
     transition: background-color 0.3s ease;
 }
 
