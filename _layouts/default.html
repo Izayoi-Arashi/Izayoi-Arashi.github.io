@@ -36,7 +36,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
+     document.addEventListener("DOMContentLoaded", function () {
     // DOM元素引用
     const menuToggle = document.getElementById("menu-toggle");
     const menuContent = document.getElementById("menu-content");
@@ -69,12 +69,12 @@
         if (isMenuOpen) {
             menuContent.style.opacity = "1";
             menuContent.style.visibility = "visible";
-            menuContent.style.transform = "translateY(0)";
+            menuContent.style.transform = "translateY(calc(-100% - var(--menu-gap)))";
             menuToggle.textContent = "✕";
         } else {
             menuContent.style.opacity = "0";
             menuContent.style.visibility = "hidden";
-            menuContent.style.transform = "translateY(20px)";
+            menuContent.style.transform = "translateY(0)";
             menuToggle.textContent = "☰";
         }
     }
@@ -92,10 +92,6 @@
         darkModeToggle.textContent = state ? "☀️" : "🌙";
         localStorage.setItem("dark-mode", state);
     }
-
-    const hour = new Date().getHours();
-    const shouldBeDark = hour >= 18 || hour < 6;
-    if (darkMode === null) darkMode = shouldBeDark ? "true" : "false";
 
     darkModeToggle.addEventListener("click", function (e) {
         e.stopPropagation();
@@ -122,7 +118,7 @@
     });
 
     // 公告功能
-    announcementToggle.addEventListener("click", function (e) {
+    announcementToggle.addEventListener("click", function(e) {
         e.stopPropagation();
         loadAnnouncement();
     });
@@ -139,7 +135,7 @@
                 announcementContent.innerHTML = 
                     content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
                 announcementModal.style.display = "block";
-                document.body.style.overflow = "hidden"; // 防止背景滚动
+                document.body.style.overflow = "hidden";
             })
             .catch(error => {
                 announcementContent.innerHTML = `
@@ -152,15 +148,15 @@
             });
     }
 
-    closeModal.addEventListener("click", function () {
+    closeModal.addEventListener("click", function() {
         announcementModal.style.display = "none";
-        document.body.style.overflow = "auto"; // 恢复背景滚动
+        document.body.style.overflow = "auto";
     });
 
-    window.addEventListener("click", function (event) {
+    window.addEventListener("click", function(event) {
         if (event.target === announcementModal) {
             announcementModal.style.display = "none";
-            document.body.style.overflow = "auto"; // 恢复背景滚动
+            document.body.style.overflow = "auto";
         }
     });
 
@@ -229,6 +225,7 @@
     // 初始化所有功能
     init();
 });
+
     </script>
     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
 </body>
