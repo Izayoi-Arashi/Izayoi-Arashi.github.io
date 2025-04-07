@@ -7,6 +7,10 @@
     --dark-modal-bg: rgba(0, 0, 0, 0.8);
     --modal-content-bg: #ffffff;
     --dark-modal-content-bg: #2d2d2d;
+    --control-size: 50px;        
+    --control-icon-size: 24px;   
+    --control-radius: 50%;       
+    --control-transition: all 0.3s ease; 
 }
 
 #control-menu {
@@ -19,21 +23,6 @@
     align-items: flex-end;
 }
 
-#menu-toggle {
-    width: 40px;
-    height: 40px;
-    background: var(--control-bg);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    order: 1;
-}
 
 #menu-content {
     display: flex;
@@ -47,21 +36,26 @@
     order: 0;
 }
 
-#announcement-toggle,
-#dark-mode-toggle,
-#music-control,
-#petals-toggle {
-    width: 40px;
-    height: 40px;
+/* 新增统一按钮类 */
+.control-button {
+    width: var(--control-size);
+    height: var(--control-size);
     background: var(--control-bg);
     color: white;
-    border-radius: 50%; /* 圆形 */
+    border: none;
+    border-radius: var(--control-radius);
+    font-size: var(--control-icon-size);
+    cursor: pointer;
+    transition: var(--control-transition);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.control-button:hover {
+    background: var(--control-bg-hover);
+    transform: scale(1.1);
 }
 
 #menu-toggle:hover,
@@ -206,13 +200,14 @@
     color: #aaa;
 }
 
-.dark-mode #menu-toggle,
-.dark-mode #announcement-toggle,
-.dark-mode #dark-mode-toggle,
-.dark-mode #music-control,
-.dark-mode #petals-toggle {
+/* 替换为统一的深色模式按钮样式 */
+.dark-mode .control-button {
     background: var(--dark-control-bg);
     color: #fff;
+}
+
+.dark-mode .control-button:hover {
+    background: var(--dark-control-bg-hover);
 }
 
 .dark-mode #menu-toggle:hover,
@@ -252,11 +247,17 @@
     }
 }
 
+@media (max-width: 768px) {
+    :root {
+        --control-size: 45px;     /* 替换原代码中的固定尺寸 */
+        --control-icon-size: 20px;
+    }
+}
+
 @media (max-width: 480px) {
-    .modal-content {
-        width: 95%;
-        margin: 15% auto;
-        padding: 10px;
+    :root {
+        --control-size: 40px;     /* 替换原代码中的固定尺寸 */
+        --control-icon-size: 18px;
     }
 }
 
