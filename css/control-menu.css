@@ -1,3 +1,81 @@
+/* ===== 基础变量定义 ===== */
+:root {
+  /* 颜色变量 */
+  --control-bg: rgba(0, 0, 0, 0.7);
+  --control-bg-hover: rgba(0, 0, 0, 0.9);
+  --dark-control-bg: rgba(255, 255, 255, 0.2);
+  --dark-control-bg-hover: rgba(255, 255, 255, 0.3);
+  --modal-bg: rgba(0, 0, 0, 0.5);
+  --dark-modal-bg: rgba(0, 0, 0, 0.8);
+  --modal-content-bg: #ffffff;
+  --dark-modal-content-bg: #2d2d2d;
+  
+  /* 尺寸变量 */
+  --control-size: 50px;
+  --control-icon-size: 24px;
+  --menu-gap: 15px;
+  
+  /* 样式变量 */
+  --control-radius: 50%;
+  --control-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --control-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ===== 控制菜单核心样式 ===== */
+#control-menu {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: var(--menu-gap);
+  pointer-events: none;
+}
+
+/* 统一按钮样式 */
+.control-button {
+  width: var(--control-size);
+  height: var(--control-size);
+  background: var(--control-bg);
+  color: white;
+  border: none;
+  border-radius: var(--control-radius);
+  font-size: var(--control-icon-size);
+  cursor: pointer;
+  transition: var(--control-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--control-shadow);
+  pointer-events: auto;
+  margin: 0;
+}
+
+.control-button:hover {
+  background: var(--control-bg-hover);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 菜单内容区域 */
+#menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--menu-gap);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: var(--control-transition);
+  pointer-events: auto;
+}
+
+#control-menu.expanded #menu-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
 /* ===== 深色模式 ===== */
 .dark-mode {
   background-color: #121212;
@@ -19,20 +97,6 @@
 
 .dark-mode .falling-petals .petal {
   background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-}
-
-/* ===== 公告部分深色模式样式 ===== */
-.dark-mode #announcement-modal {
-  background: var(--dark-modal-bg); /* 深色模式下的背景 */
-}
-
-.dark-mode #announcement-modal .modal-content {
-  background: var(--dark-modal-content-bg); /* 公告内容区域背景 */
-  color: #ffffff; /* 公告内容文字颜色 */
-}
-
-.dark-mode #announcement-modal .modal-content p {
-  color: #ffffff; /* 确保公告段落文字为白色 */
 }
 
 /* ===== 花瓣按钮特殊样式 ===== */
