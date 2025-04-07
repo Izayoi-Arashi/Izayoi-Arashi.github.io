@@ -1,312 +1,194 @@
+/* ===== 基础变量定义 ===== */
 :root {
-    --control-bg: rgba(0, 0, 0, 0.7);
-    --control-bg-hover: rgba(0, 0, 0, 0.9);
-    --dark-control-bg: rgba(255, 255, 255, 0.2);
-    --dark-control-bg-hover: rgba(255, 255, 255, 0.3);
-    --modal-bg: rgba(0, 0, 0, 0.5);
-    --dark-modal-bg: rgba(0, 0, 0, 0.8);
-    --modal-content-bg: #ffffff;
-    --dark-modal-content-bg: #2d2d2d;
-    --control-size: 50px;        
-    --control-icon-size: 24px;   
-    --control-radius: 50%;       
-    --control-transition: all 0.3s ease; 
+  /* 颜色变量 */
+  --control-bg: rgba(0, 0, 0, 0.7);
+  --control-bg-hover: rgba(0, 0, 0, 0.9);
+  --dark-control-bg: rgba(255, 255, 255, 0.2);
+  --dark-control-bg-hover: rgba(255, 255, 255, 0.3);
+  --modal-bg: rgba(0, 0, 0, 0.5);
+  --dark-modal-bg: rgba(0, 0, 0, 0.8);
+  --modal-content-bg: #ffffff;
+  --dark-modal-content-bg: #2d2d2d;
+  
+  /* 尺寸变量 */
+  --control-size: 50px;
+  --control-icon-size: 24px;
+  --menu-gap: 15px;
+  
+  /* 样式变量 */
+  --control-radius: 50%;
+  --control-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --control-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* ===== 控制菜单核心样式 ===== */
 #control-menu {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: var(--menu-gap);
+  pointer-events: none;
 }
 
-
-#menu-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 10px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(0);
-    transition: all 0.3s ease;
-    order: 0;
-}
-
-/* 新增统一按钮类 */
+/* 统一按钮样式 */
 .control-button {
-    width: var(--control-size);
-    height: var(--control-size);
-    background: var(--control-bg);
-    color: white;
-    border: none;
-    border-radius: var(--control-radius);
-    font-size: var(--control-icon-size);
-    cursor: pointer;
-    transition: var(--control-transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  width: var(--control-size);
+  height: var(--control-size);
+  background: var(--control-bg);
+  color: white;
+  border: none;
+  border-radius: var(--control-radius);
+  font-size: var(--control-icon-size);
+  cursor: pointer;
+  transition: var(--control-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--control-shadow);
+  pointer-events: auto;
+  margin: 0;
 }
 
 .control-button:hover {
-    background: var(--control-bg-hover);
-    transform: scale(1.1);
+  background: var(--control-bg-hover);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-#menu-toggle:hover,
-#announcement-toggle:hover,
-#dark-mode-toggle:hover,
-#music-control:hover,
-#petals-toggle:hover {
-    background: var(--control-bg-hover);
-    transform: scale(1.1);
+/* 菜单内容区域 */
+#menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--menu-gap);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: var(--control-transition);
+  pointer-events: auto;
 }
 
-#music-player {
-    position: fixed;
-    right: 80px;
-    bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    overflow: hidden;
-    z-index: 999;
+#control-menu.expanded #menu-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-/* 公告模态框样式 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1001;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--modal-bg);
-    overflow-y: auto;
+/* ===== 花瓣按钮特殊样式 ===== */
+#petals-toggle {
+  position: relative;
+  overflow: hidden;
 }
 
-.modal-content {
-    background-color: var(--modal-content-bg);
-    margin: 5% auto;
-    padding: 25px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 800px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    position: relative;
-    animation: modalopen 0.3s;
+#petals-toggle::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.close-modal {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.2s;
+#petals-toggle.active::after {
+  opacity: 0.6;
 }
 
-.close-modal:hover {
-    color: #333;
-}
-
-#announcement-content {
-    margin-top: 20px;
-    line-height: 1.6;
-    overflow-wrap: break-word;
-}
-
-#announcement-content h1,
-#announcement-content h2,
-#announcement-content h3 {
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
-}
-
-#announcement-content p {
-    margin-bottom: 1em;
-}
-
-#announcement-content a {
-    color: #0066cc;
-    text-decoration: none;
-}
-
-#announcement-content a:hover {
-    text-decoration: underline;
-}
-
-#announcement-content ul,
-#announcement-content ol {
-    margin-bottom: 1em;
-    padding-left: 2em;
-}
-
-.no-content {
-    text-align: center;
-    color: #666;
-    font-style: italic;
-    padding: 40px 0;
-}
-
-/* 动画效果 */
-@keyframes modalopen {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 深色模式样式 */
-.dark-mode {
-    background-color: #121212;
-    color: white;
-}
-
-.dark-mode .modal {
-    background-color: var(--dark-modal-bg);
-}
-
-.dark-mode .modal-content {
-    background-color: var(--dark-modal-content-bg);
-    color: #e0e0e0;
-}
-
-.dark-mode #announcement-content a {
-    color: #4dabf7;
-}
-
-.dark-mode .close-modal {
-    color: #777;
-}
-
-.dark-mode .close-modal:hover {
-    color: #ddd;
-}
-
-.dark-mode .no-content {
-    color: #aaa;
-}
-
-/* 替换为统一的深色模式按钮样式 */
+/* ===== 深色模式 ===== */
 .dark-mode .control-button {
-    background: var(--dark-control-bg);
-    color: #fff;
+  background: var(--dark-control-bg);
+  color: #fff;
 }
 
 .dark-mode .control-button:hover {
-    background: var(--dark-control-bg-hover);
+  background: var(--dark-control-bg-hover);
 }
 
-.dark-mode #menu-toggle:hover,
-.dark-mode #announcement-toggle:hover,
-.dark-mode #dark-mode-toggle:hover,
-.dark-mode #music-control:hover,
-.dark-mode #petals-toggle:hover {
-    background: var(--dark-control-bg-hover);
+.dark-mode #petals-toggle::after {
+  background: radial-gradient(circle, rgba(255,182,193,0.4) 0%, transparent 70%);
 }
 
-.dark-mode #music-player {
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-    #control-menu {
-        right: 10px;
-        bottom: 10px;
-    }
-
-    #music-player {
-        right: 60px;
-        bottom: 10px;
-        max-width: 80vw;
-    }
-
-    .modal-content {
-        width: 90%;
-        margin: 10% auto;
-        padding: 15px;
-    }
-
-    .close-modal {
-        right: 10px;
-        top: 5px;
-    }
-}
-
-@media (max-width: 768px) {
-    :root {
-        --control-size: 45px;     /* 替换原代码中的固定尺寸 */
-        --control-icon-size: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    :root {
-        --control-size: 40px;     /* 替换原代码中的固定尺寸 */
-        --control-icon-size: 18px;
-    }
-}
-
-/* 集成花瓣飘落效果的CSS */
-#petals-toggle {
-    cursor: pointer;
-    display: inline-block;
-    padding: 10px;
-    margin: 5px;
-    font-size: 20px;
-    background: var(--control-bg);
-    color: white;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-#petals-toggle:hover {
-    background: var(--control-bg-hover);
-    transform: scale(1.1);
-}
-
-/* 花瓣飘落效果的CSS */
+/* ===== 花瓣飘落效果 ===== */
 .falling-petals {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
 }
 
 .petal {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #ff7f7f;
-    clip-path: circle(50%);
-    opacity: 0.8;
-    animation: fall linear infinite;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  border-radius: 50% 0 50% 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+.dark-mode .petal {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
 @keyframes fall {
-    0% {
-        top: -10%;
-        transform: translateX(0) rotate(0deg);
-    }
-    100% {
-        top: 100%;
-        transform: translateX(var(--offset-x)) rotate(360deg);
-    }
+  0% {
+    top: -10%;
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    top: 110%;
+    transform: translateX(var(--offset-x)) rotate(360deg);
+  }
+}
+
+/* ===== 音乐播放器 ===== */
+#music-player {
+  position: fixed;
+  right: calc(var(--control-size) + 30px);
+  bottom: 20px;
+  border-radius: 8px;
+  box-shadow: var(--control-shadow);
+  transition: var(--control-transition);
+  overflow: hidden;
+  z-index: 999;
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+  :root {
+    --control-size: 44px;
+    --control-icon-size: 22px;
+    --menu-gap: 12px;
+  }
+  
+  #control-menu {
+    right: 15px;
+    bottom: 15px;
+  }
+  
+  #music-player {
+    right: calc(var(--control-size) + 20px);
+    bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --control-size: 40px;
+    --control-icon-size: 20px;
+    --menu-gap: 10px;
+  }
+  
+  .petal {
+    width: 12px;
+    height: 12px;
+  }
 }
