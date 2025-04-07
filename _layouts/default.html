@@ -16,6 +16,7 @@
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
                 <span id="music-icon">♫</span>
             </div>
+            <div id="petals-toggle" title="开启/关闭花瓣飘落">🍂</div> <!-- 花瓣飘落按钮 -->
         </div>
     </div>
 
@@ -47,6 +48,8 @@
             const announcementModal = document.getElementById("announcement-modal");
             const closeModal = document.querySelector(".close-modal");
             const announcementContent = document.getElementById("announcement-content");
+            const petalsToggle = document.getElementById("petals-toggle");  // 获取花瓣开关按钮
+            let petalsEnabled = localStorage.getItem("petals-enabled") === "true";  // 默认启用
 
             // 从Jekyll配置中获取公告文件路径，如果没有配置则使用默认路径
             const announcementPath = "{{ site.announcement_path | default: '/announcements/announcement.md' }}";
@@ -158,37 +161,32 @@
             });
 
             // 加载Markdown公告内容
-    function loadAnnouncement() {
-    // 方法1：使用Jekyll生成的绝对路径（最优解）
-    const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-    
-    // 方法2：纯前端计算根路径（备用方案）
-    // const rootPath = window.location.origin + "{{ site.baseurl }}";
-    // const announcementUrl = rootPath + "/announcements/am.md?t=" + Date.now();
-    
-    fetch(announcementUrl)
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return response.text();
-        })
-        .then(text => {
-            const content = text.replace(/^---[\s\S]*?---/, '').trim();
-            announcementContent.innerHTML = 
-                content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
-        })
-        .catch(error => {
-            announcementContent.innerHTML = `
-                <div class="alert-error">
-                    <strong>⚠️ 加载失败</strong>
-                    <p>${error.message}</p>
-                    <small>尝试访问: ${announcementUrl}</small>
-                </div>
-            `;
-        })
-        .finally(() => {
-            announcementModal.style.display = "block";
-        });
-}
+            function loadAnnouncement() {
+                const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+                fetch(announcementUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return response.text();
+                    })
+                    .then(text => {
+                        const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                        announcementContent.innerHTML = 
+                            content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                    })
+                    .catch(error => {
+                        announcementContent.innerHTML = `
+                            <div class="alert-error">
+                                <strong>⚠️ 加载失败</strong>
+                                <p>${error.message}</p>
+                                <small>尝试访问: ${announcementUrl}</small>
+                            </div>
+                        `;
+                    })
+                    .finally(() => {
+                        announcementModal.style.display = "block";
+                    });
+            }
+
             // 响应式调整
             function handleResize() {
                 if (window.innerWidth <= 768) {
@@ -205,6 +203,53 @@
             window.addEventListener("resize", debounce(handleResize, 200));
             handleResize();
 
+            // 花瓣飘落效果
+            function togglePetalsEffect() {
+                petalsEnabled = !petalsEnabled;
+                localStorage.setItem("petals-enabled", petalsEnabled);
+                if (petalsEnabled) {
+                    startPetals();
+                } else {
+                    stopPetals();
+                }
+            }
+
+            petalsToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                togglePetalsEffect();
+            });
+
+            if (petalsEnabled) {
+                startPetals();
+            }
+
+            // 启动花瓣效果
+            function startPetals() {
+                const numberOfPetals = 20;
+                const petalsContainer = document.createElement('div');
+                petalsContainer.classList.add('falling-petals');
+                document.body.appendChild(petalsContainer);
+
+                for (let i = 0; i < numberOfPetals; i++) {
+                    const petal = document.createElement('div');
+                    petal.classList.add('petal');
+                    petalsContainer.appendChild(petal);
+
+                    petal.style.animationDuration = `${Math.random() * 5 + 4}s`; // 随机时长
+                    petal.style.animationDelay = `${Math.random() * 5}s`; // 随机延迟
+                    petal.style.left = `${Math.random() * 100}vw`; // 随机位置
+                }
+            }
+
+            // 停止花瓣效果
+            function stopPetals() {
+                const petalsContainer = document.querySelector('.falling-petals');
+                if (petalsContainer) {
+                    petalsContainer.remove();
+                }
+            }
+
+            // 防抖函数
             function debounce(func, wait) {
                 let timeout;
                 return function () {
@@ -214,6 +259,40 @@
             }
         });
     </script>
+
     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
+    <style>
+        /* 花瓣飘落效果的CSS */
+        .falling-petals {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .petal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff7f7f;
+            clip-path: circle(50%);
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10%;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                top: 100%;
+                transform: translateX(var(--offset-x)) rotate(360deg);
+            }
+        }
+    </style>
 </body>
 </html>
