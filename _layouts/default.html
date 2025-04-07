@@ -110,6 +110,7 @@
     }
 
     musicControl.addEventListener("click", function (e) {
+        console.log(1111)
         e.stopPropagation();
         isMusicExpanded = !isMusicExpanded;
         localStorage.setItem("music-expanded", isMusicExpanded);
