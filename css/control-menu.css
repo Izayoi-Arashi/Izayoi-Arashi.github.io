@@ -113,6 +113,10 @@
   background: radial-gradient(circle, rgba(255,182,193,0.4) 0%, transparent 70%);
 }
 
+.dark-mode .petal {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
 /* ===== 花瓣飘落效果 ===== */
 .falling-petals {
   position: fixed;
@@ -161,6 +165,33 @@
   z-index: 999;
 }
 
+/* ===== 公告模态框 ===== */
+#announcement-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  background-color: var(--modal-content-bg);
+  padding: 20px;
+  z-index: 9999;
+  display: none;
+  border-radius: 8px;
+}
+
+#announcement-modal .modal-content {
+  position: relative;
+}
+
+#announcement-modal .close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
 /* ===== 响应式设计 ===== */
 @media (max-width: 768px) {
   :root {
@@ -178,6 +209,10 @@
     right: calc(var(--control-size) + 20px);
     bottom: 15px;
   }
+
+  #announcement-modal {
+    width: 90%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -190,5 +225,9 @@
   .petal {
     width: 12px;
     height: 12px;
+  }
+
+  #announcement-modal {
+    width: 95%;
   }
 }
