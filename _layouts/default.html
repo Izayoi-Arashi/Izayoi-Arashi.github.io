@@ -110,7 +110,6 @@
     }
 
     musicControl.addEventListener("click", function (e) {
-        console.log(1111)
         e.stopPropagation();
         isMusicExpanded = !isMusicExpanded;
         localStorage.setItem("music-expanded", isMusicExpanded);
@@ -162,16 +161,16 @@
     });
 
     // 花瓣效果
-    // function togglePetalsEffect() {
-    //     petalsEnabled = !petalsEnabled;
-    //     localStorage.setItem("petals-enabled", petalsEnabled);
-    //     petalsEnabled ? startPetals() : stopPetals();
-    // }
+    function togglePetalsEffect() {
+        petalsEnabled = !petalsEnabled;
+        localStorage.setItem("petals-enabled", petalsEnabled);
+        petalsEnabled ? startPetals() : stopPetals();
+    }
 
-    // petalsToggle.addEventListener("click", function (e) {
-    //     e.stopPropagation();
-    //     togglePetalsEffect();
-    // });
+    petalsToggle.addEventListener("click", function (e) {
+        e.stopPropagation();
+        togglePetalsEffect();
+    });
 
     function startPetals() {
         stopPetals(); // 先清除现有花瓣
@@ -202,7 +201,6 @@
 
     // 响应式调整
     function handleResize() {
-        console.log(333)
         if (window.innerWidth <= 768) {
             musicPlayer.style.right = "60px";
             musicPlayer.style.bottom = "15px";
