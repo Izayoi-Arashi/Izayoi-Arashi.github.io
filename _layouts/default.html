@@ -16,7 +16,8 @@
                     src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
                 <span id="music-icon">♫</span>
             </div>
-            <div id="petals-toggle" title="开启/关闭花瓣飘落">🍂</div> <!-- 花瓣飘落按钮 -->
+            <!-- 更新花瓣按钮样式，使其与其他按钮一致 -->
+            <div id="petals-toggle" title="开启/关闭花瓣飘落" class="menu-item">🍂</div> 
         </div>
     </div>
 
@@ -235,6 +236,7 @@
                     petal.classList.add('petal');
                     petalsContainer.appendChild(petal);
 
+                    // 设置随机样式
                     petal.style.animationDuration = `${Math.random() * 5 + 4}s`; // 随机时长
                     petal.style.animationDelay = `${Math.random() * 5}s`; // 随机延迟
                     petal.style.left = `${Math.random() * 100}vw`; // 随机位置
@@ -262,9 +264,24 @@
 
     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
     <style>
+        /* 统一按钮样式 */
+        .menu-item {
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
         /* 花瓣飘落效果的CSS */
         .falling-petals {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
