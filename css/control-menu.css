@@ -99,6 +99,20 @@
   background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
+/* ===== 公告部分深色模式样式 ===== */
+.dark-mode #announcement-modal {
+  background: var(--dark-modal-bg); /* 深色模式下的背景 */
+}
+
+.dark-mode #announcement-modal .modal-content {
+  background: var(--dark-modal-content-bg); /* 公告内容区域背景 */
+  color: #ffffff; /* 公告内容文字颜色 */
+}
+
+.dark-mode #announcement-modal .modal-content p {
+  color: #ffffff; /* 确保公告段落文字为白色 */
+}
+
 /* ===== 花瓣按钮特殊样式 ===== */
 #petals-toggle {
   position: relative;
@@ -190,6 +204,13 @@
     --control-icon-size: 20px;
     --menu-gap: 10px;
   }
+  
+  .petal {
+    width: 12px;
+    height: 12px;
+  }
+}
+
   
   .petal {
     width: 12px;
