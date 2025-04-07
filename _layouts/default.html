@@ -204,6 +204,52 @@
         if (existing) existing.remove();
     }
 
+    // 电梯
+    document.addEventListener("DOMContentLoaded", function () {
+    const elevatorButton = document.getElementById("elevator-button");
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuContent = document.getElementById("menu-content");
+    
+    // 设置按钮的初始状态
+    let isMenuOpen = localStorage.getItem("menu-open") === "true";
+    let isScrolling = false;  // 防止多次滚动触发
+
+    // 监听页面滚动，动态显示电梯按钮
+    window.addEventListener("scroll", function() {
+        if (isScrolling) return; // 防止滚动过程中重复执行
+
+        isScrolling = true;
+
+        const isNearTop = window.scrollY < 100;  // 页面接近顶部时
+        const isNearBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100;  // 页面接近底部时
+        
+        if (isNearTop) {
+            elevatorButton.textContent = "⬇️";  // 回到底部按钮
+            elevatorButton.title = "回到底部";
+        } else if (isNearBottom) {
+            elevatorButton.textContent = "⬆️";  // 回到顶部按钮
+            elevatorButton.title = "回到顶部";
+        }
+
+        // 控制按钮显示
+        elevatorButton.classList.add("active");
+        isScrolling = false;  // 允许继续滚动触发
+    });
+
+    // 点击按钮时，滚动到顶部或底部
+    elevatorButton.addEventListener("click", function () {
+        if (elevatorButton.textContent === "⬇️") {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });  // 滚动到页面底部
+        } else if (elevatorButton.textContent === "⬆️") {
+            window.scrollTo({ top: 0, behavior: "smooth" });  // 滚动到页面顶部
+        }
+    });
+
+    // 初始化时检查当前滚动位置
+    window.dispatchEvent(new Event('scroll'));
+});
+
+
     // 响应式调整
     function handleResize() {
         if (window.innerWidth <= 768) {
