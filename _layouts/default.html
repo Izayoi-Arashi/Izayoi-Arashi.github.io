@@ -125,39 +125,34 @@
     });
 
     function loadAnnouncement() {
-    const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-    fetch(announcementUrl)
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return response.text();
-        })
-        .then(text => {
-            const content = text.replace(/^---[\s\S]*?---/, '').trim();
-            announcementContent.innerHTML = 
-                content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
-            announcementModal.classList.add("show");
-            announcementModal.querySelector(".modal-content").classList.add("show");
-            document.body.style.overflow = "hidden";  // 防止背景滚动
-        })
-        .catch(error => {
-            announcementContent.innerHTML = `
-                <div class="alert-error">
-                    <strong>⚠️ 加载失败</strong>
-                    <p>${error.message}</p>
-                </div>
-            `;
-            announcementModal.classList.add("show");
-            announcementModal.querySelector(".modal-content").classList.add("show");
-        });
-}
+        const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+        fetch(announcementUrl)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return response.text();
+            })
+            .then(text => {
+                const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                announcementContent.innerHTML = 
+                    content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                announcementModal.style.display = "block";
+                document.body.style.overflow = "hidden";
+            })
+            .catch(error => {
+                announcementContent.innerHTML = `
+                    <div class="alert-error">
+                        <strong>⚠️ 加载失败</strong>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                announcementModal.style.display = "block";
+            });
+    }
 
-// 关闭公告弹窗
-closeModal.addEventListener("click", function() {
-    announcementModal.classList.remove("show");
-    announcementModal.querySelector(".modal-content").classList.remove("show");
-    document.body.style.overflow = "auto";  // 允许背景滚动
-});
-
+    closeModal.addEventListener("click", function() {
+        announcementModal.style.display = "none";
+        document.body.style.overflow = "auto";
+    });
 
     window.addEventListener("click", function(event) {
         if (event.target === announcementModal) {
