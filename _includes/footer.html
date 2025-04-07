@@ -5,8 +5,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <!-- SNS Link -->
-                {% include sns-links.html center=true %}
-                <div id="uptime" class="copyright text-muted">网站运行时间：0天0小时0分0秒</div>
+                {% include sns-links.html center=true %} 
                 <p class="copyright text-muted">
                     Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}
                     <br>
@@ -16,7 +15,8 @@
                         height="20px"
                         src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">
                     </iframe>
-                </p>           
+                </p>
+                <div id="uptime" class="copyright text-muted">网站运行时间：0天0小时0分0秒</div>
             </div>
         </div>
     </div>
@@ -332,7 +332,7 @@
 </script>
  <script>
         // 网站上线时间（根据实际情况修改）
-        const startTime = new Date('2025-01-01T00:00:00');
+        const startTime = new Date('2025-03-01T00:00:00');
 
         function updateUptime() {
             const now = new Date(); // 当前时间
