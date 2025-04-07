@@ -179,6 +179,16 @@
   z-index: 999;
 }
 
+/* 电梯按钮样式 */
+#elevator-button {
+    display: none;  /* 初始状态隐藏 */
+}
+
+#elevator-button.active {
+    display: flex;  /* 当按钮被激活时显示 */
+}
+
+
 /* ===== 响应式设计 ===== */
 @media (max-width: 768px) {
   :root {
