@@ -269,7 +269,7 @@
     font-size: 20px;
     background: var(--control-bg);
     color: white;
-    border-radius: 50%; /* 圆形 */
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
@@ -278,7 +278,6 @@
     transform: scale(1.1);
 }
 
-/* 花瓣飘落效果的CSS */
 /* 花瓣飘落效果的CSS */
 .falling-petals {
     position: fixed;
