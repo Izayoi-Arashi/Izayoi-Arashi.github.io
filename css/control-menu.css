@@ -99,6 +99,119 @@
   background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
+/* ===== 公告部分深色模式样式 ===== */
+.dark-mode #announcement-modal {
+  background: var(--dark-modal-bg); /* 深色模式下的背景 */
+}
+
+.dark-mode #announcement-modal .modal-content {
+  background: var(--dark-modal-content-bg); /* 公告内容区域背景 */
+  color: #ffffff; /* 公告内容文字颜色 */
+}
+
+.dark-mode #announcement-modal .modal-content p {
+  color: #ffffff; /* 确保公告段落文字为白色 */
+}
+
+/* ===== 花瓣按钮特殊样式 ===== */
+#petals-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+#petals-toggle::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#petals-toggle.active::after {
+  opacity: 0.6;
+}
+
+/* ===== 花瓣飘落效果 ===== */
+.falling-petals {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.petal {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  border-radius: 50% 0 50% 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    top: -10%;
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    top: 110%;
+    transform: translateX(var(--offset-x)) rotate(360deg);
+  }
+}
+
+/* ===== 音乐播放器 ===== */
+#music-player {
+  position: fixed;
+  right: calc(var(--control-size) + 30px);
+  bottom: 20px;
+  border-radius: 8px;
+  box-shadow: var(--control-shadow);
+  transition: var(--control-transition);
+  overflow: hidden;
+  z-index: 999;
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+  :root {
+    --control-size: 44px;
+    --control-icon-size: 22px;
+    --menu-gap: 12px;
+  }
+  
+  #control-menu {
+    right: 15px;
+    bottom: 15px;
+  }
+  
+  #music-player {
+    right: calc(var(--control-size) + 20px);
+    bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --control-size: 40px;
+    --control-icon-size: 20px;
+    --menu-gap: 10px;
+  }
+  
+  .petal {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+
 /* ===== 花瓣按钮特殊样式 ===== */
 #petals-toggle {
   position: relative;
