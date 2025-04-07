@@ -17,7 +17,7 @@
                 <span id="music-icon">♫</span>
             </div>
             <!-- 更新花瓣按钮样式，使其与其他按钮一致 -->
-            <div id="petals-toggle" title="开启/关闭花瓣飘落" class="menu-item">🍂</div> 
+            <button id="petals-toggle">🍂</button>
         </div>
     </div>
 
@@ -205,51 +205,53 @@
             handleResize();
 
             // 花瓣飘落效果
-            function togglePetalsEffect() {
-                petalsEnabled = !petalsEnabled;
-                localStorage.setItem("petals-enabled", petalsEnabled);
-                if (petalsEnabled) {
-                    startPetals();
-                } else {
-                    stopPetals();
-                }
-            }
+           document.addEventListener("DOMContentLoaded", function () {
+    // 控制菜单状态
+    const petalsToggle = document.getElementById("petals-toggle");
+    let petalsEnabled = localStorage.getItem("petals-enabled") === "true";  // 从本地存储获取花瓣状态
 
-            petalsToggle.addEventListener("click", function (e) {
-                e.stopPropagation();
-                togglePetalsEffect();
-            });
+    // 初始时根据存储的状态来启用或禁用花瓣效果
+    if (petalsEnabled) {
+        startFallingPetals();
+    }
 
-            if (petalsEnabled) {
-                startPetals();
-            }
+    petalsToggle.addEventListener("click", function () {
+        petalsEnabled = !petalsEnabled;
+        localStorage.setItem("petals-enabled", petalsEnabled);  // 保存状态
+        if (petalsEnabled) {
+            startFallingPetals();  // 启动花瓣效果
+        } else {
+            stopFallingPetals();   // 停止花瓣效果
+        }
+    });
 
-            // 启动花瓣效果
-            function startPetals() {
-                const numberOfPetals = 20;
-                const petalsContainer = document.createElement('div');
-                petalsContainer.classList.add('falling-petals');
-                document.body.appendChild(petalsContainer);
+    function startFallingPetals() {
+        const fallingPetals = document.createElement("div");
+        fallingPetals.classList.add("falling-petals");
+        document.body.appendChild(fallingPetals);
+        generatePetals(fallingPetals);
+    }
 
-                for (let i = 0; i < numberOfPetals; i++) {
-                    const petal = document.createElement('div');
-                    petal.classList.add('petal');
-                    petalsContainer.appendChild(petal);
+    function stopFallingPetals() {
+        const fallingPetals = document.querySelector(".falling-petals");
+        if (fallingPetals) {
+            fallingPetals.remove();
+        }
+    }
 
-                    // 设置随机样式
-                    petal.style.animationDuration = `${Math.random() * 5 + 4}s`; // 随机时长
-                    petal.style.animationDelay = `${Math.random() * 5}s`; // 随机延迟
-                    petal.style.left = `${Math.random() * 100}vw`; // 随机位置
-                }
-            }
+    function generatePetals(container) {
+        for (let i = 0; i < 50; i++) {
+            const petal = document.createElement("div");
+            petal.classList.add("petal");
+            petal.style.animationDuration = `${Math.random() * 5 + 5}s`;  // 随机设置下落时间
+            petal.style.animationDelay = `${Math.random() * 5}s`;  // 随机设置延迟时间
+            petal.style.left = `${Math.random() * 100}%`;  // 随机水平位置
+            petal.style.setProperty('--offset-x', `${Math.random() * 100 - 50}px`);  // 随机左右偏移量
+            container.appendChild(petal);
+        }
+    }
+});
 
-            // 停止花瓣效果
-            function stopPetals() {
-                const petalsContainer = document.querySelector('.falling-petals');
-                if (petalsContainer) {
-                    petalsContainer.remove();
-                }
-            }
 
             // 防抖函数
             function debounce(func, wait) {
