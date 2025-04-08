@@ -20,6 +20,7 @@
                  </audio>
              </div>
              <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
+             <div id="scroll-to-top" title="回到顶部" class="control-button">↑</div>
          </div>
      </div>
  
@@ -87,7 +88,23 @@
          localStorage.setItem("menu-open", isMenuOpen);
          updateMenuState();
      });
- 
+       
+     // 回到顶部
+     document.addEventListener("DOMContentLoaded", function () {
+    // DOM元素引用
+    const scrollToTopBtn = document.getElementById("scroll-to-top"); // 获取回到顶部按钮
+
+    // 回到顶部功能
+    scrollToTopBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'  // 平滑滚动到顶部
+        });
+    });
+});
+
+       
      // 深色模式
      function applyDarkMode(state) {
          document.body.classList.toggle("dark-mode", state);
