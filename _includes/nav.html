@@ -223,7 +223,7 @@ function debounce(func, wait) {
 
     </script>
 <style>
- /* 基础样式 */
+/* 基础样式 */
 .navbar-toggle {
     display: block;
 }
@@ -231,12 +231,6 @@ function debounce(func, wait) {
 /* 集成菜单按钮样式 */
 .control-buttons {
     position: relative;
-}
-
-.control-buttons .dropdown-menu {
-    min-width: 180px;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* 在小屏幕下隐藏集成菜单 */
@@ -310,6 +304,13 @@ function debounce(func, wait) {
 
 .control-buttons .dropdown-menu {
     min-width: 180px;
+}
+
+/* 控制面板按钮在点击时的背景样式，不改变背景色 */
+.control-buttons .dropdown-toggle:focus,
+.control-buttons .dropdown-toggle:active {
+    background-color: transparent;
+    outline: none;
 }
 
 /* 音乐播放器按钮的样式 */
