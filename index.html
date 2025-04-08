@@ -76,14 +76,18 @@ description: "<span class='typewriter'></span>"
 </script>
 <style>
 .typewriter {
-  font-family: monospace; /* 等宽字体更逼真 */
+  display: inline-block;
+  font-family: monospace;
 }
-.cursor::after {
-  content: "|";
-  animation: blink 1s infinite;
+
+.cursor {
+  border-right: 2px solid black;
+  animation: blink-caret 0.7s step-end infinite;
 }
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+@keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
 }
 </style>
