@@ -307,24 +307,21 @@ function debounce(func, wait) {
     color: #f0f0f0;
 }
 
-/* 音乐播放器的样式 */
-#music-player {
-    transition: all 0.3s ease;
-    display: none; /* 默认隐藏 */
-    width: 0;
-    height: 0;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 9999;
-    border: none;
+/* 控制面板按钮的样式 */
+#music-control i {
+    font-size: 20px;
+    color: #333;
+    transition: color 0.3s;
 }
 
-/* 使音乐播放器显示时的样式 */
-#music-player.show {
-    display: block;
-    width: 280px;
-    height: 86px;
+/* 深色模式下图标颜色 */
+.dark-mode #music-control i {
+    color: #f0f0f0;
+}
+
+/* 鼠标悬停时改变图标颜色 */
+#music-control:hover i {
+    color: #4CAF50;
 }
 
 </style>
