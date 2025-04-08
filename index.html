@@ -84,6 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 启动动画
   typeLoop();
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) startAnimation();
+  });
+});
+observer.observe(document.querySelector('.typewriter-effect'));
 });
 </script>
 <style>
@@ -101,5 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
   50% {
     border-color: transparent;
   }
+}
+@media (prefers-reduced-motion) {
+  .typewriter { animation: none; border: none; }
 }
 </style>
