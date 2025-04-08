@@ -21,6 +21,61 @@
   --control-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* ===== 控制菜单核心样式 ===== */
+#control-menu {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: var(--menu-gap);
+  pointer-events: none;
+}
+
+/* 统一按钮样式 */
+.control-button {
+  width: var(--control-size);
+  height: var(--control-size);
+  background: var(--control-bg);
+  color: white;
+  border: none;
+  border-radius: var(--control-radius);
+  font-size: var(--control-icon-size);
+  cursor: pointer;
+  transition: var(--control-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--control-shadow);
+  pointer-events: auto;
+  margin: 0;
+}
+
+.control-button:hover {
+  background: var(--control-bg-hover);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 菜单内容区域 */
+#menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--menu-gap);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: var(--control-transition);
+  pointer-events: auto;
+}
+
+#control-menu.expanded #menu-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
 /* ===== 深色模式 ===== */
 .dark-mode {
   background-color: #121212;
@@ -42,73 +97,6 @@
 
 .dark-mode .falling-petals .petal {
   background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-}
-
-/* 弹窗蒙层 */
-.modal {
-    display: none; /* 默认隐藏 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7); /* 半透明黑色背景 */
-    z-index: 1000; /* 确保在最上层 */
-    
-    /* 弹性布局实现完美居中 */
-    align-items: center;
-    justify-content: center;
-}
-
-/* 弹窗内容容器 */
-.modal-content {
-    position: relative;
-    background-color: #fff;
-    margin: auto;
-    padding: 20px;
-    width: 80%;
-    max-width: 600px; /* 最大宽度限制 */
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    
-    /* 动画效果 */
-    animation: modalopen 0.3s ease-out;
-}
-
-/* 关闭按钮 */
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #aaa;
-    transition: color 0.3s;
-}
-
-.close-modal:hover {
-    color: #333;
-}
-
-/* 弹窗动画 */
-@keyframes modalopen {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-        padding: 15px;
-    }
 }
 
 /* ===== 公告部分深色模式样式 ===== */
@@ -177,6 +165,18 @@
     top: 110%;
     transform: translateX(var(--offset-x)) rotate(360deg);
   }
+}
+
+/* ===== 音乐播放器 ===== */
+#music-player {
+  position: fixed;
+  right: calc(var(--control-size) + 30px);
+  bottom: 20px;
+  border-radius: 8px;
+  box-shadow: var(--control-shadow);
+  transition: var(--control-transition);
+  overflow: hidden;
+  z-index: 999;
 }
 
 /* ===== 响应式设计 ===== */
@@ -288,6 +288,11 @@
   
   #control-menu {
     right: 15px;
+    bottom: 15px;
+  }
+  
+  #music-player {
+    right: calc(var(--control-size) + 20px);
     bottom: 15px;
   }
 }
