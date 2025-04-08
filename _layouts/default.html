@@ -20,7 +20,7 @@
                  </audio>
              </div>
              <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
-             <div id="scroll-to-top" title="回到顶部" class="control-button">↑</div>
+             <div id="copy-email" title="复制邮箱" class="control-button">📧</div>
          </div>
      </div>
  
@@ -89,17 +89,25 @@
          updateMenuState();
      });
        
-     // 回到顶部
-     document.addEventListener("DOMContentLoaded", function () {
-    // DOM元素引用
-    const scrollToTopBtn = document.getElementById("scroll-to-top"); // 获取回到顶部按钮
+     // 邮箱复制
+document.addEventListener("DOMContentLoaded", function () {
+    const copyEmailBtn = document.getElementById("copy-email"); // 获取复制邮箱按钮
 
-    // 回到顶部功能
-    scrollToTopBtn.addEventListener("click", function (e) {
+    // 邮箱地址（根据需要修改）
+    const email = "example@example.com";  // 替换为你想复制的邮箱地址
+
+    // 复制邮箱功能
+    copyEmailBtn.addEventListener("click", function (e) {
         e.stopPropagation();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'  // 平滑滚动到顶部
+        
+        // 使用 Clipboard API 将邮箱复制到剪贴板
+        navigator.clipboard.writeText(email).then(() => {
+            // 提示用户邮箱已复制
+            alert("邮箱已复制到剪切板！");
+        }).catch(err => {
+            // 如果出错，提示错误信息
+            console.error("复制失败: ", err);
+            alert("复制失败，请手动复制邮箱！");
         });
     });
 });
