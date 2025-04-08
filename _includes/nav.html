@@ -224,50 +224,78 @@ function debounce(func, wait) {
     </script>
 <style>
 /* 基础样式 */
-.navbar-toggle {
-    display: block;
+/* 控制面板按钮的样式 */
+.control-buttons {
+    position: relative;
 }
 
-/* 在移动端隐藏集成菜单 */
-@media (max-width: 768px) {
-    .integrated-menu {
-        display: none; /* 在小屏幕上隐藏集成菜单 */
-    }
+/* 控制面板按钮点击时不改变背景色 */
+.control-buttons .dropdown-toggle:focus,
+.control-buttons .dropdown-toggle:active {
+    background-color: transparent;
+    outline: none;
 }
 
-/* 桌面端显示集成菜单 */
-@media (min-width: 769px) {
-    .integrated-menu {
-        display: block; /* 在大屏幕上显示集成菜单 */
-    }
+/* 下拉菜单项的样式 */
+.control-buttons .dropdown-menu li a {
+    color: #333;
+    font-size: 14px;
+    padding: 8px 15px;
+    transition: background-color 0.3s ease;
 }
 
-/* 公告弹窗样式 */
-.modal {
-    display: none; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
+/* 深色模式下的下拉菜单项 */
+.dark-mode .control-buttons .dropdown-menu li a {
+    color: #f0f0f0;
 }
 
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    width: 80%;
+/* 鼠标悬停时的背景色变化 */
+.control-buttons .dropdown-menu li a:hover {
+    background-color: #e0e0e0;
+    color: #000;
 }
 
-.close-modal {
-    font-size: 30px;
-    position: absolute;
-    top: 0;
-    right: 20px;
-    cursor: pointer;
+/* 深色模式下，悬停时的背景色变化 */
+.dark-mode .control-buttons .dropdown-menu li a:hover {
+    background-color: #444;
+    color: #fff;
 }
 
+/* 控制面板按钮的图标样式 */
+.control-buttons i {
+    font-size: 18px;
+    color: #333;
+}
 
+/* 控制面板下拉菜单的宽度 */
+.control-buttons .dropdown-menu {
+    min-width: 180px;
+}
+
+/* 控制面板按钮文字和图标对齐 */
+.control-buttons .dropdown-menu li {
+    padding: 10px 20px;
+}
+
+/* 控制面板按钮文字颜色 */
+.control-buttons .dropdown-menu li a {
+    font-size: 16px;
+    color: #333;
+}
+
+/* 深色模式下控制面板按钮文字颜色 */
+.dark-mode .control-buttons .dropdown-menu li a {
+    color: #f0f0f0;
+}
+
+/* 调整深色模式下下拉菜单悬停样式 */
+.dark-mode .control-buttons .dropdown-menu li a:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+/* 为深色模式下的按钮和图标设定适当的颜色 */
+.dark-mode .control-buttons i {
+    color: #f0f0f0;
+}
 </style>
