@@ -243,15 +243,6 @@ function debounce(func, wait) {
         timeout = setTimeout(func, wait);
     };
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-  var navbarToggler = document.querySelector('.navbar-toggler');
-  var navbarCollapse = document.querySelector('.navbar-collapse');
-
-  navbarToggler.addEventListener('click', function() {
-    navbarCollapse.classList.toggle('show');
-  });
-});    
 </script> 
 <style>
 /* 控制面板按钮点击时不改变背景色 */
