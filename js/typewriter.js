@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isDeleting && i < text.length) {
       target.innerHTML = text.substring(0, i + 1);
       i++;
-      speed = 100; // 打字速度
+      speed = 400; // 打字速度
     }
     // 删除阶段
     else if (isDeleting && i >= 0) {
