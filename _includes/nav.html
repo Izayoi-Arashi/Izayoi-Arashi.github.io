@@ -1,116 +1,126 @@
-{% if page.nav-style == "invert" or page.header-style == "text" %}
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
-{% else %}
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Navbar with Control Panel</title>
+  <!-- 引入 Bootstrap 3.3.2 样式 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <style>
+    /* 控制面板按钮的样式 */
+    .control-buttons {
+      position: relative;
+    }
+
+    .control-buttons .dropdown-toggle:focus,
+    .control-buttons .dropdown-toggle:active {
+      background-color: transparent;
+      outline: none;
+    }
+
+    .control-buttons .dropdown-menu li a {
+      color: #333;
+      font-size: 14px;
+      padding: 8px 15px;
+    }
+
+    .control-buttons .dropdown-menu li a:hover {
+      background-color: #e0e0e0;
+      color: #000;
+    }
+
+    /* 调整屏幕宽度小于750px时的菜单折叠样式 */
+    @media (max-width: 750px) {
+      .navbar-nav {
+        display: none; /* 默认隐藏 */
+      }
+
+      .navbar-toggle.collapsed + .navbar-collapse {
+        display: block;
+      }
+
+      .navbar-collapse {
+        background-color: #f8f8f8; /* 增加背景色，使折叠菜单更明显 */
+      }
+
+      .navbar-nav li {
+        text-align: center; /* 将导航项居中 */
+      }
+
+      /* 折叠菜单按钮样式 */
+      .navbar-toggle {
+        margin-top: 8px;
+      }
+    }
+
+    /* 显示大于750px时的正常菜单 */
+    @media (min-width: 751px) {
+      .navbar-collapse {
+        display: block !important; /* 强制显示导航项 */
+      }
+
+      .navbar-toggle {
+        display: none; /* 大屏幕隐藏折叠按钮 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-           <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar">
-                     <li class="dropdown control-buttons navbar-toggle">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-<!--                             <i class="fa fa-cog"></i>  -->
-                            控制面板 <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#" id="dark-mode-toggle">
-                                    <i class="fa fa-moon-o"></i> 深色模式
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="music-control">
-                                    <i class="fa fa-music"></i> 音乐播放
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="announcement-toggle">
-                                    <i class="fa fa-bullhorn"></i> 公告通知
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="petals-toggle">
-                                    <i class="fa fa-leaf"></i> 花瓣效果1
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </span>
+      <div class="navbar-header">
+        <!-- 移动端导航菜单按钮 -->
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Brand</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <!-- 导航栏菜单项 -->
+        <ul class="nav navbar-nav">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Archive</a></li>
+          <li><a href="#">Search</a></li>
+          <!-- 你的新增菜单项 -->
+          <li class="control-buttons">
+            <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Control Panel
             </button>
-            <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{{ site.baseurl }}/">Home</a>
-                    </li>
-                    {% for page in site.pages %}
-                    {% if page.title and page.hide-in-nav != true %}
-                    <li>
-                        <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
-                    
-                    <!-- 新增功能按钮 -->
-                    <li class="dropdown control-buttons">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-cog"></i> 控制面板 <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#" id="dark-mode-toggle">
-                                    <i class="fa fa-moon-o"></i> 深色模式
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="music-control">
-                                    <i class="fa fa-music"></i> 音乐播放
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="announcement-toggle">
-                                    <i class="fa fa-bullhorn"></i> 公告通知
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="petals-toggle">
-                                    <i class="fa fa-leaf"></i> 花瓣效果
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <li class="search-icon">
-                        <a href="javascript:void(0)">
-                            <i class="fa fa-search"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- /.navbar-collapse -->
+            <ul class="dropdown-menu">
+              <li><a href="#">Option 1</a></li>
+              <li><a href="#">Option 2</a></li>
+              <li><a href="#">Option 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-    <!-- /.container -->
-</nav>
+  </nav>
 
-<!-- 公告弹窗 -->
-<div id="announcement-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div id="announcement-content">
-            <!-- Markdown内容将在这里渲染 -->
-        </div>
-    </div>
-</div>
+  <!-- 引入 jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- 引入 Bootstrap 3.3.2 JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // 确保在折叠按钮点击时，菜单的展开与收缩工作正常
+      $('.navbar-toggle').click(function() {
+        $('#navbar-collapse').collapse('toggle');
+      });
+    });
+  </script>
+
+</body>
+</html>
+
 
 <!-- 引入 Marked.js -->
 <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/lib/marked.min.js"></script>
