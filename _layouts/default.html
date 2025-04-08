@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 复制邮箱功能
     copyEmailBtn.addEventListener("click", function (e) {
         e.stopPropagation();
-        
+        console.log("复制邮箱按钮被点击");
         // 使用 Clipboard API 将邮箱复制到剪贴板
         navigator.clipboard.writeText(email).then(() => {
             // 提示用户邮箱已复制
