@@ -46,33 +46,45 @@ description: "<span class='typewriter'></span>"
 {% endif %}
 
 <script>
-<script>
- document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   const text = "「并非只有话语 才能成为话语」";
-  const elem = document.querySelector(".typewriter");
+  const target = document.querySelector(".typewriter");
+  if (!target) return;
+
   let i = 0;
+  let isDeleting = false;
+  let speed = 100; // 打字/删除速度（ms）
 
-  function typeWriter() {
-    if (i < text.length) {
-      elem.innerHTML += text.charAt(i);
+  function typeLoop() {
+    const currentText = target.innerHTML;
+    
+    // 打字阶段
+    if (!isDeleting && i < text.length) {
+      target.innerHTML = text.substring(0, i + 1);
       i++;
-      setTimeout(typeWriter, 100); // 调整速度（毫秒）
-    } else {
-      elem.classList.add("cursor"); // 可选：添加静态光标
-      setTimeout(resetTyping, 1000); // 完成后等待 1 秒，重置并重新开始
+      speed = 100; // 打字速度
     }
+    // 删除阶段
+    else if (isDeleting && i >= 0) {
+      target.innerHTML = text.substring(0, i);
+      i--;
+      speed = 50;  // 删除速度更快
+    }
+    // 切换阶段
+    if (i === text.length) {
+      isDeleting = true;
+      speed = 1500; // 完成打字后暂停
+    } else if (i === 0 && isDeleting) {
+      isDeleting = false;
+      speed = 500;  // 开始新一轮前暂停
+    }
+
+    setTimeout(typeLoop, speed);
   }
 
-  function resetTyping() {
-    i = 0;                // 重置索引
-    elem.innerHTML = '';   // 清空已打字的内容
-    elem.classList.remove("cursor"); // 移除光标样式
-    typeWriter();         // 重新开始打字效果
-  }
-
-  typeWriter();  // 启动打字效果
+  // 启动动画
+  typeLoop();
 });
-</script>
 </script>
 <style>
 .typewriter {
