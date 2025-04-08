@@ -85,6 +85,7 @@
     }
     applyDarkMode(darkMode === "true");
 
+   document.addEventListener("DOMContentLoaded", function () {
     // 音乐控制
     const musicControl = document.getElementById("music-control");
     const musicPlayer = document.getElementById("music-player");
@@ -96,16 +97,12 @@
         
         if (isMusicExpanded) {
             musicPlayer.style.display = "block";
-            musicPlayer.style.width = "280px";
-            musicPlayer.style.height = "86px";
-            musicPlayer.style.position = "fixed";
-            musicPlayer.style.right = "20px";
-            musicPlayer.style.bottom = "20px";
-            musicPlayer.style.zIndex = "9999";
+            musicPlayer.classList.add('show');  // 显示播放器
         } else {
-            musicPlayer.style.width = "0";
-            musicPlayer.style.height = "0";
-            setTimeout(() => { musicPlayer.style.display = "none"; }, 300);
+            musicPlayer.classList.remove('show');  // 隐藏播放器
+            setTimeout(() => {
+                musicPlayer.style.display = "none";  // 延迟设置为none，以避免显示问题
+            }, 300); // 与动画时间同步
         }
     }
 
@@ -113,6 +110,14 @@
         e.preventDefault();
         toggleMusicPlayer();
     });
+
+    // 初始化播放器的显示状态
+    if (isMusicExpanded) {
+        musicPlayer.style.display = "block";
+        musicPlayer.classList.add('show');
+    }
+});
+
 
     // 公告功能
     const announcementToggle = document.getElementById("announcement-toggle");
@@ -298,4 +303,25 @@ function debounce(func, wait) {
 .dark-mode .control-buttons i {
     color: #f0f0f0;
 }
+
+/* 音乐播放器的样式 */
+#music-player {
+    transition: all 0.3s ease;
+    display: none; /* 默认隐藏 */
+    width: 0;
+    height: 0;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9999;
+    border: none;
+}
+
+/* 使音乐播放器显示时的样式 */
+#music-player.show {
+    display: block;
+    width: 280px;
+    height: 86px;
+}
+
 </style>
