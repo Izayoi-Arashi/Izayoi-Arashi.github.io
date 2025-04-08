@@ -1,6 +1,6 @@
 ---
 layout: page
-description: '「<span id="typewriter-loop"></span>」'
+description: '<span id="typewriter-loop"></span>」'
 ---
 
 {% for post in paginator.posts %}
@@ -97,5 +97,8 @@ description: '「<span id="typewriter-loop"></span>」'
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+@media (prefers-reduced-motion) {
+  #typewriter-loop::after { animation: none; }
 }
 </style>
