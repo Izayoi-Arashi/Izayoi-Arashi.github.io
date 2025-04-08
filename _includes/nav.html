@@ -231,188 +231,79 @@ function debounce(func, wait) {
 
     </script>
 <style>
-/* 控制面板按钮 */
-#huxblog_navbar .control-buttons a {
-    font-size: 16px;
-    color: #333;
-    transition: color 0.3s, background-color 0.3s;
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-}
-
-/* 控制面板按钮图标 */
-#huxblog_navbar .control-buttons i {
-    font-size: 18px;
-    margin-right: 8px;
-}
-
-/* 控制面板按钮在深色模式下的图标和文本颜色 */
-.dark-mode #huxblog_navbar .control-buttons a {
-    color: #f0f0f0;
-}
-
-.dark-mode #huxblog_navbar .control-buttons i {
-    color: #f0f0f0;
-}
-
-/* 鼠标悬停时改变颜色 */
-#huxblog_navbar .control-buttons a:hover {
-    background-color: #4CAF50;
-    color: #fff;
-}
-
-/* 音乐按钮 */
-#music-control i {
-    font-size: 20px;
-    color: #333;
-    transition: color 0.3s;
-}
-
-/* 音乐按钮在深色模式下的图标颜色 */
-.dark-mode #music-control i {
-    color: #f0f0f0;
-}
-
-/* 音乐按钮鼠标悬停时颜色变化 */
-#music-control:hover i {
-    color: #4CAF50;
-}
-
-/* 公告弹窗 */
-#announcement-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-    padding: 20px;
-    overflow: hidden;
-}
-
-#announcement-modal .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    border-radius: 8px;
+/* 控制面板按钮的样式 */
+.control-buttons {
     position: relative;
 }
 
-#announcement-modal .close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 30px;
+/* 控制面板按钮点击时不改变背景色 */
+.control-buttons .dropdown-toggle:focus,
+.control-buttons .dropdown-toggle:active {
+    background-color: transparent;
+    outline: none;
+}
+
+/* 下拉菜单项的样式 */
+.control-buttons .dropdown-menu li a {
     color: #333;
-    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 15px;
+    transition: background-color 0.3s ease;
 }
 
-#announcement-modal .close-modal:hover {
-    color: #ff4d4f;
+/* 深色模式下的下拉菜单项 */
+.dark-mode .control-buttons .dropdown-menu li a {
+    color: #f0f0f0;
 }
 
-#announcement-modal .alert-error {
-    padding: 10px;
-    background-color: #ffdddd;
-    border: 1px solid #ff4d4f;
-    color: #ff4d4f;
-    border-radius: 5px;
+/* 鼠标悬停时的背景色变化 */
+.control-buttons .dropdown-menu li a:hover {
+    background-color: #e0e0e0;
+    color: #000;
 }
 
-#announcement-modal .no-content {
-    text-align: center;
-    color: #999;
-}
-
-/* 花瓣效果 */
-.falling-petals {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 9998;
-}
-
-.petal {
-    position: absolute;
-    background-color: #ff9a9e;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    animation: fall 5s infinite;
-    opacity: 0.8;
-}
-
-.petal:nth-child(odd) {
-    background-color: #fad0c4;
-}
-
-@keyframes fall {
-    0% {
-        transform: translateY(-100px) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-/* 深色模式下花瓣颜色调整 */
-.dark-mode .petal:nth-child(odd) {
-    background-color: #fbc2eb;
-}
-
-.dark-mode .petal {
-    background-color: #a18cd1;
-}
-
-/* 深色模式样式 */
-.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
-}
-
-.dark-mode a {
+/* 深色模式下，悬停时的背景色变化 */
+.dark-mode .control-buttons .dropdown-menu li a:hover {
+    background-color: #444;
     color: #fff;
 }
 
-.dark-mode a:hover {
-    color: #4CAF50;
+/* 控制面板按钮的图标样式 */
+.control-buttons i {
+    font-size: 18px;
+    color: #333;
 }
 
-.dark-mode .navbar {
-    background-color: #333;
+/* 控制面板下拉菜单的宽度 */
+.control-buttons .dropdown-menu {
+    min-width: 180px;
 }
 
-.dark-mode .navbar-brand {
-    color: #fff;
+/* 控制面板按钮文字和图标对齐 */
+.control-buttons .dropdown-menu li {
+    padding: 10px 20px;
 }
 
-.dark-mode .navbar-collapse .nav > li > a {
-    color: #fff;
-}
-
-.dark-mode .navbar-collapse .nav > li > a:hover {
-    color: #4CAF50;
-}
-
-/* 公告内容样式 */
-#announcement-content {
-    max-height: 400px;
-    overflow-y: auto;
+/* 控制面板按钮文字颜色 */
+.control-buttons .dropdown-menu li a {
     font-size: 16px;
-    line-height: 1.6;
+    color: #333;
 }
 
-#announcement-content p {
-    color: #333;
+/* 深色模式下控制面板按钮文字颜色 */
+.dark-mode .control-buttons .dropdown-menu li a {
+    color: #f0f0f0;
+}
+
+/* 调整深色模式下下拉菜单悬停样式 */
+.dark-mode .control-buttons .dropdown-menu li a:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+/* 为深色模式下的按钮和图标设定适当的颜色 */
+.dark-mode .control-buttons i {
+    color: #f0f0f0;
 }
 </style>
 
