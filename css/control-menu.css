@@ -179,18 +179,6 @@
   }
 }
 
-/* ===== 音乐播放器 ===== */
-#music-player {
-  position: fixed;
-  right: calc(var(--control-size) + 30px);
-  bottom: 20px;
-  border-radius: 8px;
-  box-shadow: var(--control-shadow);
-  transition: var(--control-transition);
-  overflow: hidden;
-  z-index: 999;
-}
-
 /* ===== 响应式设计 ===== */
 @media (max-width: 768px) {
   :root {
