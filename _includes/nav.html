@@ -143,36 +143,58 @@
     const closeModal = document.querySelector(".close-modal");
     const announcementContent = document.getElementById("announcement-content");
 
-    // 使用 Marked.js 解析并显示公告
-window.onload = function() {
-  const announcementModal = document.getElementById('announcement-modal');
-  const announcementContent = document.querySelector('#announcement-modal .modal-content .announcement-text');
+document.addEventListener("DOMContentLoaded", function () {
+    // 公告功能
+    const announcementToggle = document.getElementById("announcement-toggle");
+    const announcementModal = document.getElementById("announcement-modal");
+    const closeModal = document.querySelector(".close-modal");
+    const announcementContent = document.getElementById("announcement-content");
 
-  // 使用 fetch API 加载 markdown 文件
-  fetch('announcements/am.md')
-    .then(response => {
-      if (response.ok) {
-        return response.text();  // 获取文件内容
-      } else {
-        throw new Error('公告文件加载失败');
-      }
-    })
-    .then(markdownContent => {
-      // 使用 Marked.js 解析 Markdown 内容
-      const htmlContent = marked.parse(markdownContent);
-      
-      // 将解析后的 HTML 插入到公告模态框中
-      announcementContent.innerHTML = htmlContent;
-      
-      // 显示模态框
-      announcementModal.style.display = 'flex';
-    })
-    .catch(error => {
-      console.error('公告加载错误:', error);
-      // 你可以显示一个默认的错误信息
-      announcementContent.innerHTML = '<p>无法加载公告内容，请稍后再试。</p>';
+    function loadAnnouncement() {
+        const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+        fetch(announcementUrl)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return response.text();
+            })
+            .then(text => {
+                // 提取去掉前后标记部分，通常是 YAML Front Matter 部分
+                const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                announcementContent.innerHTML = 
+                    content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                announcementModal.style.display = "block";
+                document.body.style.overflow = "hidden";
+            })
+            .catch(error => {
+                // 出错时显示错误信息
+                announcementContent.innerHTML = `
+                    <div class="alert-error">
+                        <strong>⚠️ 加载失败</strong>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                announcementModal.style.display = "block";
+            });
+    }
+
+    announcementToggle.addEventListener("click", function(e) {
+        e.preventDefault();
+        loadAnnouncement();
     });
-};
+
+    closeModal.addEventListener("click", function() {
+        announcementModal.style.display = "none";
+        document.body.style.overflow = "auto";
+    });
+
+    window.addEventListener("click", function(event) {
+        if (event.target === announcementModal) {
+            announcementModal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    });
+});
+
 
 
     announcementToggle.addEventListener("click", function(e) {
