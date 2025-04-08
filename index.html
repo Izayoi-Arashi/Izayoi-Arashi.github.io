@@ -47,23 +47,31 @@ description: "<span class='typewriter'></span>"
 
 <script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const text = "「并非只有话语 才能成为话语」";
-    const elem = document.querySelector(".typewriter");
-    let i = 0;
-    
-    function typeWriter() {
-      if (i < text.length) {
-        elem.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 100); // 调整速度（毫秒）
-      } else {
-        elem.classList.add("cursor"); // 可选：添加静态光标
-      }
+ document.addEventListener('DOMContentLoaded', function() {
+  const text = "「并非只有话语 才能成为话语」";
+  const elem = document.querySelector(".typewriter");
+  let i = 0;
+
+  function typeWriter() {
+    if (i < text.length) {
+      elem.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 100); // 调整速度（毫秒）
+    } else {
+      elem.classList.add("cursor"); // 可选：添加静态光标
+      setTimeout(resetTyping, 1000); // 完成后等待 1 秒，重置并重新开始
     }
-    
-    typeWriter();
-  });
+  }
+
+  function resetTyping() {
+    i = 0;                // 重置索引
+    elem.innerHTML = '';   // 清空已打字的内容
+    elem.classList.remove("cursor"); // 移除光标样式
+    typeWriter();         // 重新开始打字效果
+  }
+
+  typeWriter();  // 启动打字效果
+});
 </script>
 </script>
 <style>
