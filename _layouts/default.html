@@ -103,7 +103,16 @@
  
      // 音乐控制
      function initMusicPlayer() {
-         playPauseBtn.addEventListener("click", function() {
+         // 尝试在页面加载时自动播放
+         musicPlayer.play().then(() => {
+             playPauseBtn.textContent = "⏸️"; // 播放时显示暂停图标
+         }).catch(error => {
+             // 如果浏览器阻止了自动播放，显示播放按钮
+             playPauseBtn.textContent = "▶️";
+         });
+
+         // 播放/暂停按钮点击事件
+         playPauseBtn.addEventListener("click", function () {
              if (musicPlayer.paused) {
                  musicPlayer.play();
                  playPauseBtn.textContent = "⏸️"; // 修改为暂停图标
@@ -171,7 +180,6 @@
  
      function startPetals() {
          stopPetals(); // 先清除现有花瓣
- 
          const container = document.createElement('div');
          container.className = 'falling-petals';
          document.body.appendChild(container);
