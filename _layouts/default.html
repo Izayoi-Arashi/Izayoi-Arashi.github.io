@@ -13,8 +13,10 @@
              <div id="announcement-toggle" title="公告通知" class="control-button">📢</div>
              <div id="dark-mode-toggle" title="深色模式" class="control-button">🌙</div>
              <div id="music-control" title="音乐播放" class="control-button">
-                 <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
-                     src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
+                 <audio id="music-player" controls>
+                     <source src="{{ '/music/song.mp3' | relative_url }}" type="audio/mp3">
+                     Your browser does not support the audio element.
+                 </audio>
                  <span id="music-icon">♫</span>
              </div>
              <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
@@ -199,43 +201,6 @@
          const existing = document.querySelector('.falling-petals');
          if (existing) existing.remove();
      }
-     function togglePetalsEffect() {
-         petalsEnabled = !petalsEnabled;
-         localStorage.setItem("petals-enabled", petalsEnabled);
-         petalsEnabled ? startPetals() : stopPetals();
-     }
- 
-     petalsToggle.addEventListener("click", function (e) {
-         e.stopPropagation();
-         togglePetalsEffect();
-     });
- 
-     function startPetals() {
-         stopPetals(); // 先清除现有花瓣
- 
-         const container = document.createElement('div');
-         container.className = 'falling-petals';
-         document.body.appendChild(container);
- 
-         for (let i = 0; i < 20; i++) {
-             const petal = document.createElement('div');
-             petal.className = 'petal';
-             petal.style.cssText = `
-                 animation-duration: ${Math.random() * 5 + 4}s;
-                 animation-delay: ${Math.random() * 5}s;
-                 left: ${Math.random() * 100}vw;
-                 ${document.body.classList.contains('dark-mode') ? 
-                     'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
-                     'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
-             `;
-             container.appendChild(petal);
-         }
-     }
- 
-     function stopPetals() {
-         const existing = document.querySelector('.falling-petals');
-         if (existing) existing.remove();
-     }
  
      // 响应式调整
      function handleResize() {
@@ -266,5 +231,5 @@
  
      </script>
      <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
- </body>
- </html>
+ </body> 
+</html>
