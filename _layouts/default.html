@@ -1,23 +1,270 @@
-<!DOCTYPE html>
 <html lang="en">
-
-{% include head.html %}
-
-<!-- hack iOS CSS :active style -->
-<body ontouchstart="">
-
-    {% include nav.html %}
-    {% include search.html %}
-
-    {{ content }}
-
-    {% include footer.html %}
-
-
-<!-- Image to hack wechat -->
-<img src="/img/icon_wechat.png" width="0" height="0" />
-<!-- Migrate from head to bottom, no longer block render and still work -->
-
-</body>
-
-</html>
+ {% include head.html %}
+ 
+ <body ontouchstart="">
+     {% include nav.html %}
+     {% include search.html %}
+ 
+     <!-- 控制菜单结构保持不变 -->
+ 
+     <div id="control-menu">
+         <button id="menu-toggle" class="control-button">☰</button>
+         <div id="menu-content">           
+             <div id="announcement-toggle" title="公告通知" class="control-button">📢</div>
+             <div id="dark-mode-toggle" title="深色模式" class="control-button">🌙</div>
+             <div id="music-control" title="音乐播放" class="control-button">
+                 <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
+                     src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
+                 <span id="music-icon">♫</span>
+             </div>
+             <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
+         </div>
+     </div>
+ 
+     <!-- 公告弹窗 -->
+     <div id="announcement-modal" class="modal">
+         <div class="modal-content">
+             <span class="close-modal">&times;</span>
+             <div id="announcement-content">
+                 <!-- Markdown内容将在这里渲染 -->
+             </div>
+         </div>
+     </div>
+ 
+     {{ content }}
+     {% include footer.html %}
+ 
+     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+ 
+     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+     // DOM元素引用
+     const menuToggle = document.getElementById("menu-toggle");
+     const menuContent = document.getElementById("menu-content");
+     const darkModeToggle = document.getElementById("dark-mode-toggle");
+     const musicControl = document.getElementById("music-control");
+     const musicPlayer = document.getElementById("music-player");
+     const musicIcon = document.getElementById("music-icon");
+     const announcementToggle = document.getElementById("announcement-toggle");
+     const announcementModal = document.getElementById("announcement-modal");
+     const closeModal = document.querySelector(".close-modal");
+     const announcementContent = document.getElementById("announcement-content");
+     const petalsToggle = document.getElementById("petals-toggle");
+ 
+     // 状态变量
+     let isMenuOpen = localStorage.getItem("menu-open") === "true";
+     let darkMode = localStorage.getItem("dark-mode");
+     let isMusicExpanded = localStorage.getItem("music-expanded") !== "false";
+     let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
+ 
+     // 初始化函数
+     function init() {
+         updateMenuState();
+         applyDarkMode(darkMode === "true");
+         initMusicPlayer();
+         if (petalsEnabled) startPetals();
+     }
+ 
+     // 菜单控制
+     function updateMenuState() {
+         if (isMenuOpen) {
+             menuContent.style.opacity = "1";
+             menuContent.style.visibility = "visible";
+             menuContent.style.transform = "translateY(-1px)";
+             menuToggle.textContent = "✕";
+         } else {
+             menuContent.style.opacity = "0";
+             menuContent.style.visibility = "hidden";
+             menuContent.style.transform = "translateY(0)";
+             menuToggle.textContent = "☰";
+         }
+     }
+ 
+     menuToggle.addEventListener("click", function (e) {
+         e.stopPropagation();
+         isMenuOpen = !isMenuOpen;
+         localStorage.setItem("menu-open", isMenuOpen);
+         updateMenuState();
+     });
+ 
+     // 深色模式
+     function applyDarkMode(state) {
+         document.body.classList.toggle("dark-mode", state);
+         darkModeToggle.textContent = state ? "☀️" : "🌙";
+         localStorage.setItem("dark-mode", state);
+     }
+ 
+     darkModeToggle.addEventListener("click", function (e) {
+         e.stopPropagation();
+         darkMode = darkMode === "true" ? "false" : "true";
+         applyDarkMode(darkMode === "true");
+     });
+ 
+     // 音乐控制
+     function initMusicPlayer() {
+         musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
+         musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
+         musicPlayer.style.position = "fixed";
+         musicPlayer.style.right = "80px";
+         musicPlayer.style.bottom = "20px";
+         musicPlayer.style.transition = "all 0.3s ease";
+     }
+ 
+     musicControl.addEventListener("click", function (e) {
+         e.stopPropagation();
+         isMusicExpanded = !isMusicExpanded;
+         localStorage.setItem("music-expanded", isMusicExpanded);
+         musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
+         musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
+     });
+ 
+     // 公告功能
+     announcementToggle.addEventListener("click", function(e) {
+         e.stopPropagation();
+         loadAnnouncement();
+     });
+ 
+     function loadAnnouncement() {
+         const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+         fetch(announcementUrl)
+             .then(response => {
+                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                 return response.text();
+             })
+             .then(text => {
+                 const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                 announcementContent.innerHTML = 
+                     content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                 announcementModal.style.display = "block";
+                 document.body.style.overflow = "hidden";
+             })
+             .catch(error => {
+                 announcementContent.innerHTML = `
+                     <div class="alert-error">
+                         <strong>⚠️ 加载失败</strong>
+                         <p>${error.message}</p>
+                     </div>
+                 `;
+                 announcementModal.style.display = "block";
+             });
+     }
+ 
+     closeModal.addEventListener("click", function() {
+         announcementModal.style.display = "none";
+         document.body.style.overflow = "auto";
+     });
+ 
+     window.addEventListener("click", function(event) {
+         if (event.target === announcementModal) {
+             announcementModal.style.display = "none";
+             document.body.style.overflow = "auto";
+         }
+     });
+ 
+     // 花瓣效果
+     function togglePetalsEffect() {
+         petalsEnabled = !petalsEnabled;
+         localStorage.setItem("petals-enabled", petalsEnabled);
+         petalsEnabled ? startPetals() : stopPetals();
+     }
+ 
+     petalsToggle.addEventListener("click", function (e) {
+         e.stopPropagation();
+         togglePetalsEffect();
+     });
+ 
+     function startPetals() {
+         stopPetals(); // 先清除现有花瓣
+ 
+         const container = document.createElement('div');
+         container.className = 'falling-petals';
+         document.body.appendChild(container);
+ 
+         for (let i = 0; i < 20; i++) {
+             const petal = document.createElement('div');
+             petal.className = 'petal';
+             petal.style.cssText = `
+                 animation-duration: ${Math.random() * 5 + 4}s;
+                 animation-delay: ${Math.random() * 5}s;
+                 left: ${Math.random() * 100}vw;
+                 ${document.body.classList.contains('dark-mode') ? 
+                     'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
+                     'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
+             `;
+             container.appendChild(petal);
+         }
+     }
+ 
+     function stopPetals() {
+         const existing = document.querySelector('.falling-petals');
+         if (existing) existing.remove();
+     }
+     function togglePetalsEffect() {
+         petalsEnabled = !petalsEnabled;
+         localStorage.setItem("petals-enabled", petalsEnabled);
+         petalsEnabled ? startPetals() : stopPetals();
+     }
+ 
+     petalsToggle.addEventListener("click", function (e) {
+         e.stopPropagation();
+         togglePetalsEffect();
+     });
+ 
+     function startPetals() {
+         stopPetals(); // 先清除现有花瓣
+ 
+         const container = document.createElement('div');
+         container.className = 'falling-petals';
+         document.body.appendChild(container);
+ 
+         for (let i = 0; i < 20; i++) {
+             const petal = document.createElement('div');
+             petal.className = 'petal';
+             petal.style.cssText = `
+                 animation-duration: ${Math.random() * 5 + 4}s;
+                 animation-delay: ${Math.random() * 5}s;
+                 left: ${Math.random() * 100}vw;
+                 ${document.body.classList.contains('dark-mode') ? 
+                     'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
+                     'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
+             `;
+             container.appendChild(petal);
+         }
+     }
+ 
+     function stopPetals() {
+         const existing = document.querySelector('.falling-petals');
+         if (existing) existing.remove();
+     }
+ 
+     // 响应式调整
+     function handleResize() {
+         if (window.innerWidth <= 768) {
+             musicPlayer.style.right = "60px";
+             musicPlayer.style.bottom = "15px";
+         } else {
+             musicPlayer.style.right = "80px";
+             musicPlayer.style.bottom = "20px";
+         }
+     }
+ 
+     window.addEventListener('resize', debounce(handleResize, 200));
+     handleResize();
+ 
+     // 工具函数
+     function debounce(func, wait) {
+         let timeout;
+         return function () {
+             clearTimeout(timeout);
+             timeout = setTimeout(func, wait);
+         };
+     }
+ 
+     // 初始化所有功能
+     init();
+ });
+ 
+     </script>
+     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
+ </body>
+ </html>
