@@ -32,7 +32,16 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#" id="dark-mode-toggle"><i class="fa fa-moon-o"></i> 深色模式</a></li>
-                        <li><a href="#" id="music-control"><i class="fa fa-music"></i> 音乐播放</a></li>
+                        <<!-- 控制面板按钮中的音乐控制 -->
+                        <li>
+                            <a href="#" id="music-control">
+                                <i class="fa fa-music"></i> 音乐播放
+                            </a>
+                            <audio id="audio-player" style="display: none;">
+                                <source src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </li>
                         <li><a href="#" id="announcement-toggle"><i class="fa fa-bullhorn"></i> 公告通知</a></li>
                         <li><a href="#" id="petals-toggle"><i class="fa fa-leaf"></i> 花瓣效果</a></li>
                     </ul>
@@ -87,34 +96,33 @@
 
    document.addEventListener("DOMContentLoaded", function () {
     // 音乐控制
+    document.addEventListener("DOMContentLoaded", function () {
     const musicControl = document.getElementById("music-control");
-    const musicPlayer = document.getElementById("music-player");
-    let isMusicExpanded = localStorage.getItem("music-expanded") !== "false";
+    const audioPlayer = document.getElementById("audio-player");
 
-    function toggleMusicPlayer() {
-        isMusicExpanded = !isMusicExpanded;
-        localStorage.setItem("music-expanded", isMusicExpanded);
-        
-        if (isMusicExpanded) {
-            musicPlayer.style.display = "block";
-            musicPlayer.classList.add('show');  // 显示播放器
+    let isPlaying = false;  // 音乐当前播放状态
+
+    function toggleMusicPlayback() {
+        if (isPlaying) {
+            audioPlayer.pause();  // 暂停音乐
+            isPlaying = false;
         } else {
-            musicPlayer.classList.remove('show');  // 隐藏播放器
-            setTimeout(() => {
-                musicPlayer.style.display = "none";  // 延迟设置为none，以避免显示问题
-            }, 300); // 与动画时间同步
+            audioPlayer.play();   // 播放音乐
+            isPlaying = true;
         }
     }
 
+    // 点击按钮时切换播放和暂停
     musicControl.addEventListener("click", function (e) {
         e.preventDefault();
-        toggleMusicPlayer();
+        toggleMusicPlayback();
     });
 
-    // 初始化播放器的显示状态
-    if (isMusicExpanded) {
-        musicPlayer.style.display = "block";
-        musicPlayer.classList.add('show');
+    // 初始化音频播放状态
+    if (audioPlayer.paused) {
+        isPlaying = false;
+    } else {
+        isPlaying = true;
     }
 });
 
