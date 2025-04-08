@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const text = "「并非只有话语 才能成为话语」";
   const target = document.querySelector(".typewriter");
   if (!target) return;
 
-  // 从 data-text 属性获取文本内容
-  const text = target.getAttribute("data-text") || "默认文本";  // 如果没有设置 data-text 则使用默认文本
   let i = 0;
   let isDeleting = false;
   let speed = 100; // 打字/删除速度（ms）
@@ -43,5 +42,5 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.isIntersecting) typeLoop();
     });
   });
-  observer.observe(target);  // 观察目标元素
+  observer.observe(document.querySelector('.typewriter-effect'));
 });
