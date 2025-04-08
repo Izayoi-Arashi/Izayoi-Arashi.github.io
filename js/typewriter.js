@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isDeleting && i < text.length) {
       target.innerHTML = text.substring(0, i + 1);
       i++;
-      speed = 400; // 打字速度
+      speed = 800; // 打字速度
     }
     // 删除阶段
     else if (isDeleting && i >= 0) {
       target.innerHTML = text.substring(0, i);
       i--;
-      speed = 50;  // 删除速度更快
+      speed = 90;  // 删除速度更快
     }
     // 切换阶段
     if (i === text.length) {
