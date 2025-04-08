@@ -1,0 +1,27 @@
+/* 打字效果的容器样式 */
+.typewriter {
+  display: inline-block;
+  font-family: monospace;
+  /* 可以设置字体大小、颜色等 */
+}
+
+/* 光标样式 */
+.cursor {
+  border-right: 2px solid black;
+  animation: blink-caret 0.7s step-end infinite;
+}
+
+/* 光标闪烁动画 */
+@keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* 如果用户设置了减少动画效果，则禁用打字动画 */
+@media (prefers-reduced-motion) {
+  .typewriter {
+    animation: none;
+    border: none;
+  }
+}
