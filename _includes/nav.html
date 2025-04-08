@@ -1,583 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Navbar with Control Panel</title>
-  <!-- 引入 Bootstrap 3.3.2 样式 -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-  <style>
-    /* 控制面板按钮的样式 */
-    .control-buttons {
-      position: relative;
-    }
+<!-- Navigation -->
+{% if page.nav-style == "invert" or page.header-style == "text" %}
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+    {% else %}
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        {% endif %}
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
+            </div>
 
-    .control-buttons .dropdown-toggle:focus,
-    .control-buttons .dropdown-toggle:active {
-      background-color: transparent;
-      outline: none;
-    }
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{{ site.baseurl }}/">Home</a>
+                        </li>
+                        {% for page in site.pages %}
+                        {% if page.title and page.hide-in-nav != true %}
+                        <li>
+                            <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+<!--       额外                   -->
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
 
-    .control-buttons .dropdown-menu li a {
-      color: #333;
-      font-size: 14px;
-      padding: 8px 15px;
-    }
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
 
-    .control-buttons .dropdown-menu li a:hover {
-      background-color: #e0e0e0;
-      color: #000;
-    }
-
-    /* 调整屏幕宽度小于750px时的菜单折叠样式 */
-    @media (max-width: 750px) {
-      .navbar-nav {
-        display: none; /* 默认隐藏 */
-      }
-
-      .navbar-toggle.collapsed + .navbar-collapse {
-        display: block;
-      }
-
-      .navbar-collapse {
-        background-color: #f8f8f8; /* 增加背景色，使折叠菜单更明显 */
-      }
-
-      .navbar-nav li {
-        text-align: center; /* 将导航项居中 */
-      }
-
-      /* 折叠菜单按钮样式 */
-      .navbar-toggle {
-        margin-top: 8px;
-      }
-    }
-
-    /* 显示大于750px时的正常菜单 */
-    @media (min-width: 751px) {
-      .navbar-collapse {
-        display: block !important; /* 强制显示导航项 */
-      }
-
-      .navbar-toggle {
-        display: none; /* 大屏幕隐藏折叠按钮 */
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- 导航栏 -->
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <!-- 移动端导航菜单按钮 -->
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Brand</a>
-      </div>
-
-      <div class="collapse navbar-collapse" id="navbar-collapse">
-        <!-- 导航栏菜单项 -->
-        <ul class="nav navbar-nav">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Archive</a></li>
-          <li><a href="#">Search</a></li>
-          <!-- 你的新增菜单项 -->
-          <li class="control-buttons">
-            <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Control Panel
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Option 1</a></li>
-              <li><a href="#">Option 2</a></li>
-              <li><a href="#">Option 3</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- 引入 jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- 引入 Bootstrap 3.3.2 JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      // 确保在折叠按钮点击时，菜单的展开与收缩工作正常
-      $('.navbar-toggle').click(function() {
-        $('#navbar-collapse').collapse('toggle');
-      });
-    });
-  </script>
-
-</body>
-</html>
-
-
-<!-- 引入 Marked.js -->
-<script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/lib/marked.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    // 深色模式切换
-    const darkModeToggle = document.getElementById("dark-mode-toggle");
-    let darkMode = localStorage.getItem("dark-mode");
-    
-    function applyDarkMode(state) {
-        document.body.classList.toggle("dark-mode", state);
-        localStorage.setItem("dark-mode", state);
-        
-        // 更新图标
-        const icon = darkModeToggle.querySelector("i");
-        icon.className = state ? "fa fa-sun-o" : "fa fa-moon-o";
-        
-        // 如果花瓣效果已启用，重新加载以适应主题
-        if (localStorage.getItem("petals-enabled") === "true") {
-            stopPetals();
-            startPetals();
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
         }
-    }
 
-    darkModeToggle.addEventListener("click", function (e) {
-        e.preventDefault();
-        darkMode = darkMode === "true" ? "false" : "true";
-        applyDarkMode(darkMode === "true");
-    });
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
 
-    // 初始化深色模式
-    if (darkMode === null) {
-        // 默认跟随系统偏好
-        darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "true" : "false";
-    }
-    applyDarkMode(darkMode === "true");
-
-    // 音乐控制
-    const musicControl = document.getElementById("music-control");
-    const musicPlayer = new Audio('{{ site.baseurl }}/music/your-music-file.mp3'); // 替换为你自己的音乐文件路径
-    let isMusicPlaying = false;
-
-    function toggleMusicPlayer() {
-        if (isMusicPlaying) {
-            musicPlayer.pause();
-        } else {
-            musicPlayer.play();
-        }
-        isMusicPlaying = !isMusicPlaying;
-    }
-
-    musicControl.addEventListener("click", function (e) {
-        e.preventDefault();
-        toggleMusicPlayer();
-    });
-
-    // 公告功能
-    const announcementToggle = document.getElementById("announcement-toggle");
-    const announcementModal = document.getElementById("announcement-modal");
-    const closeModal = document.querySelector(".close-modal");
-    const announcementContent = document.getElementById("announcement-content");
-
-    function loadAnnouncement() {
-        const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-        fetch(announcementUrl)
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return response.text();
-            })
-            .then(text => {
-                const content = text.replace(/^---[\s\S]*?---/, '').trim();
-                announcementContent.innerHTML = 
-                    content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
-                announcementModal.style.display = "block";
-                document.body.style.overflow = "hidden";
-            })
-            .catch(error => {
-                announcementContent.innerHTML = `
-                    <div class="alert-error">
-                        <strong>⚠️ 加载失败</strong>
-                        <p>${error.message}</p>
-                    </div>
-                `;
-                announcementModal.style.display = "block";
-            });
-    }
-
-    announcementToggle.addEventListener("click", function(e) {
-        e.preventDefault();
-        loadAnnouncement();
-    });
-
-    closeModal.addEventListener("click", function() {
-        announcementModal.style.display = "none";
-        document.body.style.overflow = "auto";
-    });
-
-    window.addEventListener("click", function(event) {
-        if (event.target === announcementModal) {
-            announcementModal.style.display = "none";
-            document.body.style.overflow = "auto";
-        }
-    });
-
-    // 花瓣效果
-    const petalsToggle = document.getElementById("petals-toggle");
-    let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
-
-    function togglePetalsEffect() {
-        petalsEnabled = !petalsEnabled;
-        localStorage.setItem("petals-enabled", petalsEnabled);
-        petalsEnabled ? startPetals() : stopPetals();
-        
-        // 更新图标
-        const icon = petalsToggle.querySelector("i");
-        icon.style.color = petalsEnabled ? "#4CAF50" : "";
-    }
-
-    petalsToggle.addEventListener("click", function (e) {
-        e.preventDefault();
-        togglePetalsEffect();
-    });
-
-    function startPetals() {
-        stopPetals(); // 先清除现有花瓣
-
-        const container = document.createElement('div');
-        container.className = 'falling-petals';
-        document.body.appendChild(container);
-
-        for (let i = 0; i < 20; i++) {
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            petal.style.cssText = `
-                animation-duration: ${Math.random() * 5 + 4}s;
-                animation-delay: ${Math.random() * 5}s;
-                left: ${Math.random() * 100}vw;
-                ${document.body.classList.contains('dark-mode') ? 
-                    'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
-                    'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'
-            }`;
-            container.appendChild(petal);
-        }
-    }
-
-    function stopPetals() {
-        const existing = document.querySelector('.falling-petals');
-        if (existing) existing.remove();
-    }
-
-    // 初始化花瓣效果
-    if (petalsEnabled) startPetals();
-});
-
-// 工具函数
-function debounce(func, wait) {
-    let timeout;
-    return function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(func, wait);
-    };
-}
-</script> 
-<style>
-/* 控制面板按钮点击时不改变背景色 */
-.control-buttons .dropdown-toggle:focus,
-.control-buttons .dropdown-toggle:active {
-    background-color: transparent;
-    outline: none;
-}
-        
-/* 下拉菜单项的样式 */
-.control-buttons .dropdown-menu li a {
-    color: #333;
-    font-size: 14px;
-    padding: 8px 15px;
-    transition: background-color 0.3s ease;
-}
-
-/* 深色模式下的下拉菜单项 */
-.dark-mode .control-buttons .dropdown-menu li a {
-    color: #f0f0f0;
-}
-
-/* 鼠标悬停时的背景色变化 */
-.control-buttons .dropdown-menu li a:hover {
-    background-color: #e0e0e0;
-    color: #000;
-}
-
-/* 深色模式下，悬停时的背景色变化 */
-.dark-mode .control-buttons .dropdown-menu li a:hover {
-    background-color: #444;
-    color: #fff;
-}
-
-/* 控制面板按钮的图标样式 */
-.control-buttons i {
-    font-size: 18px;
-    color: #333;
-}
-
-/* 控制面板下拉菜单的宽度 */
-.control-buttons .dropdown-menu {
-    min-width: 180px;
-    padding: 0; /* 去除多余的内边距 */
-}
-
-/* 控制面板按钮文字和图标对齐 */
-.control-buttons .dropdown-menu li {
-    padding: 10px 20px;
-}
-
-/* 控制面板按钮文字颜色 */
-.control-buttons .dropdown-menu li a {
-    font-size: 16px;
-    color: #333;
-}
-
-/* 深色模式下控制面板按钮文字颜色 */
-.dark-mode .control-buttons .dropdown-menu li a {
-    color: #f0f0f0;
-}
-
-/* 调整深色模式下下拉菜单悬停样式 */
-.dark-mode .control-buttons .dropdown-menu li a:hover {
-    background-color: #444;
-    color: #fff;
-}
-
-/* 为深色模式下的按钮和图标设定适当的颜色 */
-.dark-mode .control-buttons i {
-    color: #f0f0f0;
-}
-
-/* ===== 基础变量定义 ===== */
-:root {
-    /* 颜色变量 */
-    --control-bg: rgba(0, 0, 0, 0.7);
-    --control-bg-hover: rgba(0, 0, 0, 0.9);
-    --dark-control-bg: rgba(255, 255, 255, 0.2);
-    --dark-control-bg-hover: rgba(255, 255, 255, 0.3);
-    --modal-bg: rgba(0, 0, 0, 0.5);
-    --dark-modal-bg: rgba(0, 0, 0, 0.8);
-    --modal-content-bg: #ffffff;
-    --dark-modal-content-bg: #2d2d2d;
-
-    /* 尺寸变量 */
-    --control-size: 50px;
-    --control-icon-size: 24px;
-    --menu-gap: 15px;
-
-    /* 样式变量 */
-    --control-radius: 50%;
-    --control-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    --control-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-/* ===== 深色模式 ===== */
-.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-}
-
-.dark-mode .control-button {
-    background: var(--dark-control-bg);
-    color: #fff;
-}
-
-.dark-mode .control-button:hover {
-    background: var(--dark-control-bg-hover);
-}
-
-.dark-mode #petals-toggle::after {
-    background: radial-gradient(circle, rgba(255,182,193,0.4) 0%, transparent 70%);
-}
-
-.dark-mode .falling-petals .petal {
-    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-}
-
-/* 弹窗蒙层 */
-.modal {
-    display: none; /* 默认隐藏 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7); /* 半透明黑色背景 */
-    z-index: 1000; /* 确保在最上层 */
-    
-    /* 弹性布局实现完美居中 */
-    align-items: center;
-    justify-content: center;
-}
-
-/* 弹窗内容容器 */
-.modal-content {
-    position: relative;
-    background-color: #fff;
-    margin: auto;
-    padding: 20px;
-    width: 80%;
-    max-width: 600px; /* 最大宽度限制 */
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    
-    /* 动画效果 */
-    animation: modalopen 0.3s ease-out;
-}
-
-/* 关闭按钮 */
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #aaa;
-    transition: color 0.3s;
-}
-
-.close-modal:hover {
-    color: #333;
-}
-
-/* 弹窗动画 */
-@keyframes modalopen {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-        padding: 15px;
-    }
-}
-
-/* ===== 公告部分深色模式样式 ===== */
-.dark-mode #announcement-modal {
-  background: var(--dark-modal-bg); /* 深色模式下的背景 */
-}
-
-.dark-mode #announcement-modal .modal-content {
-  background: var(--dark-modal-content-bg); /* 公告内容区域背景 */
-  color: #ffffff; /* 公告内容文字颜色 */
-}
-
-.dark-mode #announcement-modal .modal-content p {
-  color: #ffffff; /* 确保公告段落文字为白色 */
-}
-
-/* ===== 花瓣按钮特殊样式 ===== */
-#petals-toggle {
-  position: relative;
-  overflow: hidden;
-}
-
-#petals-toggle::after {
-  content: "";
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-#petals-toggle.active::after {
-  opacity: 0.6;
-}
-
-/* ===== 花瓣飘落效果 ===== */
-.falling-petals {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9998;
-}
-
-.petal {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-  border-radius: 50% 0 50% 50%;
-  opacity: 0.8;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  0% {
-    top: -10%;
-    transform: translateX(0) rotate(0deg);
-  }
-  100% {
-    top: 110%;
-    transform: translateX(var(--offset-x)) rotate(360deg);
-  }
-}
-
-/* ===== 音乐播放器 ===== */
-#music-player {
-  position: fixed;
-  right: calc(var(--control-size) + 30px);
-  bottom: 20px;
-  border-radius: 8px;
-  box-shadow: var(--control-shadow);
-  transition: var(--control-transition);
-  overflow: hidden;
-  z-index: 999;
-}
-
-/* ===== 响应式设计 ===== */
-@media (max-width: 768px) {
-  :root {
-    --control-size: 44px;
-    --control-icon-size: 22px;
-    --menu-gap: 12px;
-  }
-  
-  #control-menu {
-    right: 15px;
-    bottom: 15px;
-  }
-  
-  #music-player {
-    right: calc(var(--control-size) + 20px);
-    bottom: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --control-size: 40px;
-    --control-icon-size: 20px;
-    --menu-gap: 10px;
-  }
-  
-  .petal {
-    width: 12px;
-    height: 12px;
-  }
-}
-</style>
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
