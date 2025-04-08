@@ -35,7 +35,27 @@
                                 <i class="fa fa-search"></i>
                             </a>
                         </li>
-<!--       额外                   -->
+
+                        <!-- New control menu buttons -->
+                        <li>
+                            <button id="menu-toggle" class="control-button">☰</button>
+                        </li>
+                        <li>
+                            <div id="announcement-toggle" title="公告通知" class="control-button">📢</div>
+                        </li>
+                        <li>
+                            <div id="dark-mode-toggle" title="深色模式" class="control-button">🌙</div>
+                        </li>
+                        <li>
+                            <div id="music-control" title="音乐播放" class="control-button">
+                                <iframe id="music-player" frameborder="no" border="0" marginwidth="0" marginheight="0" width="0" height="0"
+                                    src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66"></iframe>
+                                <span id="music-icon">♫</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -45,54 +65,173 @@
     </nav>
 
     <script>
-        // Drop Bootstarp low-performance Navbar
-        // Use customize navbar with high-quality material design animation
-        // in high-perf jank-free CSS3 implementation
-        var $body = document.body;
-        var $toggle = document.querySelector('.navbar-toggle');
-        var $navbar = document.querySelector('#huxblog_navbar');
-        var $collapse = document.querySelector('.navbar-collapse');
+        // Menu toggle and other functionalities here (same as before)
 
-        var __HuxNav__ = {
-            close: function () {
-                $navbar.className = " ";
-                // wait until animation end.
-                setTimeout(function () {
-                    // prevent frequently toggle
-                    if ($navbar.className.indexOf('in') < 0) {
-                        $collapse.style.height = "0px"
-                    }
-                }, 400)
-            },
-            open: function () {
-                $collapse.style.height = "auto"
-                $navbar.className += " in";
+        document.addEventListener("DOMContentLoaded", function () {
+            // DOM元素引用
+            const menuToggle = document.getElementById("menu-toggle");
+            const menuContent = document.getElementById("menu-content");
+            const darkModeToggle = document.getElementById("dark-mode-toggle");
+            const musicControl = document.getElementById("music-control");
+            const musicPlayer = document.getElementById("music-player");
+            const musicIcon = document.getElementById("music-icon");
+            const announcementToggle = document.getElementById("announcement-toggle");
+            const announcementModal = document.getElementById("announcement-modal");
+            const closeModal = document.querySelector(".close-modal");
+            const announcementContent = document.getElementById("announcement-content");
+            const petalsToggle = document.getElementById("petals-toggle");
+
+            // 状态变量
+            let isMenuOpen = localStorage.getItem("menu-open") === "true";
+            let darkMode = localStorage.getItem("dark-mode");
+            let isMusicExpanded = localStorage.getItem("music-expanded") !== "false";
+            let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
+
+            // 初始化函数
+            function init() {
+                updateMenuState();
+                applyDarkMode(darkMode === "true");
+                initMusicPlayer();
+                if (petalsEnabled) startPetals();
             }
-        }
 
-        // Bind Event
-        $toggle.addEventListener('click', function (e) {
-            if ($navbar.className.indexOf('in') > 0) {
-                __HuxNav__.close()
-            } else {
-                __HuxNav__.open()
+            // 菜单控制
+            function updateMenuState() {
+                if (isMenuOpen) {
+                    menuContent.style.opacity = "1";
+                    menuContent.style.visibility = "visible";
+                    menuContent.style.transform = "translateY(-1px)";
+                    menuToggle.textContent = "✕";
+                } else {
+                    menuContent.style.opacity = "0";
+                    menuContent.style.visibility = "hidden";
+                    menuContent.style.transform = "translateY(0)";
+                    menuToggle.textContent = "☰";
+                }
             }
-        })
 
-        /**
-         * Since Fastclick is used to delegate 'touchstart' globally
-         * to hack 300ms delay in iOS by performing a fake 'click',
-         * Using 'e.stopPropagation' to stop 'touchstart' event from 
-         * $toggle/$collapse will break global delegation.
-         * 
-         * Instead, we use a 'e.target' filter to prevent handler
-         * added to document close HuxNav.  
-         *
-         * Also, we use 'click' instead of 'touchstart' as compromise
-         */
-        document.addEventListener('click', function (e) {
-            if (e.target == $toggle) return;
-            if (e.target.className == 'icon-bar') return;
-            __HuxNav__.close();
-        })
+            menuToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                isMenuOpen = !isMenuOpen;
+                localStorage.setItem("menu-open", isMenuOpen);
+                updateMenuState();
+            });
+
+            // 深色模式
+            function applyDarkMode(state) {
+                document.body.classList.toggle("dark-mode", state);
+                darkModeToggle.textContent = state ? "☀️" : "🌙";
+                localStorage.setItem("dark-mode", state);
+            }
+
+            darkModeToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                darkMode = darkMode === "true" ? "false" : "true";
+                applyDarkMode(darkMode === "true");
+            });
+
+            // 音乐控制
+            function initMusicPlayer() {
+                musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
+                musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
+                musicPlayer.style.position = "fixed";
+                musicPlayer.style.right = "80px";
+                musicPlayer.style.bottom = "20px";
+                musicPlayer.style.transition = "all 0.3s ease";
+            }
+
+            musicControl.addEventListener("click", function (e) {
+                e.stopPropagation();
+                isMusicExpanded = !isMusicExpanded;
+                localStorage.setItem("music-expanded", isMusicExpanded);
+                musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
+                musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
+            });
+
+            // 公告功能
+            announcementToggle.addEventListener("click", function(e) {
+                e.stopPropagation();
+                loadAnnouncement();
+            });
+
+            function loadAnnouncement() {
+                const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+                fetch(announcementUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return response.text();
+                    })
+                    .then(text => {
+                        const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                        announcementContent.innerHTML = 
+                            content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                        announcementModal.style.display = "block";
+                        document.body.style.overflow = "hidden";
+                    })
+                    .catch(error => {
+                        announcementContent.innerHTML = `
+                            <div class="alert-error">
+                                <strong>⚠️ 加载失败</strong>
+                                <p>${error.message}</p>
+                            </div>
+                        `;
+                        announcementModal.style.display = "block";
+                    });
+            }
+
+            closeModal.addEventListener("click", function() {
+                announcementModal.style.display = "none";
+                document.body.style.overflow = "auto";
+            });
+
+            window.addEventListener("click", function(event) {
+                if (event.target === announcementModal) {
+                    announcementModal.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }
+            });
+
+            // 花瓣效果
+            function togglePetalsEffect() {
+                petalsEnabled = !petalsEnabled;
+                localStorage.setItem("petals-enabled", petalsEnabled);
+                petalsEnabled ? startPetals() : stopPetals();
+            }
+
+            petalsToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                togglePetalsEffect();
+            });
+
+            function startPetals() {
+                stopPetals(); // 先清除现有花瓣
+
+                const container = document.createElement('div');
+                container.className = 'falling-petals';
+                document.body.appendChild(container);
+
+                for (let i = 0; i < 20; i++) {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    petal.style.cssText = `
+                        animation-duration: ${Math.random() * 5 + 4}s;
+                        animation-delay: ${Math.random() * 5}s;
+                        left: ${Math.random() * 100}vw;
+                        ${document.body.classList.contains('dark-mode') ? 
+                            'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
+                            'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
+                    `;
+                    container.appendChild(petal);
+                }
+            }
+
+            function stopPetals() {
+                const existing = document.querySelector('.falling-petals');
+                if (existing) existing.remove();
+            }
+
+            // 初始化所有功能
+            init();
+        });
     </script>
+</nav>
