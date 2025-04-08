@@ -44,3 +44,23 @@ description: "<span class='typewriter'>「并非只有话语 才能成为话语�
     {% endif %}
 </ul>
 {% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const text = "「并非只有话语 才能成为话语」";
+    const elem = document.querySelector(".typewriter");
+    let i = 0;
+    
+    function typeWriter() {
+      if (i < text.length) {
+        elem.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 100); // 调整速度（毫秒）
+      } else {
+        elem.classList.add("cursor"); // 可选：添加静态光标
+      }
+    }
+    
+    typeWriter();
+  });
+</script>
