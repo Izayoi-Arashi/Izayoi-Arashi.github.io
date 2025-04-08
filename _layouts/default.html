@@ -13,11 +13,11 @@
              <div id="announcement-toggle" title="公告通知" class="control-button">📢</div>
              <div id="dark-mode-toggle" title="深色模式" class="control-button">🌙</div>
              <div id="music-control" title="音乐播放" class="control-button">
-                 <audio id="music-player" controls>
+                 <button id="play-pause-btn" class="control-button">▶️</button>
+                 <audio id="music-player">
                      <source src="{{ '/music/song.mp3' | relative_url }}" type="audio/mp3">
                      Your browser does not support the audio element.
                  </audio>
-                 <span id="music-icon">♫</span>
              </div>
              <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
          </div>
@@ -45,8 +45,8 @@
      const menuContent = document.getElementById("menu-content");
      const darkModeToggle = document.getElementById("dark-mode-toggle");
      const musicControl = document.getElementById("music-control");
+     const playPauseBtn = document.getElementById("play-pause-btn");
      const musicPlayer = document.getElementById("music-player");
-     const musicIcon = document.getElementById("music-icon");
      const announcementToggle = document.getElementById("announcement-toggle");
      const announcementModal = document.getElementById("announcement-modal");
      const closeModal = document.querySelector(".close-modal");
@@ -56,7 +56,6 @@
      // 状态变量
      let isMenuOpen = localStorage.getItem("menu-open") === "true";
      let darkMode = localStorage.getItem("dark-mode");
-     let isMusicExpanded = localStorage.getItem("music-expanded") !== "false";
      let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
  
      // 初始化函数
@@ -104,21 +103,16 @@
  
      // 音乐控制
      function initMusicPlayer() {
-         musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
-         musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
-         musicPlayer.style.position = "fixed";
-         musicPlayer.style.right = "80px";
-         musicPlayer.style.bottom = "20px";
-         musicPlayer.style.transition = "all 0.3s ease";
+         playPauseBtn.addEventListener("click", function() {
+             if (musicPlayer.paused) {
+                 musicPlayer.play();
+                 playPauseBtn.textContent = "⏸️"; // 修改为暂停图标
+             } else {
+                 musicPlayer.pause();
+                 playPauseBtn.textContent = "▶️"; // 修改为播放图标
+             }
+         });
      }
- 
-     musicControl.addEventListener("click", function (e) {
-         e.stopPropagation();
-         isMusicExpanded = !isMusicExpanded;
-         localStorage.setItem("music-expanded", isMusicExpanded);
-         musicPlayer.style.width = isMusicExpanded ? "280px" : "0";
-         musicPlayer.style.height = isMusicExpanded ? "86px" : "0";
-     });
  
      // 公告功能
      announcementToggle.addEventListener("click", function(e) {
