@@ -32,16 +32,13 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#" id="dark-mode-toggle"><i class="fa fa-moon-o"></i> 深色模式</a></li>
-                        <<!-- 控制面板按钮中的音乐控制 -->
-                        <li>
-                            <a href="#" id="music-control">
-                                <i class="fa fa-music"></i> 音乐播放
-                            </a>
-                            <audio id="audio-player" style="display: none;">
-                                <source src="//music.163.com/outchain/player?type=2&id=730861&auto=1&height=66" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </li>
+                    <li>
+                        <a href="#" id="music-control">
+                            <i class="fa fa-music"></i> 音乐播放
+                        </a>
+                    </li>
+                    <!-- 音乐播放器 -->
+                    <audio id="music-player" style="display:none;" src="{{ site.baseurl }}/music/song.mp3" preload="auto"></audio>
                         <li><a href="#" id="announcement-toggle"><i class="fa fa-bullhorn"></i> 公告通知</a></li>
                         <li><a href="#" id="petals-toggle"><i class="fa fa-leaf"></i> 花瓣效果</a></li>
                     </ul>
@@ -96,37 +93,35 @@
 
    document.addEventListener("DOMContentLoaded", function () {
     // 音乐控制
-    document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
+    // 音乐控制按钮和播放器
     const musicControl = document.getElementById("music-control");
-    const audioPlayer = document.getElementById("audio-player");
+    const musicPlayer = document.getElementById("music-player");
+    let isMusicPlaying = localStorage.getItem("music-playing") === "true";
 
-    let isPlaying = false;  // 音乐当前播放状态
-
-    function toggleMusicPlayback() {
-        if (isPlaying) {
-            audioPlayer.pause();  // 暂停音乐
-            isPlaying = false;
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            musicPlayer.pause();  // 停止播放
+            musicControl.querySelector("i").classList.replace("fa-pause", "fa-play");  // 更新图标为播放
         } else {
-            audioPlayer.play();   // 播放音乐
-            isPlaying = true;
+            musicPlayer.play();  // 播放音乐
+            musicControl.querySelector("i").classList.replace("fa-play", "fa-pause");  // 更新图标为暂停
         }
+        isMusicPlaying = !isMusicPlaying;
+        localStorage.setItem("music-playing", isMusicPlaying);  // 保存状态
     }
 
-    // 点击按钮时切换播放和暂停
+    // 初始化音乐播放器状态
+    if (isMusicPlaying) {
+        musicPlayer.play();
+        musicControl.querySelector("i").classList.replace("fa-play", "fa-pause");
+    }
+
     musicControl.addEventListener("click", function (e) {
         e.preventDefault();
-        toggleMusicPlayback();
+        toggleMusic();  // 点击按钮控制播放暂停
     });
-
-    // 初始化音频播放状态
-    if (audioPlayer.paused) {
-        isPlaying = false;
-    } else {
-        isPlaying = true;
-    }
 });
-
-
     // 公告功能
     const announcementToggle = document.getElementById("announcement-toggle");
     const announcementModal = document.getElementById("announcement-modal");
