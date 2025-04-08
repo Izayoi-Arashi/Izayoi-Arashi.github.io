@@ -162,43 +162,43 @@
     });
 
     // 花瓣效果
-    function togglePetalsEffect() {
-        petalsEnabled = !petalsEnabled;
-        localStorage.setItem("petals-enabled", petalsEnabled);
-        petalsEnabled ? startPetals() : stopPetals();
-    }
+    // function togglePetalsEffect() {
+    //     petalsEnabled = !petalsEnabled;
+    //     localStorage.setItem("petals-enabled", petalsEnabled);
+    //     petalsEnabled ? startPetals() : stopPetals();
+    // }
 
-    petalsToggle.addEventListener("click", function (e) {
-        e.stopPropagation();
-        togglePetalsEffect();
-    });
+    // petalsToggle.addEventListener("click", function (e) {
+    //     e.stopPropagation();
+    //     togglePetalsEffect();
+    // });
 
-    function startPetals() {
-        stopPetals(); // 先清除现有花瓣
+    // function startPetals() {
+    //     stopPetals(); // 先清除现有花瓣
 
-        const container = document.createElement('div');
-        container.className = 'falling-petals';
-        document.body.appendChild(container);
+    //     const container = document.createElement('div');
+    //     container.className = 'falling-petals';
+    //     document.body.appendChild(container);
 
-        for (let i = 0; i < 20; i++) {
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            petal.style.cssText = `
-                animation-duration: ${Math.random() * 5 + 4}s;
-                animation-delay: ${Math.random() * 5}s;
-                left: ${Math.random() * 100}vw;
-                ${document.body.classList.contains('dark-mode') ? 
-                    'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
-                    'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
-            `;
-            container.appendChild(petal);
-        }
-    }
+    //     for (let i = 0; i < 20; i++) {
+    //         const petal = document.createElement('div');
+    //         petal.className = 'petal';
+    //         petal.style.cssText = `
+    //             animation-duration: ${Math.random() * 5 + 4}s;
+    //             animation-delay: ${Math.random() * 5}s;
+    //             left: ${Math.random() * 100}vw;
+    //             ${document.body.classList.contains('dark-mode') ? 
+    //                 'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
+    //                 'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
+    //         `;
+    //         container.appendChild(petal);
+    //     }
+    // }
 
-    function stopPetals() {
-        const existing = document.querySelector('.falling-petals');
-        if (existing) existing.remove();
-    }
+    // function stopPetals() {
+    //     const existing = document.querySelector('.falling-petals');
+    //     if (existing) existing.remove();
+    // }
 
     // 响应式调整
     function handleResize() {
