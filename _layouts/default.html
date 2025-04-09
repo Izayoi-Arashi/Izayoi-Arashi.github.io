@@ -5,24 +5,33 @@
      {% include nav.html %}
      {% include search.html %}
  
-     <!-- 控制菜单结构保持不变 -->
- 
-     <div id="control-menu">
-         <button id="menu-toggle" class="control-button">☰</button>
-         <div id="menu-content"> 
-             <div id="email-copy" title="复制邮箱" class="control-button">✉️</div>
-             <div id="announcement-toggle" title="公告通知" class="control-button">📢</div>
-             <div id="dark-mode-toggle" title="深色模式" class="control-button">🌙</div>
-             <div id="music-control" title="音乐播放" class="control-button">
-                 <button id="play-pause-btn" class="control-button">▶️</button>
-                 <audio id="music-player">
-                     <source src="{{ '/music/song.mp3' | relative_url }}" type="audio/mp3">
-                     Your browser does not support the audio element.
-                 </audio>
-             </div>
-             <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
-         </div>
-     </div>
+         <div id="control-menu">
+        <button id="menu-toggle" class="control-button">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div id="menu-content">
+            <div id="back-to-top" title="回到顶部" class="control-button">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+            <div id="email-copy" title="复制邮箱" class="control-button">
+                <i class="far fa-envelope"></i>
+            </div>
+            <div id="announcement-toggle" title="公告通知" class="control-button">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <div id="dark-mode-toggle" title="深色模式" class="control-button">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div id="music-control" title="音乐播放" class="control-button">
+                <button id="play-pause-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+            <div id="petals-toggle" title="花瓣效果" class="control-button">
+                <i class="fas fa-leaf"></i>
+            </div>
+        </div>
+    </div>
  
      <!-- 公告弹窗 -->
      <div id="announcement-modal" class="modal">
@@ -82,18 +91,17 @@
          }
      }
  
-     menuToggle.addEventListener("click", function (e) {
-         e.stopPropagation();
-         isMenuOpen = !isMenuOpen;
-         localStorage.setItem("menu-open", isMenuOpen);
-         updateMenuState();
-     });
+     menuToggle.addEventListener("click", function() {
+        const menuIcon = this.querySelector('i');
+        menuIcon.classList.toggle('fa-times');
+        menuIcon.classList.toggle('fa-bars');
+    });
        
      // 深色模式
      function applyDarkMode(state) {
          document.body.classList.toggle("dark-mode", state);
-         darkModeToggle.textContent = state ? "☀️" : "🌙";
-         localStorage.setItem("dark-mode", state);
+         const modeIcon = darkModeToggle.querySelector('i');
+         modeIcon.className = state ? 'fas fa-sun' : 'fas fa-moon';
      }
  
      darkModeToggle.addEventListener("click", function (e) {
@@ -104,25 +112,21 @@
  
      // 音乐控制
      function initMusicPlayer() {
-         // 尝试在页面加载时自动播放
-         musicPlayer.play().then(() => {
-             playPauseBtn.textContent = "⏸️"; // 播放时显示暂停图标
-         }).catch(error => {
-             // 如果浏览器阻止了自动播放，显示播放按钮
-             playPauseBtn.textContent = "▶️";
-         });
-
-         // 播放/暂停按钮点击事件
-         playPauseBtn.addEventListener("click", function () {
-             if (musicPlayer.paused) {
-                 musicPlayer.play();
-                 playPauseBtn.textContent = "⏸️"; // 修改为暂停图标
-             } else {
-                 musicPlayer.pause();
-                 playPauseBtn.textContent = "▶️"; // 修改为播放图标
-             }
-         });
-     }
+     const playIcon = playPauseBtn.querySelector('i');
+     musicPlayer.play().then(() => {
+         playIcon.className = 'fas fa-pause';
+     }).catch(() => {
+         playIcon.className = 'fas fa-play';
+     });
+ 
+     playPauseBtn.addEventListener("click", function() {
+         if (musicPlayer.paused) {
+             playIcon.className = 'fas fa-pause';
+         } else {
+             playIcon.className = 'fas fa-play';
+         }
+     });
+ }
 
      // 邮箱复制功能
     function copyEmailToClipboard() {
@@ -199,10 +203,11 @@
          petalsEnabled ? startPetals() : stopPetals();
      }
  
-     petalsToggle.addEventListener("click", function (e) {
-         e.stopPropagation();
-         togglePetalsEffect();
+     petalsToggle.addEventListener("click", function() {
+       const petalIcon = this.querySelector('i');
+       petalIcon.classList.toggle('fa-spin');
      });
+
  
      function startPetals() {
          stopPetals(); // 先清除现有花瓣
