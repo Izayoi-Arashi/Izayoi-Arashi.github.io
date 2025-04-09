@@ -53,6 +53,18 @@
   margin: 0;
 }
 
+/* ===== 深色模式 ===== */
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .control-button {
+  background: var(--dark-control-bg);
+  color: #fff;
+}
+
+
 .control-button:hover {
   background: var(--control-bg-hover);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
