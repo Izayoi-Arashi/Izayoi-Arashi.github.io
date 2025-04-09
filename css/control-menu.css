@@ -35,7 +35,7 @@
 }
 
 /* 统一按钮样式 */
-/* .control-button {
+.control-button {
   width: var(--control-size);
   height: var(--control-size);
   background: var(--control-bg);
@@ -51,7 +51,7 @@
   box-shadow: var(--control-shadow);
   pointer-events: auto;
   margin: 0;
-} */
+}
 
 .control-button:hover {
   background: var(--control-bg-hover);
