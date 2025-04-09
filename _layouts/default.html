@@ -175,6 +175,18 @@
                     announcementModal.style.display = "block";
                 });
         }
+
+        closeModal.addEventListener("click", function() {
+         announcementModal.style.display = "none";
+         document.body.style.overflow = "auto";
+     });
+ 
+     window.addEventListener("click", function(event) {
+         if (event.target === announcementModal) {
+             announcementModal.style.display = "none";
+             document.body.style.overflow = "auto";
+         }
+     });
      
      // 花瓣效果
         petalsToggle.addEventListener("click", function (e) {
