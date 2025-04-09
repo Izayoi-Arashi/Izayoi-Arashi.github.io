@@ -1,10 +1,10 @@
 # Site settings
 title: Arashi Blog
-SEOTitle: 十六夜岚的博客
+SEOTitle:  樱缄信笺 | Arashi Blog
 header-img: img/home-bg.jpg
 email: arashiizayoi@qq.com
 description: "这里是 @十六夜岚 的个人博客，与你一起发现更大的世界 | 一个 热爱生活 的程序员"
-keyword: "岚, Arashi岚, Arashi, 鬼栈, Arashipro, @Arashipro, 岚的博客, Arashi Blog, 博客, 个人网站, 互联网, Web, JavaScript, React, 前端, 设计"
+keyword: "岚, Arashi岚, Arashi, Arashi, @Arashi, 岚的博客, Arashi Blog, 博客, 个人网站, 互联网, Web, JavaScript, Vue, 前端, 设计"
 url: "https://arashiizayoi.xin/" # your host, for absolute URL
 baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 
@@ -86,7 +86,7 @@ ga_domain: arashiizayoi.xin
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "一个 热爱生活 的程序员 <br> Email：arashiizayoi@qq.com"
+sidebar-about-description: "一个 热爱生活 的程序员 <br> 傲雪凌霜，踏雪无痕"
 sidebar-avatar: https://avatars.githubusercontent.com/u/107742034?s=96&v=4 # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
