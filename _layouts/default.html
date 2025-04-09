@@ -2,6 +2,12 @@
 {% include head.html %}
 
 <body ontouchstart="">
+    <!-- 加载过渡页面 -->
+    <div id="loadingScreen">
+        <div class="spinner"></div>
+        <p>正在加载...</p>
+    </div>
+
     {% include nav.html %}
     {% include search.html %}
 
@@ -49,208 +55,212 @@
     <!-- 依赖项 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
- 
-     <script>
+
+    <script>
       document.addEventListener("DOMContentLoaded", function () {
-     // DOM元素引用
-     const menuToggle = document.getElementById("menu-toggle");
-     const menuContent = document.getElementById("menu-content");
-     const darkModeToggle = document.getElementById("dark-mode-toggle");
-     const musicControl = document.getElementById("music-control");
-     const playPauseBtn = document.getElementById("play-pause-btn");
-     const musicPlayer = document.getElementById("music-player");
-     const announcementToggle = document.getElementById("announcement-toggle");
-     const announcementModal = document.getElementById("announcement-modal");
-     const closeModal = document.querySelector(".close-modal");
-     const announcementContent = document.getElementById("announcement-content");
-     const petalsToggle = document.getElementById("petals-toggle");
-     const emailCopy = document.getElementById("email-copy");
-     // 状态变量
-     let isMenuOpen = localStorage.getItem("menu-open") === "true";
-     let darkMode = localStorage.getItem("dark-mode");
-     let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
- 
-     // 初始化函数
-     function init() {
-         updateMenuState();
-         applyDarkMode(darkMode === "true");
-         initMusicPlayer();
-         if (petalsEnabled) startPetals();
-     }
- 
-    // 菜单控制
-        function updateMenuState() {
-            const menuIcon = menuToggle.querySelector("i");
-            if (isMenuOpen) {
-                menuContent.style.opacity = "1";
-                menuContent.style.visibility = "visible";
-                menuIcon.className = "fas fa-times";
-            } else {
-                menuContent.style.opacity = "0";
-                menuContent.style.visibility = "hidden";
-                menuIcon.className = "fas fa-bars";
-            }
-        }
+          // DOM元素引用
+          const menuToggle = document.getElementById("menu-toggle");
+          const menuContent = document.getElementById("menu-content");
+          const darkModeToggle = document.getElementById("dark-mode-toggle");
+          const musicControl = document.getElementById("music-control");
+          const playPauseBtn = document.getElementById("play-pause-btn");
+          const musicPlayer = document.getElementById("music-player");
+          const announcementToggle = document.getElementById("announcement-toggle");
+          const announcementModal = document.getElementById("announcement-modal");
+          const closeModal = document.querySelector(".close-modal");
+          const announcementContent = document.getElementById("announcement-content");
+          const petalsToggle = document.getElementById("petals-toggle");
+          const emailCopy = document.getElementById("email-copy");
 
-        menuToggle.addEventListener("click", function (e) {
-            e.stopPropagation();
-            isMenuOpen = !isMenuOpen;
-            localStorage.setItem("menu-open", isMenuOpen);
-            updateMenuState();
-        });
+          // 状态变量
+          let isMenuOpen = localStorage.getItem("menu-open") === "true";
+          let darkMode = localStorage.getItem("dark-mode");
+          let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
 
-       
-      // 深色模式
-        function applyDarkMode(state) {
-            const modeIcon = darkModeToggle.querySelector("i");
-            document.body.classList.toggle("dark-mode", state);
-            modeIcon.className = state ? "fas fa-sun" : "fas fa-moon";
-            localStorage.setItem("dark-mode", state);
-        }
+          // 初始化函数
+          function init() {
+              updateMenuState();
+              applyDarkMode(darkMode === "true");
+              initMusicPlayer();
+              if (petalsEnabled) startPetals();
+          }
 
-        darkModeToggle.addEventListener("click", function (e) {
-            e.stopPropagation();
-            darkMode = darkMode === "true" ? "false" : "true";
-            applyDarkMode(darkMode === "true");
-        });
- 
-    // 音乐控制
-        function initMusicPlayer() {
-            const playIcon = playPauseBtn.querySelector("i");
-            musicPlayer.play().then(() => {
-                playIcon.className = "fas fa-pause";
-            }).catch(() => {
-                playIcon.className = "fas fa-play";
-            });
+          // 菜单控制
+          function updateMenuState() {
+              const menuIcon = menuToggle.querySelector("i");
+              if (isMenuOpen) {
+                  menuContent.style.opacity = "1";
+                  menuContent.style.visibility = "visible";
+                  menuIcon.className = "fas fa-times";
+              } else {
+                  menuContent.style.opacity = "0";
+                  menuContent.style.visibility = "hidden";
+                  menuIcon.className = "fas fa-bars";
+              }
+          }
 
-            playPauseBtn.addEventListener("click", function () {
-                if (musicPlayer.paused) {
-                    musicPlayer.play();
-                    playIcon.className = "fas fa-pause";
-                } else {
-                    musicPlayer.pause();
-                    playIcon.className = "fas fa-play";
-                }
-            });
-        }
+          menuToggle.addEventListener("click", function (e) {
+              e.stopPropagation();
+              isMenuOpen = !isMenuOpen;
+              localStorage.setItem("menu-open", isMenuOpen);
+              updateMenuState();
+          });
 
-     // 邮箱复制功能
-    emailCopy.addEventListener("click", function (e) {
-            e.stopPropagation();
-            navigator.clipboard.writeText("your-email@example.com")
-                .then(() => showNotification("邮箱已复制"))
-                .catch(() => showNotification("复制失败", true));
-        });
+          // 深色模式
+          function applyDarkMode(state) {
+              const modeIcon = darkModeToggle.querySelector("i");
+              document.body.classList.toggle("dark-mode", state);
+              modeIcon.className = state ? "fas fa-sun" : "fas fa-moon";
+              localStorage.setItem("dark-mode", state);
+          }
 
-      // 显示提示通知
-      function showNotification(message, isError = false) {
-          const toast = document.createElement('div');
-          toast.className = `notification-toast${isError ? ' error' : ''}`;
-          toast.textContent = message;
-          document.body.appendChild(toast);
-      
-          setTimeout(() => toast.classList.add('show'), 10);
-          setTimeout(() => {
-              toast.classList.remove('show');
-              setTimeout(() => toast.remove(), 300);
-          }, 2000);
-      }
-            
-      // 公告功能
-        announcementToggle.addEventListener("click", loadAnnouncement);
-        
-        function loadAnnouncement() {
-            const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-            fetch(announcementUrl)
-                .then(response => response.text())
-                .then(text => {
-                    const content = text.replace(/^---[\s\S]*?---/, '').trim();
-                    announcementContent.innerHTML = 
-                        content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
-                    announcementModal.style.display = "block";
-                    document.body.style.overflow = "hidden";
-                })
-                .catch(error => {
-                    announcementContent.innerHTML = `<p class="error">加载失败：${error.message}</p>`;
-                    announcementModal.style.display = "block";
-                });
-        }
+          darkModeToggle.addEventListener("click", function (e) {
+              e.stopPropagation();
+              darkMode = darkMode === "true" ? "false" : "true";
+              applyDarkMode(darkMode === "true");
+          });
 
-        closeModal.addEventListener("click", function() {
-         announcementModal.style.display = "none";
-         document.body.style.overflow = "auto";
-     });
- 
-     window.addEventListener("click", function(event) {
-         if (event.target === announcementModal) {
-             announcementModal.style.display = "none";
-             document.body.style.overflow = "auto";
-         }
-     });
-     
-     // 花瓣效果
-        petalsToggle.addEventListener("click", function (e) {
-            e.stopPropagation();
-            petalsEnabled = !petalsEnabled;
-            localStorage.setItem("petals-enabled", petalsEnabled);
-            // this.querySelector("i").classList.toggle("fa-spin");
-            petalsEnabled ? startPetals() : stopPetals();
-        });
- 
-     function startPetals() {
-         stopPetals(); // 先清除现有花瓣
-         const container = document.createElement('div');
-         container.className = 'falling-petals';
-         document.body.appendChild(container);
- 
-         for (let i = 0; i < 20; i++) {
-             const petal = document.createElement('div');
-             petal.className = 'petal';
-             petal.style.cssText = `
-                 animation-duration: ${Math.random() * 5 + 4}s;
-                 animation-delay: ${Math.random() * 5}s;
-                 left: ${Math.random() * 100}vw;
-                 ${document.body.classList.contains('dark-mode') ? 
-                     'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
-                     'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
-             `;
-             container.appendChild(petal);
-         }
-     }
- 
-     function stopPetals() {
-         const existing = document.querySelector('.falling-petals');
-         if (existing) existing.remove();
-     }
- 
-     // 响应式调整
-     function handleResize() {
-         if (window.innerWidth <= 768) {
-             musicPlayer.style.right = "60px";
-             musicPlayer.style.bottom = "15px";
-         } else {
-             musicPlayer.style.right = "80px";
-             musicPlayer.style.bottom = "20px";
-         }
-     }
- 
-     window.addEventListener('resize', debounce(handleResize, 200));
-     handleResize();
- 
-     // 工具函数
-     function debounce(func, wait) {
-         let timeout;
-         return function () {
-             clearTimeout(timeout);
-             timeout = setTimeout(func, wait);
-         };
-     }
- 
-     // 初始化所有功能
-     init();
- });
- 
-     </script>
+          // 音乐控制
+          function initMusicPlayer() {
+              const playIcon = playPauseBtn.querySelector("i");
+              musicPlayer.play().then(() => {
+                  playIcon.className = "fas fa-pause";
+              }).catch(() => {
+                  playIcon.className = "fas fa-play";
+              });
+
+              playPauseBtn.addEventListener("click", function () {
+                  if (musicPlayer.paused) {
+                      musicPlayer.play();
+                      playIcon.className = "fas fa-pause";
+                  } else {
+                      musicPlayer.pause();
+                      playIcon.className = "fas fa-play";
+                  }
+              });
+          }
+
+          // 邮箱复制功能
+          emailCopy.addEventListener("click", function (e) {
+              e.stopPropagation();
+              navigator.clipboard.writeText("your-email@example.com")
+                  .then(() => showNotification("邮箱已复制"))
+                  .catch(() => showNotification("复制失败", true));
+          });
+
+          // 显示提示通知
+          function showNotification(message, isError = false) {
+              const toast = document.createElement('div');
+              toast.className = `notification-toast${isError ? ' error' : ''}`;
+              toast.textContent = message;
+              document.body.appendChild(toast);
+
+              setTimeout(() => toast.classList.add('show'), 10);
+              setTimeout(() => {
+                  toast.classList.remove('show');
+                  setTimeout(() => toast.remove(), 300);
+              }, 2000);
+          }
+
+          // 公告功能
+          announcementToggle.addEventListener("click", loadAnnouncement);
+
+          function loadAnnouncement() {
+              const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+              fetch(announcementUrl)
+                  .then(response => response.text())
+                  .then(text => {
+                      const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                      announcementContent.innerHTML = 
+                          content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                      announcementModal.style.display = "block";
+                      document.body.style.overflow = "hidden";
+                  })
+                  .catch(error => {
+                      announcementContent.innerHTML = `<p class="error">加载失败：${error.message}</p>`;
+                      announcementModal.style.display = "block";
+                  });
+          }
+
+          closeModal.addEventListener("click", function() {
+           announcementModal.style.display = "none";
+           document.body.style.overflow = "auto";
+       });
+
+       window.addEventListener("click", function(event) {
+           if (event.target === announcementModal) {
+               announcementModal.style.display = "none";
+               document.body.style.overflow = "auto";
+           }
+       });
+
+       // 花瓣效果
+          petalsToggle.addEventListener("click", function (e) {
+              e.stopPropagation();
+              petalsEnabled = !petalsEnabled;
+              localStorage.setItem("petals-enabled", petalsEnabled);
+              petalsEnabled ? startPetals() : stopPetals();
+          });
+
+          function startPetals() {
+              stopPetals(); // 先清除现有花瓣
+              const container = document.createElement('div');
+              container.className = 'falling-petals';
+              document.body.appendChild(container);
+
+              for (let i = 0; i < 20; i++) {
+                  const petal = document.createElement('div');
+                  petal.className = 'petal';
+                  petal.style.cssText = `
+                      animation-duration: ${Math.random() * 5 + 4}s;
+                      animation-delay: ${Math.random() * 5}s;
+                      left: ${Math.random() * 100}vw;
+                      ${document.body.classList.contains('dark-mode') ? 
+                          'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
+                          'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
+                  `;
+                  container.appendChild(petal);
+              }
+          }
+
+          function stopPetals() {
+              const existing = document.querySelector('.falling-petals');
+              if (existing) existing.remove();
+          }
+
+          // 响应式调整
+          function handleResize() {
+              if (window.innerWidth <= 768) {
+                  musicPlayer.style.right = "60px";
+                  musicPlayer.style.bottom = "15px";
+              } else {
+                  musicPlayer.style.right = "80px";
+                  musicPlayer.style.bottom = "20px";
+              }
+          }
+
+          window.addEventListener('resize', debounce(handleResize, 200));
+          handleResize();
+
+          // 工具函数
+          function debounce(func, wait) {
+              let timeout;
+              return function () {
+                  clearTimeout(timeout);
+                  timeout = setTimeout(func, wait);
+              };
+          }
+
+          // 页面加载完成后隐藏加载页面并显示内容
+          window.addEventListener('load', function() {
+              document.getElementById('loadingScreen').style.display = 'none';
+              document.getElementById('content').style.display = 'block';
+          });
+
+          // 初始化所有功能
+          init();
+      });
+    </script>
       <style>
     /* 控制菜单样式 */
     .control-button {
