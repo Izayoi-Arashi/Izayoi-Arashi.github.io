@@ -9,7 +9,8 @@
  
      <div id="control-menu">
          <button id="menu-toggle" class="control-button">☰</button>
-         <div id="menu-content">           
+         <div id="menu-content"> 
+             <div id="email-copy" title="复制邮箱" class="control-button">✉️</div>
              <div id="announcement-toggle" title="公告通知" class="control-button">📢</div>
              <div id="dark-mode-toggle" title="深色模式" class="control-button">🌙</div>
              <div id="music-control" title="音乐播放" class="control-button">
@@ -52,7 +53,8 @@
      const closeModal = document.querySelector(".close-modal");
      const announcementContent = document.getElementById("announcement-content");
      const petalsToggle = document.getElementById("petals-toggle");
- 
+
+     const emailCopy = document.getElementById("email-copy");
      // 状态变量
      let isMenuOpen = localStorage.getItem("menu-open") === "true";
      let darkMode = localStorage.getItem("dark-mode");
@@ -122,7 +124,38 @@
              }
          });
      }
- 
+
+     // 邮箱复制功能
+function copyEmailToClipboard() {
+    const email = 'your-email@example.com'; // 替换为你的真实邮箱
+    navigator.clipboard.writeText(email).then(() => {
+        showNotification('邮箱已复制到剪贴板 📋');
+    }).catch(err => {
+        console.error('复制失败:', err);
+        showNotification('复制失败，请手动复制', true);
+    });
+}
+
+// 显示提示通知
+function showNotification(message, isError = false) {
+    const toast = document.createElement('div');
+    toast.className = `notification-toast${isError ? ' error' : ''}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+// 在事件监听部分添加
+emailCopy.addEventListener("click", function(e) {
+    e.stopPropagation();
+    copyEmailToClipboard();
+});
+       
      // 公告功能
      announcementToggle.addEventListener("click", function(e) {
          e.stopPropagation();
