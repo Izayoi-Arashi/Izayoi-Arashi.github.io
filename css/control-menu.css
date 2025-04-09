@@ -65,7 +65,7 @@
   gap: var(--menu-gap);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);  
+  transform: translateY(5px);  
 /*   修改 */
   transition: var(--control-transition);
   pointer-events: auto;
