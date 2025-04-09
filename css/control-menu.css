@@ -143,6 +143,35 @@
     }
 }
 
+/* 邮箱功能 */
+
+/* 添加在control-menu.css中或页面的样式部分 */
+.notification-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.notification-toast.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dark-mode .notification-toast {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
 /* ===== 深色模式 ===== */
 .dark-mode {
   background-color: #121212;
