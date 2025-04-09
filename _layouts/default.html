@@ -1,18 +1,16 @@
 <html lang="en">
- {% include head.html %}
- 
- <body ontouchstart="">
-     {% include nav.html %}
-     {% include search.html %}
- 
-         <div id="control-menu">
-        <button id="menu-toggle" class="control-button">
+{% include head.html %}
+
+<body ontouchstart="">
+    {% include nav.html %}
+    {% include search.html %}
+
+    <!-- 控制菜单 -->
+    <div id="control-menu">
+        <button id="menu-toggle" class="control-button" aria-label="主菜单">
             <i class="fas fa-bars"></i>
         </button>
         <div id="menu-content">
-            <div id="back-to-top" title="回到顶部" class="control-button">
-                <i class="fas fa-arrow-up"></i>
-            </div>
             <div id="email-copy" title="复制邮箱" class="control-button">
                 <i class="far fa-envelope"></i>
             </div>
@@ -26,27 +24,31 @@
                 <button id="play-pause-btn">
                     <i class="fas fa-play"></i>
                 </button>
+                <audio id="music-player">
+                    <source src="{{ '/music/song.mp3' | relative_url }}" type="audio/mp3">
+                    Your browser does not support the audio element.
+                </audio>
             </div>
             <div id="petals-toggle" title="花瓣效果" class="control-button">
                 <i class="fas fa-leaf"></i>
             </div>
         </div>
     </div>
- 
-     <!-- 公告弹窗 -->
-     <div id="announcement-modal" class="modal">
-         <div class="modal-content">
-             <span class="close-modal">&times;</span>
-             <div id="announcement-content">
-                 <!-- Markdown内容将在这里渲染 -->
-             </div>
-         </div>
-     </div>
- 
-     {{ content }}
-     {% include footer.html %}
- 
-     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- 公告弹窗 -->
+    <div id="announcement-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="announcement-content"></div>
+        </div>
+    </div>
+
+    {{ content }}
+    {% include footer.html %}
+
+    <!-- 依赖项 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
  
      <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -76,68 +78,69 @@
          if (petalsEnabled) startPetals();
      }
  
-     // 菜单控制
-     function updateMenuState() {
-         if (isMenuOpen) {
-             menuContent.style.opacity = "1";
-             menuContent.style.visibility = "visible";
-             menuContent.style.transform = "translateY(-1px)";
-             menuToggle.textContent = "✕";
-         } else {
-             menuContent.style.opacity = "0";
-             menuContent.style.visibility = "hidden";
-             menuContent.style.transform = "translateY(0)";
-             menuToggle.textContent = "☰";
-         }
-     }
- 
-     menuToggle.addEventListener("click", function() {
-        const menuIcon = this.querySelector('i');
-        menuIcon.classList.toggle('fa-times');
-        menuIcon.classList.toggle('fa-bars');
-    });
+    // 菜单控制
+        function updateMenuState() {
+            const menuIcon = menuToggle.querySelector("i");
+            if (isMenuOpen) {
+                menuContent.style.opacity = "1";
+                menuContent.style.visibility = "visible";
+                menuIcon.className = "fas fa-times";
+            } else {
+                menuContent.style.opacity = "0";
+                menuContent.style.visibility = "hidden";
+                menuIcon.className = "fas fa-bars";
+            }
+        }
+
+        menuToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            isMenuOpen = !isMenuOpen;
+            localStorage.setItem("menu-open", isMenuOpen);
+            updateMenuState();
+        });
+
        
-     // 深色模式
-     function applyDarkMode(state) {
-         document.body.classList.toggle("dark-mode", state);
-         const modeIcon = darkModeToggle.querySelector('i');
-         modeIcon.className = state ? 'fas fa-sun' : 'fas fa-moon';
-     }
+      // 深色模式
+        function applyDarkMode(state) {
+            const modeIcon = darkModeToggle.querySelector("i");
+            document.body.classList.toggle("dark-mode", state);
+            modeIcon.className = state ? "fas fa-sun" : "fas fa-moon";
+            localStorage.setItem("dark-mode", state);
+        }
+
+        darkModeToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            darkMode = darkMode === "true" ? "false" : "true";
+            applyDarkMode(darkMode === "true");
+        });
  
-     darkModeToggle.addEventListener("click", function (e) {
-         e.stopPropagation();
-         darkMode = darkMode === "true" ? "false" : "true";
-         applyDarkMode(darkMode === "true");
-     });
- 
-     // 音乐控制
-     function initMusicPlayer() {
-     const playIcon = playPauseBtn.querySelector('i');
-     musicPlayer.play().then(() => {
-         playIcon.className = 'fas fa-pause';
-     }).catch(() => {
-         playIcon.className = 'fas fa-play';
-     });
- 
-     playPauseBtn.addEventListener("click", function() {
-         if (musicPlayer.paused) {
-             playIcon.className = 'fas fa-pause';
-         } else {
-             playIcon.className = 'fas fa-play';
-         }
-     });
- }
+    // 音乐控制
+        function initMusicPlayer() {
+            const playIcon = playPauseBtn.querySelector("i");
+            musicPlayer.play().then(() => {
+                playIcon.className = "fas fa-pause";
+            }).catch(() => {
+                playIcon.className = "fas fa-play";
+            });
+
+            playPauseBtn.addEventListener("click", function () {
+                if (musicPlayer.paused) {
+                    musicPlayer.play();
+                    playIcon.className = "fas fa-pause";
+                } else {
+                    musicPlayer.pause();
+                    playIcon.className = "fas fa-play";
+                }
+            });
+        }
 
      // 邮箱复制功能
-    function copyEmailToClipboard() {
-        const email = 'arashiizayoi@qq.com'; // 替换为你的真实邮箱
-        navigator.clipboard.writeText(email).then(() => {
-            showNotification('邮箱已复制到剪贴板 📋');
-        }).catch(err => {
-            console.error('复制失败:', err);
-            showNotification('复制失败，请手动复制', true);
+    emailCopy.addEventListener("click", function (e) {
+            e.stopPropagation();
+            navigator.clipboard.writeText("your-email@example.com")
+                .then(() => showNotification("邮箱已复制"))
+                .catch(() => showNotification("复制失败", true));
         });
-    }
 
       // 显示提示通知
       function showNotification(message, isError = false) {
@@ -153,61 +156,34 @@
           }, 2000);
       }
             
-     // 公告功能
-     announcementToggle.addEventListener("click", function(e) {
-         e.stopPropagation();
-         loadAnnouncement();
-     });
- 
-     function loadAnnouncement() {
-         const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-         fetch(announcementUrl)
-             .then(response => {
-                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                 return response.text();
-             })
-             .then(text => {
-                 const content = text.replace(/^---[\s\S]*?---/, '').trim();
-                 announcementContent.innerHTML = 
-                     content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
-                 announcementModal.style.display = "block";
-                 document.body.style.overflow = "hidden";
-             })
-             .catch(error => {
-                 announcementContent.innerHTML = `
-                     <div class="alert-error">
-                         <strong>⚠️ 加载失败</strong>
-                         <p>${error.message}</p>
-                     </div>
-                 `;
-                 announcementModal.style.display = "block";
-             });
-     }
- 
-     closeModal.addEventListener("click", function() {
-         announcementModal.style.display = "none";
-         document.body.style.overflow = "auto";
-     });
- 
-     window.addEventListener("click", function(event) {
-         if (event.target === announcementModal) {
-             announcementModal.style.display = "none";
-             document.body.style.overflow = "auto";
-         }
-     });
- 
+      // 公告功能
+        announcementToggle.addEventListener("click", loadAnnouncement);
+        
+        function loadAnnouncement() {
+            const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+            fetch(announcementUrl)
+                .then(response => response.text())
+                .then(text => {
+                    const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                    announcementContent.innerHTML = 
+                        content ? marked.parse(content) : '<p class="no-content">暂无公告</p>';
+                    announcementModal.style.display = "block";
+                    document.body.style.overflow = "hidden";
+                })
+                .catch(error => {
+                    announcementContent.innerHTML = `<p class="error">加载失败：${error.message}</p>`;
+                    announcementModal.style.display = "block";
+                });
+        }
+     
      // 花瓣效果
-     function togglePetalsEffect() {
-         petalsEnabled = !petalsEnabled;
-         localStorage.setItem("petals-enabled", petalsEnabled);
-         petalsEnabled ? startPetals() : stopPetals();
-     }
- 
-     petalsToggle.addEventListener("click", function() {
-       const petalIcon = this.querySelector('i');
-       petalIcon.classList.toggle('fa-spin');
-     });
-
+        petalsToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            petalsEnabled = !petalsEnabled;
+            localStorage.setItem("petals-enabled", petalsEnabled);
+            this.querySelector("i").classList.toggle("fa-spin");
+            petalsEnabled ? startPetals() : stopPetals();
+        });
  
      function startPetals() {
          stopPetals(); // 先清除现有花瓣
@@ -263,6 +239,41 @@
  });
  
      </script>
+      <style>
+    /* 控制菜单样式 */
+    .control-button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin: 8px 0;
+        transition: all 0.3s ease;
+    }
+
+    .control-button i {
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .dark-mode .control-button {
+        background: rgba(30, 30, 30, 0.9);
+    }
+
+    .dark-mode .control-button i {
+        color: #fff;
+    }
+
+    #music-control button {
+        all: unset;
+        display: contents;
+    }
+
+    /* 公告弹窗样式保持不变 */
+    </style>
      <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
  </body> 
 </html>
