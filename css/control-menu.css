@@ -370,7 +370,31 @@
   z-index: 999;
 }
 
- /* 加载过渡页面样式 */
+  /* 控制菜单样式 */
+      .control-button {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          margin: 8px 0;
+          transition: all 0.3s ease;
+      }
+
+      .control-button i {
+          font-size: 1.2em;
+          color: #333;
+      }
+
+      /* 隐藏菜单 */
+      .hidden {
+          display: none;
+      }
+
+      /* 加载过渡页面样式 */
       #loadingScreen {
           position: fixed;
           top: 0;
