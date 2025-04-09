@@ -20,7 +20,6 @@
                  </audio>
              </div>
              <div id="petals-toggle" title="开启/关闭花瓣飘落" class="control-button">🍂</div>
-             <div id="copy-email" title="复制邮箱" class="control-button">📧</div>
          </div>
      </div>
  
@@ -88,39 +87,6 @@
          localStorage.setItem("menu-open", isMenuOpen);
          updateMenuState();
      });
-       
-     // 邮箱复制
-document.addEventListener("DOMContentLoaded", function () {
-    const copyEmailBtn = document.getElementById("copy-email"); // 获取复制邮箱按钮
-
-    if (!copyEmailBtn) {
-        console.error("复制邮箱按钮未找到");
-        return;  // 如果按钮没有找到，则退出
-    }
-
-    // 检查按钮是否正确绑定了事件
-    console.log("复制邮箱按钮已加载");  // 这里用来确认按钮被正确加载
-
-    // 邮箱地址（根据需要修改）
-    const email = "example@example.com";  // 替换为你想复制的邮箱地址
-
-    // 复制邮箱功能
-    copyEmailBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        console.log("复制邮箱按钮被点击");  // 确认点击事件是否被触发
-
-        // 使用 Clipboard API 将邮箱复制到剪贴板
-        navigator.clipboard.writeText(email).then(() => {
-            // 提示用户邮箱已复制
-            alert("邮箱已复制到剪切板！");
-        }).catch(err => {
-            // 如果出错，提示错误信息
-            console.error("复制失败: ", err);
-            alert("复制失败，请手动复制邮箱！");
-        });
-    });
-});
-
        
      // 深色模式
      function applyDarkMode(state) {
