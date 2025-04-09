@@ -193,7 +193,7 @@
             e.stopPropagation();
             petalsEnabled = !petalsEnabled;
             localStorage.setItem("petals-enabled", petalsEnabled);
-            this.querySelector("i").classList.toggle("fa-spin");
+            // this.querySelector("i").classList.toggle("fa-spin");
             petalsEnabled ? startPetals() : stopPetals();
         });
  
