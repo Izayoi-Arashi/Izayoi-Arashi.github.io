@@ -53,8 +53,9 @@
      const closeModal = document.querySelector(".close-modal");
      const announcementContent = document.getElementById("announcement-content");
      const petalsToggle = document.getElementById("petals-toggle");
-
      const emailCopy = document.getElementById("email-copy");
+
+     const backToTopBtn = document.getElementById("back-to-top");
      // 状态变量
      let isMenuOpen = localStorage.getItem("menu-open") === "true";
      let darkMode = localStorage.getItem("dark-mode");
@@ -126,35 +127,89 @@
      }
 
      // 邮箱复制功能
-function copyEmailToClipboard() {
-    const email = 'arashiizayoi@qq.com'; // 替换为你的真实邮箱
-    navigator.clipboard.writeText(email).then(() => {
-        showNotification('邮箱已复制到剪贴板 📋');
-    }).catch(err => {
-        console.error('复制失败:', err);
-        showNotification('复制失败，请手动复制', true);
-    });
+    function copyEmailToClipboard() {
+        const email = 'arashiizayoi@qq.com'; // 替换为你的真实邮箱
+        navigator.clipboard.writeText(email).then(() => {
+            showNotification('邮箱已复制到剪贴板 📋');
+        }).catch(err => {
+            console.error('复制失败:', err);
+            showNotification('复制失败，请手动复制', true);
+        });
+    }
+
+      // 显示提示通知
+      function showNotification(message, isError = false) {
+          const toast = document.createElement('div');
+          toast.className = `notification-toast${isError ? ' error' : ''}`;
+          toast.textContent = message;
+          document.body.appendChild(toast);
+      
+          setTimeout(() => toast.classList.add('show'), 10);
+          setTimeout(() => {
+              toast.classList.remove('show');
+              setTimeout(() => toast.remove(), 300);
+          }, 2000);
+      }
+
+      //回到顶部
+      // 在事件监听部分添加
+      emailCopy.addEventListener("click", function(e) {
+          e.stopPropagation();
+          copyEmailToClipboard();
+      });
+
+      // 在初始化函数后添加滚动检测
+      function handleScroll() {
+          const showHeight = 400; // 滚动超过400px显示按钮
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          
+          if (scrollY > showHeight) {
+              backToTopBtn.style.display = "flex"; // 保持与其他按钮相同的flex显示方式
+          } else {
+              backToTopBtn.style.display = "none";
+          }
+      }
+      
+      // 平滑滚动函数
+      function scrollToTop() {
+          window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+          });
+          
+    // 备选方案：兼容旧浏览器
+    if (typeof window.scrollY === "undefined") {
+        let currentPosition = document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentPosition > 0) {
+            window.requestAnimationFrame(scrollToTop);
+            window.scrollTo(0, currentPosition - currentPosition / 8);
+        }
+    }
 }
 
-// 显示提示通知
-function showNotification(message, isError = false) {
-    const toast = document.createElement('div');
-    toast.className = `notification-toast${isError ? ' error' : ''}`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    setTimeout(() => toast.classList.add('show'), 10);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 2000);
-}
-
-// 在事件监听部分添加
-emailCopy.addEventListener("click", function(e) {
+// 事件监听
+backToTopBtn.addEventListener("click", function(e) {
     e.stopPropagation();
-    copyEmailToClipboard();
+    scrollToTop();
 });
+
+// 初始化滚动检测
+window.addEventListener("scroll", throttle(handleScroll, 200));
+window.addEventListener("load", handleScroll); // 页面加载时检查位置
+
+// 工具函数 - 节流
+function throttle(func, wait) {
+    let timeout;
+    return function() {
+        if (!timeout) {
+            timeout = setTimeout(() => {
+                func.apply(this, arguments);
+                timeout = null;
+            }, wait);
+        }
+    };
+}
+
        
      // 公告功能
      announcementToggle.addEventListener("click", function(e) {
