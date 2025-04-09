@@ -179,11 +179,6 @@
   color: #ffffff;
 }
 
-/* .dark-mode .control-button {
-  background: var(--dark-control-bg);
-  color: #fff;
-}
- */
 .dark-mode .control-button:hover {
   background: var(--dark-control-bg-hover);
 }
