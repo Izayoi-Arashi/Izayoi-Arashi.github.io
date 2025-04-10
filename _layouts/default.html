@@ -115,69 +115,6 @@
             }
         });
     </script>
-    <style>
-         /* 音乐控制按钮的样式 */
-        #music-control button {
-            all: unset;
-            display: contents;
-        }
-        /* 公告弹窗的滚动条样式 */
-        #announcement-content {
-            max-height: 400px; /* 限制内容区域的最大高度 */
-            overflow-y: auto;  /* 启用垂直滚动条 */
-        }
-
-        #announcement-content::-webkit-scrollbar {
-            width: 8px;
-            transition: all 0.3s ease; /* 滚动条宽度变化过渡 */
-        }
-
-        #announcement-content::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 204, 255, 0.7); /* 荧光淡蓝色 */
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.8); /* 增加荧光效果 */
-            transition: all 0.3s ease; /* 滚动条滑块平滑过渡 */
-        }
-
-        #announcement-content::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(0, 204, 255, 1); /* 悬停时更加明亮 */
-            box-shadow: 0 0 15px rgba(0, 204, 255, 1); /* 增强荧光效果 */
-        }
-
-        #announcement-content::-webkit-scrollbar-track {
-            background: #444;
-            border-radius: 10px;
-        }
-
-        /* 滚动平滑效果 */
-        #announcement-content {
-            scroll-behavior: smooth; /* 平滑滚动 */
-        }
-
-        /* 加载动画样式 */
-        .loading-indicator {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #00ccff;
-        }
-
-        .loading-indicator .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #00ccff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
     <script src="{{ '/js/control-menu.js' | relative_url }}"></script>
     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
 </body> 
