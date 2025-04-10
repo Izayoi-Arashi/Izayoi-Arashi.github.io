@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 邮箱复制功能
     emailCopy.addEventListener("click", function (e) {
         e.stopPropagation();
-        navigator.clipboard.writeText("your-email@example.com")
+        navigator.clipboard.writeText("arashiizayoi@eqq.com")
             .then(() => showNotification("邮箱已复制"))
             .catch(() => showNotification("复制失败", true));
     });
