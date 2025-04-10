@@ -20,39 +20,29 @@
             </div>
         </div>
     </div>
-    <!-- Wave container -->
-    <div class="wave-container">
-        <!-- 第一层波浪 -->
-        <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
-            <defs>
-                <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
-                    <stop offset="0%" stop-color="#3a86ff" stop-opacity="0.6"/>
-                    <stop offset="100%" stop-color="#3a0ca3" stop-opacity="0.2"/>
-                </linearGradient>
-            </defs>
-            <path class="wave" id="wave1"/>
-        </svg>
-        <!-- 第二层波浪 -->
-        <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
-            <defs>
-                <linearGradient id="grad2" x1="0%" y1="50%" x2="100%" y2="50%">
-                    <stop offset="0%" stop-color="#007bff" stop-opacity="0.4"/>
-                    <stop offset="100%" stop-color="#1e3c72" stop-opacity="0.3"/>
-                </linearGradient>
-            </defs>
-            <path class="wave" id="wave2"/>
-        </svg>
-        <!-- 第三层波浪 -->
-        <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
-            <defs>
-                <linearGradient id="grad3" x1="0%" y1="50%" x2="100%" y2="50%">
-                    <stop offset="0%" stop-color="#5c6bc0" stop-opacity="0.2"/>
-                    <stop offset="100%" stop-color="#3f51b5" stop-opacity="0.1"/>
-                </linearGradient>
-            </defs>
-            <path class="wave" id="wave3"/>
-        </svg>
-    </div>
+     <!-- 波浪效果 -->
+  <div class="wave-container">
+    <svg viewBox="0 0 1000 150" preserveAspectRatio="none">
+      <defs>
+        <!-- 蓝色渐变 -->
+        <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stop-color="#1e90ff" stop-opacity="0.8" />
+          <stop offset="100%" stop-color="#00bfff" stop-opacity="0.6" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stop-color="#4682b4" stop-opacity="0.7" />
+          <stop offset="100%" stop-color="#5f9ea0" stop-opacity="0.5" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stop-color="#00ced1" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="#20b2aa" stop-opacity="0.3" />
+        </linearGradient>
+      </defs>
+      <path class="wave" id="wave1"/>
+      <path class="wave" id="wave2"/>
+      <path class="wave" id="wave3"/>
+    </svg>
+  </div>
 </footer>
 
 <!-- jQuery -->
@@ -389,7 +379,6 @@
     </script>
   
     <script>
-        // 波浪效果
 function createWavePath(amplitude, frequency, phase, waveWidth) {
   let path = `M 0 ${50 + amplitude}`;
   const points = [];
@@ -410,16 +399,16 @@ function createWavePath(amplitude, frequency, phase, waveWidth) {
     }
   }
 
-  path += `L ${waveWidth} 200 L 0 200 Z`;
+  path += `L ${waveWidth} 150 L 0 150 Z`;
   return path;
 }
 
 class WaveAnimator {
   constructor() {
     this.waves = [
-      { element: document.getElementById('wave1'), amplitude: 50, frequency: 0.02, speed: 0.03, gradient: 'url(#grad1)', phase: 0 },
-      { element: document.getElementById('wave2'), amplitude: 40, frequency: 0.03, speed: 0.05, gradient: 'url(#grad2)', phase: 0 },
-      { element: document.getElementById('wave3'), amplitude: 30, frequency: 0.04, speed: 0.07, gradient: 'url(#grad3)', phase: 0 }
+      { element: document.getElementById('wave1'), amplitude: 20, frequency: 0.02, speed: 0.03, gradient: 'url(#grad1)', phase: 0 },
+      { element: document.getElementById('wave2'), amplitude: 25, frequency: 0.015, speed: 0.05, gradient: 'url(#grad2)', phase: Math.PI / 2 },
+      { element: document.getElementById('wave3'), amplitude: 15, frequency: 0.025, speed: 0.04, gradient: 'url(#grad3)', phase: Math.PI }
     ];
 
     this.waveWidth = 1000;
@@ -436,12 +425,7 @@ class WaveAnimator {
   animate() {
     this.waves.forEach(wave => {
       wave.phase += wave.speed;
-      const path = createWavePath(
-        wave.amplitude,
-        wave.frequency,
-        wave.phase,
-        this.waveWidth
-      );
+      const path = createWavePath(wave.amplitude, wave.frequency, wave.phase, this.waveWidth);
       wave.element.setAttribute('d', path);
     });
 
@@ -451,58 +435,26 @@ class WaveAnimator {
 
 new WaveAnimator();
 
-
     </script>
     <style>
-footer {
-  position: relative;
-  padding: 50px 0 80px 0;
-  background-color: #1a1a1a;
-  color: #fff;
-  overflow: hidden;
-}
-
 .wave-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 150px; 
-  z-index: -1;
+  height: 150px; /* 波浪的高度，可以调整 */
+  background: transparent;
+  overflow: hidden;
 }
 
 svg {
   position: absolute;
   width: 100%;
   height: 100%;
-  left: 0;
-  bottom: 0;
+  bottom: 0; /* 确保波浪位于底部 */
 }
 
-footer .container {
-  position: relative;
-  z-index: 1;
+.wave {
+  transition: all 0.3s ease;
 }
 
-.copyright {
-  position: relative;
-  z-index: 1;
-}
-
-/* 蓝色渐变颜色 */
-<defs>
-    <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
-        <stop offset="0%" stop-color="#1e90ff" stop-opacity="0.8" />
-        <stop offset="100%" stop-color="#00bfff" stop-opacity="0.6" />
-    </linearGradient>
-    <linearGradient id="grad2" x1="0%" y1="50%" x2="100%" y2="50%">
-        <stop offset="0%" stop-color="#4682b4" stop-opacity="0.7" />
-        <stop offset="100%" stop-color="#5f9ea0" stop-opacity="0.5" />
-    </linearGradient>
-    <linearGradient id="grad3" x1="0%" y1="50%" x2="100%" y2="50%">
-        <stop offset="0%" stop-color="#00ced1" stop-opacity="0.6" />
-        <stop offset="100%" stop-color="#20b2aa" stop-opacity="0.3" />
-    </linearGradient>
-</defs>
 
     </style>
