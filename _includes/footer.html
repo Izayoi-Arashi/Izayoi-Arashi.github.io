@@ -1,24 +1,45 @@
 <!-- Footer -->
 <footer>
-  
+      <div class="wave-container">
+        <!-- 第一层波浪 -->
+        <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
+            <defs>
+                <!-- 蓝色渐变波浪 -->
+                <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#3a86ff" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#3a0ca3" stop-opacity="0.2"/>
+                </linearGradient>
+            </defs>
+            <path class="wave" id="wave1"/>
+        </svg>
+        <!-- 第二层波浪 -->
+        <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
+            <defs>
+                <!-- 另一种蓝色渐变 -->
+                <linearGradient id="grad2" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#007bff" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#1e3c72" stop-opacity="0.3"/>
+                </linearGradient>
+            </defs>
+            <path class="wave" id="wave2"/>
+        </svg>
+        <!-- 第三层波浪 -->
+        <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
+            <defs>
+                <!-- 透明度更低的波浪 -->
+                <linearGradient id="grad3" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#5c6bc0" stop-opacity="0.2"/>
+                    <stop offset="100%" stop-color="#3f51b5" stop-opacity="0.1"/>
+                </linearGradient>
+            </defs>
+            <path class="wave" id="wave3"/>
+        </svg>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <!-- SNS Link -->
-                {% include sns-links.html center=true %} 
-                <!-- 波浪效果 -->
-                <div class="wave-container">
-                    <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
-                        <defs>
-                            <!-- 蓝色渐变波浪 -->
-                            <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
-                                <stop offset="0%" stop-color="#3a86ff" stop-opacity="0.6"/>
-                                <stop offset="100%" stop-color="#3a0ca3" stop-opacity="0.2"/>
-                            </linearGradient>
-                        </defs>
-                        <path class="wave" id="wave1"/>
-                    </svg>
-                </div>
+                {% include sns-links.html center=true %}                
                 <p class="copyright text-muted">
                     Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}
                     <br>
@@ -370,7 +391,7 @@
   
     <script>
         // 波浪效果
-        function createWavePath(amplitude, frequency, phase, waveWidth) {
+ function createWavePath(amplitude, frequency, phase, waveWidth) {
   let path = `M 0 ${50 + amplitude}`;
   const points = [];
   
@@ -397,12 +418,9 @@
 class WaveAnimator {
   constructor() {
     this.waves = [
-      { element: document.getElementById('wave1'),
-        amplitude: 25, 
-        frequency: 0.02, 
-        speed: 0.03,
-        gradient: 'url(#grad1)',
-        phase: 0 }
+      { element: document.getElementById('wave1'), amplitude: 25, frequency: 0.02, speed: 0.03, gradient: 'url(#grad1)', phase: 0 },
+      { element: document.getElementById('wave2'), amplitude: 20, frequency: 0.03, speed: 0.05, gradient: 'url(#grad2)', phase: 0 },
+      { element: document.getElementById('wave3'), amplitude: 15, frequency: 0.04, speed: 0.07, gradient: 'url(#grad3)', phase: 0 }
     ];
 
     this.waveWidth = 1000;
@@ -436,13 +454,13 @@ new WaveAnimator();
 
     </script>
     <style>
-      .wave-container {
-  position: absolute; /* 定位到页脚位置 */
+  .wave-container {
+  position: relative; /* 确保波浪层叠 */
   width: 100%;
-  height: 100px; /* 波浪高度可以适当调整 */
-  bottom: 0; /* 让波浪位于页面底部 */
+  height: 100px; /* 调整波浪高度 */
+  bottom: 0; /* 波浪在底部 */
   left: 0;
-  z-index: -1; /* 确保波浪位于文字下方 */
+  z-index: -1; /* 确保波浪位于文本之下 */
   overflow: hidden;
 }
 
@@ -450,15 +468,24 @@ svg {
   position: absolute;
   width: 100%;
   height: 100%;
+  left: 0;
+  bottom: 0;
 }
 
 .wave {
   transition: all 0.3s ease;
 }
 
+footer {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 80px; /* 留出空间避免被波浪覆盖 */
+}
+
 .copyright {
-  position: relative; /* 确保文本位于波浪上面 */
+  position: relative;
   z-index: 1;
 }
+
 
     </style>
