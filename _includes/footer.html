@@ -378,7 +378,7 @@
     background: linear-gradient(to right, rgba(0, 176, 255, 0.6), rgba(0, 68, 204, 0.8));
     background-size: 50% 100%;
     background-repeat: no-repeat;
-    animation: wave1 6s ease-in-out infinite; /* 往上往下的动画 */
+    animation: wave1 6s ease-in-out infinite; /* 弯曲波浪动画 */
 }
 
 /* 第二层波浪（中等深浅） */
@@ -407,42 +407,60 @@
     animation: wave3 10s ease-in-out infinite;
 }
 
-/* 第一层波浪动画：上下起伏 */
+/* 第一层波浪动画：弯曲的上下波动 */
 @keyframes wave1 {
     0% {
-        transform: translateY(0); /* 初始位置 */
+        transform: translateY(0) skewX(0deg); /* 初始位置 */
+    }
+    25% {
+        transform: translateY(-15px) skewX(-10deg); /* 弯曲向上 */
     }
     50% {
-        transform: translateY(-20px); /* 向上移动 */
+        transform: translateY(0) skewX(0deg); /* 恢复 */
+    }
+    75% {
+        transform: translateY(15px) skewX(10deg); /* 弯曲向下 */
     }
     100% {
-        transform: translateY(0); /* 恢复到原位置 */
+        transform: translateY(0) skewX(0deg); /* 恢复 */
     }
 }
 
-/* 第二层波浪动画：上下起伏 */
+/* 第二层波浪动画：弯曲的上下波动 */
 @keyframes wave2 {
     0% {
-        transform: translateY(0);
+        transform: translateY(0) skewX(0deg);
+    }
+    25% {
+        transform: translateY(-10px) skewX(-8deg);
     }
     50% {
-        transform: translateY(-15px); /* 向上移动 */
+        transform: translateY(0) skewX(0deg);
+    }
+    75% {
+        transform: translateY(10px) skewX(8deg);
     }
     100% {
-        transform: translateY(0);
+        transform: translateY(0) skewX(0deg);
     }
 }
 
-/* 第三层波浪动画：上下起伏 */
+/* 第三层波浪动画：弯曲的上下波动 */
 @keyframes wave3 {
     0% {
-        transform: translateY(0);
+        transform: translateY(0) skewX(0deg);
+    }
+    25% {
+        transform: translateY(-5px) skewX(-5deg);
     }
     50% {
-        transform: translateY(-10px); /* 向上移动 */
+        transform: translateY(0) skewX(0deg);
+    }
+    75% {
+        transform: translateY(5px) skewX(5deg);
     }
     100% {
-        transform: translateY(0);
+        transform: translateY(0) skewX(0deg);
     }
 }
 
