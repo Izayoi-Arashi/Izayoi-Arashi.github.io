@@ -364,43 +364,43 @@
     position: relative;
     width: 100%;
     height: 150px;
-    background-color: #fff; /* 背景颜色，可以根据需要修改 */
+    background-color: #fff; /* 背景颜色 */
     overflow: hidden;
 }
 
-/* 第一层波浪（柔和的渐变） */
+/* 第一层波浪（浅灰色渐变） */
 .footer-wave::before {
     content: '';
     position: absolute;
     left: 0;
     bottom: 0;
     width: 200%;
-    height: 100px;  /* 高度可以根据需求调整 */
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8)); /* 柔和的渐变效果 */
+    height: 100px;
+    background: linear-gradient(to right, rgba(169, 169, 169, 0.6), rgba(192, 192, 192, 0.8)); /* 浅灰到中灰 */
     background-size: 50% 100%;
     animation: wave1 8s ease-in-out infinite; /* 平滑动画 */
 }
 
-/* 第二层波浪 */
+/* 第二层波浪（中灰色渐变） */
 .footer-wave .wave2 {
     position: absolute;
     left: 0;
     bottom: -40px;
     width: 200%;
     height: 80px;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6)); /* 稍微深一点的渐变 */
+    background: linear-gradient(to right, rgba(169, 169, 169, 0.4), rgba(192, 192, 192, 0.6)); /* 稍深一点的灰色 */
     background-size: 60% 100%;
     animation: wave2 10s ease-in-out infinite;
 }
 
-/* 第三层波浪 */
+/* 第三层波浪（深灰色渐变） */
 .footer-wave .wave3 {
     position: absolute;
     left: 0;
     bottom: -80px;
     width: 200%;
     height: 60px;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5)); /* 最深色的渐变 */
+    background: linear-gradient(to right, rgba(169, 169, 169, 0.3), rgba(192, 192, 192, 0.5)); /* 深灰色渐变 */
     background-size: 70% 100%;
     animation: wave3 12s ease-in-out infinite;
 }
@@ -443,5 +443,6 @@
         transform: translateY(0);
     }
 }
+
 
    </style>
