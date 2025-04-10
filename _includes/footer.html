@@ -24,6 +24,7 @@
   <div class="wave-container">
     <svg viewBox="0 0 1000 150" preserveAspectRatio="none">
       <defs>
+        <!-- 蓝色渐变 -->
         <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
           <stop offset="0%" stop-color="#1e90ff" stop-opacity="0.8" />
           <stop offset="100%" stop-color="#00bfff" stop-opacity="0.6" />
@@ -380,11 +381,11 @@
     <script>
      // 波浪效果
 function createWavePath(amplitude, frequency, phase, waveWidth) {
-  let path = `M 0 ${150 - amplitude}`; // Start the wave at the bottom
+  let path = `M 0 ${50 + amplitude}`;
   const points = [];
-
+  
   for (let x = 0; x <= waveWidth; x += 10) {
-    const y = amplitude * Math.sin(x * frequency + phase) + (150 - amplitude);
+    const y = amplitude * Math.sin(x * frequency + phase) + 50;
     const ry = y + (Math.random() * 2 - 1) * amplitude * 0.2;
     points.push({ x, y: ry });
   }
@@ -437,7 +438,7 @@ new WaveAnimator();
 
     </script>
     <style>
-.wave-container {
+     .wave-container {
   position: relative;
   width: 100%;
   height: 150px; /* 波浪的高度，可以调整 */
@@ -455,4 +456,5 @@ svg {
 .wave {
   transition: all 0.3s ease;
 }
+
     </style>
