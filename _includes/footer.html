@@ -390,7 +390,7 @@
   
     <script>
         // 波浪效果
- function createWavePath(amplitude, frequency, phase, waveWidth) {
+function createWavePath(amplitude, frequency, phase, waveWidth) {
   let path = `M 0 ${50 + amplitude}`;
   const points = [];
   
@@ -417,9 +417,9 @@
 class WaveAnimator {
   constructor() {
     this.waves = [
-      { element: document.getElementById('wave1'), amplitude: 25, frequency: 0.02, speed: 0.03, gradient: 'url(#grad1)', phase: 0 },
-      { element: document.getElementById('wave2'), amplitude: 20, frequency: 0.03, speed: 0.05, gradient: 'url(#grad2)', phase: 0 },
-      { element: document.getElementById('wave3'), amplitude: 15, frequency: 0.04, speed: 0.07, gradient: 'url(#grad3)', phase: 0 }
+      { element: document.getElementById('wave1'), amplitude: 50, frequency: 0.02, speed: 0.03, gradient: 'url(#grad1)', phase: 0 },
+      { element: document.getElementById('wave2'), amplitude: 40, frequency: 0.03, speed: 0.05, gradient: 'url(#grad2)', phase: 0 },
+      { element: document.getElementById('wave3'), amplitude: 30, frequency: 0.04, speed: 0.07, gradient: 'url(#grad3)', phase: 0 }
     ];
 
     this.waveWidth = 1000;
@@ -454,21 +454,21 @@ new WaveAnimator();
 
     </script>
     <style>
- footer {
+footer {
   position: relative;
-  padding: 50px 0 80px 0;  /* 上下留白 */
+  padding: 50px 0 80px 0;
   background-color: #1a1a1a;
   color: #fff;
-  overflow: hidden; /* 隐藏溢出内容 */
+  overflow: hidden;
 }
 
 .wave-container {
   position: absolute;
-  bottom: 0; /* 波浪位于底部 */
+  bottom: 0;
   left: 0;
-  width: 100%;  /* 波浪横向铺满 */
-  height: 150px; /* 波浪区域的高度 */
-  z-index: -1; /* 确保波浪位于背景层 */
+  width: 100%;
+  height: 150px; 
+  z-index: -1;
 }
 
 svg {
@@ -481,12 +481,28 @@ svg {
 
 footer .container {
   position: relative;
-  z-index: 1; /* 确保内容位于波浪之上 */
+  z-index: 1;
 }
 
 .copyright {
   position: relative;
-  z-index: 1;  /* 确保版权信息位于波浪之上 */
+  z-index: 1;
 }
+
+/* 蓝色渐变颜色 */
+<defs>
+    <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" stop-color="#1e90ff" stop-opacity="0.8" />
+        <stop offset="100%" stop-color="#00bfff" stop-opacity="0.6" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" stop-color="#4682b4" stop-opacity="0.7" />
+        <stop offset="100%" stop-color="#5f9ea0" stop-opacity="0.5" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" stop-color="#00ced1" stop-opacity="0.6" />
+        <stop offset="100%" stop-color="#20b2aa" stop-opacity="0.3" />
+    </linearGradient>
+</defs>
 
     </style>
