@@ -1,10 +1,6 @@
 <!-- Footer -->
 <footer>
-    <div class="footer-wave">
-        <div class="wave1"></div> <!-- 第一层波浪 -->
-        <div class="wave2"></div> <!-- 第二层波浪 -->
-        <div class="wave3"></div> <!-- 第三层波浪 -->
-    </div>
+  
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -358,91 +354,3 @@
         // 页面加载时立即更新一次
         updateUptime();
     </script>
-   <style>
-/* 波浪容器 */
-.footer-wave {
-    position: relative;
-    width: 100%;
-    height: 150px;
-    background-color: #fff; /* 背景颜色 */
-    overflow: hidden;
-}
-
-/* 第一层波浪（浅灰色渐变） */
-.footer-wave::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 200%;
-    height: 100px;
-    background: linear-gradient(to right, rgba(169, 169, 169, 0.6), rgba(192, 192, 192, 0.8)); /* 浅灰到中灰 */
-    background-size: 50% 100%;
-    animation: wave1 8s ease-in-out infinite; /* 平滑动画 */
-}
-
-/* 第二层波浪（中灰色渐变） */
-.footer-wave .wave2 {
-    position: absolute;
-    left: 0;
-    bottom: -40px;
-    width: 200%;
-    height: 80px;
-    background: linear-gradient(to right, rgba(169, 169, 169, 0.4), rgba(192, 192, 192, 0.6)); /* 稍深一点的灰色 */
-    background-size: 60% 100%;
-    animation: wave2 10s ease-in-out infinite;
-}
-
-/* 第三层波浪（深灰色渐变） */
-.footer-wave .wave3 {
-    position: absolute;
-    left: 0;
-    bottom: -80px;
-    width: 200%;
-    height: 60px;
-    background: linear-gradient(to right, rgba(169, 169, 169, 0.3), rgba(192, 192, 192, 0.5)); /* 深灰色渐变 */
-    background-size: 70% 100%;
-    animation: wave3 12s ease-in-out infinite;
-}
-
-/* 第一层波浪动画：平滑的上下起伏 */
-@keyframes wave1 {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-/* 第二层波浪动画 */
-@keyframes wave2 {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-15px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-/* 第三层波浪动画 */
-@keyframes wave3 {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-
-   </style>
