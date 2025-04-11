@@ -83,27 +83,51 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 邮箱复制功能
-    emailCopy.addEventListener("click", function (e) {
-        e.stopPropagation();
-        navigator.clipboard.writeText("arashiizayoi@eqq.com")
+    // 邮箱复制功能优化
+emailCopy.addEventListener("click", function (e) {
+    e.stopPropagation();
+    
+    // 尝试使用mailto打开邮件客户端
+    const emailAddress = "arashiizayoi@eqq.com";
+    const mailtoLink = `mailto:${emailAddress}`;
+
+    // 创建一个隐藏的 <a> 标签并触发点击事件
+    const mailtoLinkElement = document.createElement('a');
+    mailtoLinkElement.href = mailtoLink;
+    mailtoLinkElement.style.display = 'none';
+    document.body.appendChild(mailtoLinkElement);
+
+    // 监听邮件客户端是否成功打开
+    const openEmailClient = setTimeout(() => {
+        // 如果在短时间内邮件客户端没有打开，尝试复制邮箱地址
+        navigator.clipboard.writeText(emailAddress)
             .then(() => showNotification("邮箱已复制"))
             .catch(() => showNotification("复制失败", true));
-    });
+    }, 2000);
 
-    // 显示提示通知
-    function showNotification(message, isError = false) {
-        const toast = document.createElement('div');
-        toast.className = `notification-toast${isError ? ' error' : ''}`;
-        toast.textContent = message;
-        document.body.appendChild(toast);
+    // 尝试打开邮件客户端
+    mailtoLinkElement.click();
 
-        setTimeout(() => toast.classList.add('show'), 10);
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 2000);
-    }
+    // 如果邮件客户端成功打开，清除超时定时器
+    clearTimeout(openEmailClient);
+
+    // 移除临时创建的 <a> 标签
+    document.body.removeChild(mailtoLinkElement);
+});
+
+// 显示提示通知
+function showNotification(message, isError = false) {
+    const toast = document.createElement('div');
+    toast.className = `notification-toast${isError ? ' error' : ''}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
 
     // 花瓣效果
     petalsToggle.addEventListener("click", function (e) {
