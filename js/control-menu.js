@@ -84,7 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 手动切换深色模式
-    darkModeToggle.addEventListener("click", function () {
+    darkModeToggle.addEventListener("click", function (e) {
+        e.stopPropagation(); // 防止事件冒泡
         darkMode = darkMode === "true" ? "false" : "true";
         applyDarkMode(darkMode === "true");
     });
