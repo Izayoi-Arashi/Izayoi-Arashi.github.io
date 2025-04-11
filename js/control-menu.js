@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 初始化函数
     function init() {
+        // 如果是首次访问，默认启用花瓣效果
+        if (localStorage.getItem("first-visit") === null) {
+            petalsEnabled = true;
+            localStorage.setItem("first-visit", "true");
+        }
+
         updateMenuState();
         applyDarkMode(darkMode === "true");
         initMusicPlayer();
@@ -117,13 +123,17 @@ document.addEventListener("DOMContentLoaded", function () {
             const petal = document.createElement('div');
             petal.className = 'petal';
             petal.style.cssText = `
-                animation-duration: ${Math.random() * 5 + 4}s;
+                animation-duration: ${Math.random() * 6 + 4}s;
                 animation-delay: ${Math.random() * 5}s;
                 left: ${Math.random() * 100}vw;
+                top: -10px;
                 ${document.body.classList.contains('dark-mode') ? 
                     'background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' : 
-                    'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'}
+                    'background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)'};
+                transform: rotate(${Math.random() * 360}deg);
+                animation-name: fall, sway;
             `;
+
             container.appendChild(petal);
         }
     }
@@ -132,6 +142,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const existing = document.querySelector('.falling-petals');
         if (existing) existing.remove();
     }
+
+    // 添加动画效果
+    const styles = document.createElement('style');
+    styles.innerHTML = `
+        @keyframes fall {
+            0% { top: -10px; }
+            100% { top: 100vh; }
+        }
+        @keyframes sway {
+            0% { transform: rotate(0deg) translateX(0); }
+            50% { transform: rotate(10deg) translateX(30px); }
+            100% { transform: rotate(-10deg) translateX(-30px); }
+        }
+    `;
+    document.head.appendChild(styles);
 
     // 响应式调整
     function handleResize() {
