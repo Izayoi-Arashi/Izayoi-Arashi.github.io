@@ -72,53 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 应用深色模式
-    function applyDarkMode(state) {
+ function applyDarkMode(state) {
+        const modeIcon = darkModeToggle.querySelector("i");
         document.body.classList.toggle("dark-mode", state);
-        localStorage.setItem("dark-mode", state);
-        updateButtonIcon(state);
-    }
-
-    // 更新按钮图标
-    function updateButtonIcon(state) {
         modeIcon.className = state ? "fas fa-sun" : "fas fa-moon";
+        localStorage.setItem("dark-mode", state);
     }
 
-    // 手动切换深色模式
     darkModeToggle.addEventListener("click", function (e) {
-        e.stopPropagation(); // 防止事件冒泡
+        e.stopPropagation();
         darkMode = darkMode === "true" ? "false" : "true";
         applyDarkMode(darkMode === "true");
     });
-
-    // 初始化时检查并应用深色模式
-    if (darkMode === null) {
-        autoSwitchDarkMode();  // 如果没有手动设置，按照时间自动切换
-    } else {
-        applyDarkMode(darkMode === "true");
-    }
-});
-
-
-    // 音乐控制
-    function initMusicPlayer() {
-        const playIcon = playPauseBtn.querySelector("i");
-        musicPlayer.play().then(() => {
-            playIcon.className = "fas fa-pause";
-        }).catch(() => {
-            playIcon.className = "fas fa-play";
-        });
-
-        playPauseBtn.addEventListener("click", function () {
-            if (musicPlayer.paused) {
-                musicPlayer.play();
-                playIcon.className = "fas fa-pause";
-            } else {
-                musicPlayer.pause();
-                playIcon.className = "fas fa-play";
-            }
-        });
-    }
-
+       
     // 邮箱复制功能优化
 emailCopy.addEventListener("click", function (e) {
     e.stopPropagation();
