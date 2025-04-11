@@ -148,7 +148,7 @@ function showNotification(message, isError = false) {
         petal.className = 'petal';
         
         // 设置花瓣的大小、动画时间、延迟等
-        const size = Math.random() * 15 + 10;  // 设置花瓣的大小在10px到25px之间
+        const size = Math.random() * 15 + 5;  // 设置花瓣的大小在10px到20px之间
         const duration = Math.random() * 6 + 4; // 设置飘落时间在4秒到10秒之间
         const delay = Math.random() * 5;  // 设置随机延迟
         const rotation = Math.random() * 360;  // 随机旋转角度
