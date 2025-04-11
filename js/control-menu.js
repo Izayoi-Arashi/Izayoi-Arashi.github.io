@@ -50,29 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 深色模式
-   document.addEventListener("DOMContentLoaded", function () {
-    const darkModeToggle = document.getElementById("dark-mode-toggle");
-    const modeIcon = darkModeToggle.querySelector("i");
-
-    let darkMode = localStorage.getItem("dark-mode");
-
-    // 根据时间自动切换深色模式
-    function autoSwitchDarkMode() {
-        const hours = new Date().getHours();
-        // 假设晚上7点到早上7点为深色模式
-        if (hours >= 19 || hours < 7) {
-            if (darkMode !== "true") {
-                applyDarkMode(true);
-            }
-        } else {
-            if (darkMode !== "false") {
-                applyDarkMode(false);
-            }
-        }
-    }
-
-    // 应用深色模式
- function applyDarkMode(state) {
+  function applyDarkMode(state) {
         const modeIcon = darkModeToggle.querySelector("i");
         document.body.classList.toggle("dark-mode", state);
         modeIcon.className = state ? "fas fa-sun" : "fas fa-moon";
