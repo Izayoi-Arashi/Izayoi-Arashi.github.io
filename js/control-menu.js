@@ -50,18 +50,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 深色模式
-    function applyDarkMode(state) {
-        const modeIcon = darkModeToggle.querySelector("i");
-        document.body.classList.toggle("dark-mode", state);
-        modeIcon.className = state ? "fas fa-sun" : "fas fa-moon";
-        localStorage.setItem("dark-mode", state);
+   document.addEventListener("DOMContentLoaded", function () {
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const modeIcon = darkModeToggle.querySelector("i");
+
+    let darkMode = localStorage.getItem("dark-mode");
+
+    // 根据时间自动切换深色模式
+    function autoSwitchDarkMode() {
+        const hours = new Date().getHours();
+        // 假设晚上7点到早上7点为深色模式
+        if (hours >= 19 || hours < 7) {
+            if (darkMode !== "true") {
+                applyDarkMode(true);
+            }
+        } else {
+            if (darkMode !== "false") {
+                applyDarkMode(false);
+            }
+        }
     }
 
-    darkModeToggle.addEventListener("click", function (e) {
-        e.stopPropagation();
+    // 应用深色模式
+    function applyDarkMode(state) {
+        document.body.classList.toggle("dark-mode", state);
+        localStorage.setItem("dark-mode", state);
+        updateButtonIcon(state);
+    }
+
+    // 更新按钮图标
+    function updateButtonIcon(state) {
+        modeIcon.className = state ? "fas fa-sun" : "fas fa-moon";
+    }
+
+    // 手动切换深色模式
+    darkModeToggle.addEventListener("click", function () {
         darkMode = darkMode === "true" ? "false" : "true";
         applyDarkMode(darkMode === "true");
     });
+
+    // 初始化时检查并应用深色模式
+    if (darkMode === null) {
+        autoSwitchDarkMode();  // 如果没有手动设置，按照时间自动切换
+    } else {
+        applyDarkMode(darkMode === "true");
+    }
+});
+
 
     // 音乐控制
     function initMusicPlayer() {
