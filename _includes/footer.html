@@ -435,9 +435,14 @@ class WaveAnimator {
   }
 }
 
-if (!window.location.pathname.includes("/404/")) {
+// 获取当前页面的路径
+const path = window.location.pathname;
+
+// 仅在 /，/about，/archive 页面加载波浪效果
+if (path === "/" || path === "/about" || path === "/archive") {
     new WaveAnimator();
 }
+
 
     </script>
     <style>
