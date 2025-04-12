@@ -8,12 +8,14 @@ document.addEventListener("DOMContentLoaded", function () {
      const musicPlayer = document.getElementById("music-player");
      const petalsToggle = document.getElementById("petals-toggle");
      const emailCopy = document.getElementById("email-copy");
- 
+
+     const menuIcon = menuToggle.querySelector("i");
      // 状态变量
-     let isMenuOpen = localStorage.getItem("menu-open") === "true";
+     // let isMenuOpen = localStorage.getItem("menu-open") === "true";
      let darkMode = localStorage.getItem("dark-mode");
      let petalsEnabled = localStorage.getItem("petals-enabled") === "true";
- 
+
+     let isMenuOpen = JSON.parse(localStorage.getItem("menu-open")) || false;
      // 初始化函数
      function init() {
          // 如果是首次访问，默认启用花瓣效果
@@ -29,25 +31,28 @@ document.addEventListener("DOMContentLoaded", function () {
      }
  
      // 菜单控制
-     function updateMenuState() {
-         const menuIcon = menuToggle.querySelector("i");
-         if (isMenuOpen) {
-             menuContent.style.opacity = "1";
-             menuContent.style.visibility = "visible";
-             menuIcon.className = "fas fa-times";
-         } else {
-             menuContent.style.opacity = "0";
-             menuContent.style.visibility = "hidden";
-             menuIcon.className = "fas fa-bars";
-         }
-     }
- 
-     menuToggle.addEventListener("click", function (e) {
-         e.stopPropagation();
-         isMenuOpen = !isMenuOpen;
-         localStorage.setItem("menu-open", isMenuOpen);
-         updateMenuState();
-     });
+    function updateMenuState() {
+    // 设置菜单的显示状态
+    if (isMenuOpen) {
+        menuContent.style.opacity = "1";
+        menuContent.style.visibility = "visible";
+        menuIcon.className = "fas fa-times";  // 显示关闭图标
+        menuToggle.style.backgroundColor = '';  // 恢复按钮背景颜色
+    } else {
+        menuContent.style.opacity = "0";
+        menuContent.style.visibility = "hidden";
+        menuIcon.className = "fas fa-bars";  // 显示打开图标
+        menuToggle.style.backgroundColor = 'transparent';  // 隐藏按钮背景（设置为透明）
+    }
+}
+
+// 菜单切换按钮点击事件
+menuToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+    isMenuOpen = !isMenuOpen;
+    localStorage.setItem("menu-open", isMenuOpen);  // 保持状态
+    updateMenuState();  // 更新菜单和按钮的状态
+});
  
      // 深色模式
      function applyDarkMode(state) {
