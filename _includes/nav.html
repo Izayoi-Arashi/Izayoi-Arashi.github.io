@@ -1,18 +1,13 @@
-<html lang="en">
-{% include head.html %}
-
-<body ontouchstart="">
-    <!-- 加载过渡页面 -->
-    <div id="loadingScreen">
-        <div class="spinner"></div>
-        <p>正在加载...</p>
-    </div>
-
-    <!-- 更新后的导航栏 -->
+<!-- Navigation -->
+{% if page.nav-style == "invert" or page.header-style == "text" %}
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+    {% else %}
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        {% endif %}
         <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" aria-label="Toggle navigation">
+                <button type="button" class="navbar-toggle">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -21,136 +16,83 @@
                 <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
             </div>
 
+            <!-- Collect the nav links, forms, and other content for toggling -->
             <div id="huxblog_navbar">
                 <div class="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ site.baseurl }}/">Home</a></li>
+                        <li>
+                            <a href="{{ site.baseurl }}/">Home</a>
+                        </li>
                         {% for page in site.pages %}
-                            {% if page.title and page.hide-in-nav != true %}
-                                <li><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></li>
-                            {% endif %}
+                        {% if page.title and page.hide-in-nav != true %}
+                        <li>
+                            <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+                        </li>
+                        {% endif %}
                         {% endfor %}
                         <li class="search-icon">
                             <a href="javascript:void(0)">
                                 <i class="fa fa-search"></i>
                             </a>
                         </li>
-                        <!-- 集成菜单按钮 -->
-                        <li>
-                            <button id="menu-toggle" class="control-button" aria-label="主菜单">
-                                <i class="fas fa-bars"></i>
-                            </button>
-                        </li>
+<!--       额外                   -->
                     </ul>
                 </div>
             </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container -->
     </nav>
 
-    <!-- 控制菜单 -->
-    <div id="control-menu">
-        <button id="menu-toggle" class="control-button" aria-label="主菜单">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div id="menu-content">
-            <div id="email-copy" title="邮箱" class="control-button">
-                <i class="far fa-envelope"></i>
-            </div>
-            <div id="announcement-toggle" title="公告通知" class="control-button">
-                <i class="fas fa-bullhorn"></i>
-            </div>
-            <div id="dark-mode-toggle" title="深色模式" class="control-button">
-                <i class="fas fa-moon"></i>
-            </div>
-            <div id="music-control" title="音乐播放" class="control-button">
-                <button id="play-pause-btn">
-                    <i class="fas fa-play"></i>
-                </button>
-                <audio id="music-player">
-                    <source src="{{ '/music/song.mp3' | relative_url }}" type="audio/mp3">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            <div id="petals-toggle" title="花瓣效果" class="control-button">
-                <i class="fas fa-leaf"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- 公告弹窗 -->
-    <div id="announcement-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="loading-indicator" class="loading-indicator">
-                <div class="spinner"></div>
-                <p>正在加载公告...</p>
-            </div>
-            <div id="announcement-content" style="display: none;"></div>
-        </div>
-    </div>
-
-    {{ content }}
-    {% include footer.html %}
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // 公告功能
-        const announcementToggle = document.getElementById("announcement-toggle");
-        const announcementModal = document.getElementById("announcement-modal");
-        const closeModal = document.querySelector(".close-modal");
-        const announcementContent = document.getElementById("announcement-content");
-        const loadingIndicator = document.getElementById("loading-indicator");
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
 
-        announcementToggle.addEventListener("click", loadAnnouncement);
-
-        function loadAnnouncement() {
-            loadingIndicator.style.display = "block";
-            announcementContent.style.display = "none";
-            const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-            fetch(announcementUrl)
-                .then(response => response.text())
-                .then(text => {
-                    const content = text.replace(/^---[\s\S]*?---/, '').trim();
-                    if (content) {
-                        announcementContent.innerHTML = marked.parse(content);
-                    } else {
-                        announcementContent.innerHTML = '<p class="no-content">暂无公告</p>';
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
                     }
-                    loadingIndicator.style.display = "none";
-                    announcementContent.style.display = "block";
-                    announcementModal.style.display = "block";
-                    document.body.style.overflow = "hidden";
-                })
-                .catch(error => {
-                    announcementContent.innerHTML = `<p class="error">加载失败：${error.message}</p>`;
-                    loadingIndicator.style.display = "none";
-                    announcementContent.style.display = "block";
-                    announcementModal.style.display = "block";
-                    document.body.style.overflow = "hidden";
-                });
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
         }
 
-        closeModal.addEventListener("click", function() {
-            announcementModal.style.display = "none";
-            document.body.style.overflow = "auto";
-        });
-
-        window.addEventListener("click", function(event) {
-            if (event.target === announcementModal) {
-                announcementModal.style.display = "none";
-                document.body.style.overflow = "auto";
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
             }
-        });
+        })
 
-        // 控制菜单逻辑
-        const menuToggle = document.getElementById("menu-toggle");
-        const menuContent = document.getElementById("menu-content");
-
-        menuToggle.addEventListener("click", function() {
-            menuContent.classList.toggle("active");
-        });
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
     </script>
-    <script src="{{ '/js/control-menu.js' | relative_url }}"></script>
-    <link rel="stylesheet" href="{{ '/css/control-menu.min.css' | relative_url }}">
-</body>
-</html>
