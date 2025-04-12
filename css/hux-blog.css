@@ -1694,25 +1694,4 @@ img::-moz-selection {
 .no-scroll {
   overflow-y: hidden;
 }
-/* 自定义滚动条样式 */
-        /* 滚动条整体宽度 */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
 
-        /* 滚动条轨道样式 */
-        ::-webkit-scrollbar-track {
-            background: #e0e0e0;
-            border-radius: 10px;
-        }
-
-        /* 滚动条滑块样式 */
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-
-        /* 滑块悬浮时的样式 */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
