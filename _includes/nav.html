@@ -13,8 +13,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
-                <span id="latency-info" class="latency-info" style="margin-left: 15px;"></span> <!-- 网络延迟 -->
+                <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>                
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -96,26 +95,4 @@
             if (e.target.className == 'icon-bar') return;
             __HuxNav__.close();
         })
-
-
-        // 测量网络延迟的函数
-function measureLatency() {
-  const startTime = Date.now();
-
-  // 发起一个简单的请求（可以使用你网站的 URL）
-  const img = new Image();
-  img.onload = function() {
-    const endTime = Date.now();
-    const latency = endTime - startTime;
-    document.getElementById('latency-info').innerText = `延迟：${latency}ms`;
-  };
-  img.src = '{{ site.baseurl }}/favicon.ico?' + startTime; // 使用一个图片请求，防止缓存
-}
-
-// 页面加载时测量网络延迟，并每隔5秒更新一次
-window.onload = function() {
-  measureLatency();
-  setInterval(measureLatency, 5000); // 每5秒更新一次网络延迟
-};
-
     </script>
