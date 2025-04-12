@@ -26,28 +26,3 @@
   }
 }
 
-/* 自定义滚动条样式 */
-/* 滚动条整体宽度 */
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-/* 滚动条轨道样式 */
-::-webkit-scrollbar-track {
-    background: #f0f8ff;  /* 淡蓝色背景 */
-    border-radius: 10px;
-}
-
-/* 滚动条滑块样式 */
-::-webkit-scrollbar-thumb {
-    background: #89CFF0;  /* 淡蓝色 */
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(137, 207, 240, 0.8);  /* 荧光效果 */
-}
-
-/* 滑块悬浮时的样式 */
-::-webkit-scrollbar-thumb:hover {
-    background: #66a3cc;  /* 更深的蓝色 */
-    box-shadow: 0 0 15px rgba(102, 163, 204, 1);  /* 更强的荧光效果 */
-}
-
