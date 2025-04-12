@@ -32,36 +32,42 @@
   align-items: flex-end;
   gap: var(--menu-gap);
   pointer-events: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* 统一按钮样式 */
 .control-button {
   width: var(--control-size);
   height: var(--control-size);
-  background: var(--control-bg);
+  background: linear-gradient(135deg, #5c6bc0, #3f51b5);
   color: white;
   border: none;
   border-radius: var(--control-radius);
   font-size: var(--control-icon-size);
   cursor: pointer;
-  transition: var(--control-transition);
+  transition: all 0.3s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--control-shadow);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   pointer-events: auto;
   margin: 0;
 }
 
-/* ===== 深色模式 ===== */
-.dark-mode {
-  background-color: #121212;
-  color: #ffffff;
+
+/* 深色模式 */
+.dark-mode #control-menu {
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .dark-mode .control-button {
-  background: var(--dark-control-bg);
-  color: #fff;
+  background: linear-gradient(135deg, #3949ab, #3f51b5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 
@@ -78,8 +84,7 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-3px);  
-/*   修改 */
-  transition: var(--control-transition);
+  transition: transform 0.4s ease-out, opacity 0.3s ease-in-out;
   pointer-events: auto;
 }
 
@@ -346,13 +351,22 @@
             display: contents;
         }
 
-/* ===== 响应式设计 ===== */
+/* 响应式设计 */
 @media (max-width: 768px) {
-  :root {
-    --control-size: 44px;
-    --control-icon-size: 22px;
-    --menu-gap: 12px;
+  .control-button {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
   }
+}
+
+@media (max-width: 480px) {
+  .control-button {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
   
   #control-menu {
     right: 15px;
