@@ -1,119 +1,121 @@
 <html lang="en">
-{% include head.html %}
-
-<body ontouchstart="">
-    <!-- 加载过渡页面 -->
-    <div id="loadingScreen">
-        <div class="spinner"></div>
-        <p>正在加载...</p>
-    </div>
-
-    {% include nav.html %}
-    {% include search.html %}
-
-    <!-- 控制菜单 -->
-    <div id="control-menu">
-        <button id="menu-toggle" class="control-button" aria-label="主菜单">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div id="menu-content">
-            <div id="email-copy" title="邮箱" class="control-button">
-                <i class="far fa-envelope"></i>
-            </div>
-            <div id="announcement-toggle" title="公告通知" class="control-button">
-                <i class="fas fa-bullhorn"></i>
-            </div>
-            <div id="dark-mode-toggle" title="深色模式" class="control-button">
-                <i class="fas fa-moon"></i>
-            </div>
-            <div id="music-control" title="音乐播放" class="control-button">
-                <button id="play-pause-btn">
-                    <i class="fas fa-play"></i>
-                </button>
-                <audio id="music-player">
-                    <source src="{{ '/music/song.mp3' | relative_url }}" type="audio/mp3">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            <div id="petals-toggle" title="花瓣效果" class="control-button">
-                <i class="fas fa-leaf"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- 公告弹窗 -->
-    <div id="announcement-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <!-- 加载动画 -->
-            <div id="loading-indicator" class="loading-indicator">
-                <div class="spinner"></div>
-                <p>正在加载公告...</p>
-            </div>
-            <!-- 公告内容区域 -->
-            <div id="announcement-content" style="display: none;"></div>
-        </div>
-    </div>
-
-    {{ content }}
-    {% include footer.html %}
-    <style>
-      const announcementToggle = document.getElementById("announcement-toggle");
-      const announcementModal = document.getElementById("announcement-modal");
-      const closeModal = document.querySelector(".close-modal");
-      const announcementContent = document.getElementById("announcement-content");
-      const loadingIndicator = document.getElementById("loading-indicator");
-        
-        // 公告功能
-        announcementToggle.addEventListener("click", loadAnnouncement);
-
-        function loadAnnouncement() {
-            // 显示加载动画
-            loadingIndicator.style.display = "block";
-            announcementContent.style.display = "none"; // 隐藏公告内容区域
-
-            const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-            fetch(announcementUrl)
-                .then(response => response.text())
-                .then(text => {
-                    const content = text.replace(/^---[\s\S]*?---/, '').trim();
-                    if (content) {
-                        announcementContent.innerHTML = marked.parse(content);
-                    } else {
-                        announcementContent.innerHTML = '<p class="no-content">暂无公告</p>';
-                    }
-                    // 隐藏加载动画，显示内容
-                    loadingIndicator.style.display = "none";
-                    announcementContent.style.display = "block";
-                    announcementModal.style.display = "block";
-                    document.body.style.overflow = "hidden";
-                })
-                .catch(error => {
-                    announcementContent.innerHTML = `<p class="error">加载失败：${error.message}</p>`;
-                    // 隐藏加载动画，显示内容（加载失败时也显示公告弹窗）
-                    loadingIndicator.style.display = "none";
-                    announcementContent.style.display = "block";
-                    announcementModal.style.display = "block";
-                    document.body.style.overflow = "hidden";
-                });
-        }
-
-        closeModal.addEventListener("click", function() {
-            announcementModal.style.display = "none";
-            document.body.style.overflow = "auto";
-        });
-
-        window.addEventListener("click", function(event) {
-            if (event.target === announcementModal) {
-                announcementModal.style.display = "none";
-                document.body.style.overflow = "auto";
-            }
-        });
-    </style>
-    <!-- 依赖项 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ '/js/control-menu.js' | relative_url }}"></script>
-    <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
-</body> 
-</html>
+ {% include head.html %}
+ 
+ <body ontouchstart="">
+     <!-- 加载过渡页面 -->
+     <div id="loadingScreen">
+         <div class="spinner"></div>
+         <p>正在加载...</p>
+     </div>
+ 
+     {% include nav.html %}
+     {% include search.html %}
+ 
+     <!-- 控制菜单 -->
+     <div id="control-menu">
+         <button id="menu-toggle" class="control-button" aria-label="主菜单">
+             <i class="fas fa-bars"></i>
+         </button>
+         <div id="menu-content">
+             <div id="email-copy" title="邮箱" class="control-button">
+                 <i class="far fa-envelope"></i>
+             </div>
+             <div id="announcement-toggle" title="公告通知" class="control-button">
+                 <i class="fas fa-bullhorn"></i>
+             </div>
+             <div id="dark-mode-toggle" title="深色模式" class="control-button">
+                 <i class="fas fa-moon"></i>
+             </div>
+             <div id="music-control" title="音乐播放" class="control-button">
+                 <button id="play-pause-btn">
+                     <i class="fas fa-play"></i>
+                 </button>
+                 <audio id="music-player">
+                     <source src="{{ '/music/song.mp3' | relative_url }}" type="audio/mp3">
+                     Your browser does not support the audio element.
+                 </audio>
+             </div>
+             <div id="petals-toggle" title="花瓣效果" class="control-button">
+                 <i class="fas fa-leaf"></i>
+             </div>
+         </div>
+     </div>
+ 
+     <!-- 公告弹窗 -->
+     <div id="announcement-modal" class="modal">
+         <div class="modal-content">
+             <span class="close-modal">&times;</span>
+             <!-- 加载动画 -->
+             <div id="loading-indicator" class="loading-indicator">
+                 <div class="spinner"></div>
+                 <p>正在加载公告...</p>
+             </div>
+             <!-- 公告内容区域 -->
+             <div id="announcement-content" style="display: none;"></div>
+         </div>
+     </div>
+ 
+     {{ content }}
+     {% include footer.html %}
+ 
+     <!-- 依赖项 -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+ 
+     <script>
+         const announcementToggle = document.getElementById("announcement-toggle");
+         const announcementModal = document.getElementById("announcement-modal");
+         const closeModal = document.querySelector(".close-modal");
+         const announcementContent = document.getElementById("announcement-content");
+         const loadingIndicator = document.getElementById("loading-indicator");
+ 
+         // 公告功能
+         announcementToggle.addEventListener("click", loadAnnouncement);
+ 
+         function loadAnnouncement() {
+             // 显示加载动画
+             loadingIndicator.style.display = "block";
+             announcementContent.style.display = "none"; // 隐藏公告内容区域
+ 
+             const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
+             fetch(announcementUrl)
+                 .then(response => response.text())
+                 .then(text => {
+                     const content = text.replace(/^---[\s\S]*?---/, '').trim();
+                     if (content) {
+                         announcementContent.innerHTML = marked.parse(content);
+                     } else {
+                         announcementContent.innerHTML = '<p class="no-content">暂无公告</p>';
+                     }
+                     // 隐藏加载动画，显示内容
+                     loadingIndicator.style.display = "none";
+                     announcementContent.style.display = "block";
+                     announcementModal.style.display = "block";
+                     document.body.style.overflow = "hidden";
+                 })
+                 .catch(error => {
+                     announcementContent.innerHTML = `<p class="error">加载失败：${error.message}</p>`;
+                     // 隐藏加载动画，显示内容（加载失败时也显示公告弹窗）
+                     loadingIndicator.style.display = "none";
+                     announcementContent.style.display = "block";
+                     announcementModal.style.display = "block";
+                     document.body.style.overflow = "hidden";
+                 });
+         }
+ 
+         closeModal.addEventListener("click", function() {
+             announcementModal.style.display = "none";
+             document.body.style.overflow = "auto";
+         });
+ 
+         window.addEventListener("click", function(event) {
+             if (event.target === announcementModal) {
+                 announcementModal.style.display = "none";
+                 document.body.style.overflow = "auto";
+             }
+         });
+     </script>
+     <script src="{{ '/js/control-menu.js' | relative_url }}"></script>
+     <link rel="stylesheet" href="{{ '/css/control-menu.css' | relative_url }}">
+ </body> 
+ </html>
