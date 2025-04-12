@@ -58,6 +58,12 @@
     {{ content }}
     {% include footer.html %}
     <style>
+      const announcementToggle = document.getElementById("announcement-toggle");
+      const announcementModal = document.getElementById("announcement-modal");
+      const closeModal = document.querySelector(".close-modal");
+      const announcementContent = document.getElementById("announcement-content");
+      const loadingIndicator = document.getElementById("loading-indicator");
+        
         // 公告功能
         announcementToggle.addEventListener("click", loadAnnouncement);
 
