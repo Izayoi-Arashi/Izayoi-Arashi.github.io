@@ -16,7 +16,7 @@
   --menu-gap: 15px;
   
   /* 样式变量 */
-  --control-radius: 12px; /* 圆角方形按钮 */
+  --control-radius: 50%;
   --control-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   --control-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -32,44 +32,42 @@
   align-items: flex-end;
   gap: var(--menu-gap);
   pointer-events: none;
-  background: rgba(255, 255, 255, 0.1); /* 保持半透明背景 */
-  border-radius: 10px;
-  backdrop-filter: blur(10px); /* 玻璃效果 */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 微软风格的阴影 */
-  opacity: 1; /* 确保菜单默认是可见的 */
-  visibility: visible; /* 默认可见 */
-  transition: opacity 0.3s ease, visibility 0.3s ease; /* 平滑的收起/展开动画 */
-}
-
-/* 隐藏菜单 */
-#control-menu.hidden {
-  opacity: 0;
-  visibility: hidden;
 }
 
 /* 统一按钮样式 */
 .control-button {
   width: var(--control-size);
   height: var(--control-size);
-  background: linear-gradient(135deg, #5c6bc0, #3f51b5);
+  background: var(--control-bg);
   color: white;
   border: none;
-  border-radius: var(--control-radius); /* 方形圆角 */
+  border-radius: var(--control-radius);
   font-size: var(--control-icon-size);
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: var(--control-transition);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--control-shadow);
   pointer-events: auto;
   margin: 0;
 }
 
-/* 按钮悬停效果 */
+/* ===== 深色模式 ===== */
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .control-button {
+  background: var(--dark-control-bg);
+  color: #fff;
+}
+
+
 .control-button:hover {
-  background: linear-gradient(135deg, #3f51b5, #5c6bc0);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background: var(--control-bg-hover);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* 菜单内容区域 */
@@ -80,32 +78,168 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-3px);  
-  transition: transform 0.4s ease-out, opacity 0.3s ease-in-out; /* 平滑的展开收起动画 */
+/*   修改 */
+  transition: var(--control-transition);
   pointer-events: auto;
 }
 
-/* 菜单展开时 */
 #control-menu.expanded #menu-content {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* 深色模式 */
-.dark-mode #control-menu {
-  background: rgba(30, 30, 30, 0.6);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+/* 弹窗蒙层 */
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7); /* 半透明黑色背景 */
+    z-index: 1000; /* 确保在最上层 */
+    
+    /* 弹性布局实现完美居中 */
+    align-items: center;
+    justify-content: center;
 }
 
-.dark-mode .control-button {
-  background: linear-gradient(135deg, #3949ab, #3f51b5);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+/* 弹窗内容容器 */
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px; /* 最大宽度限制 */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    
+    /* 动画效果 */
+    animation: modalopen 0.3s ease-out;
 }
 
-.dark-mode .control-button:hover {
-  background: linear-gradient(135deg, #3f51b5, #3949ab);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+/* 关闭按钮 */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+/* 弹窗动画 */
+@keyframes modalopen {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+        /* 公告弹窗的滚动条样式 */
+        #announcement-content {
+            max-height: 700px; /* 限制内容区域的最大高度 */
+            overflow-y: auto;  /* 启用垂直滚动条 */
+        }
+
+        #announcement-content::-webkit-scrollbar {
+            width: 8px;
+            transition: all 0.3s ease; /* 滚动条宽度变化过渡 */
+        }
+
+        #announcement-content::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 204, 255, 0.7); /* 荧光淡蓝色 */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.8); /* 增加荧光效果 */
+            transition: all 0.3s ease; /* 滚动条滑块平滑过渡 */
+        }
+
+        #announcement-content::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 204, 255, 1); /* 悬停时更加明亮 */
+            box-shadow: 0 0 15px rgba(0, 204, 255, 1); /* 增强荧光效果 */
+        }
+
+        #announcement-content::-webkit-scrollbar-track {
+            background: #444;
+            border-radius: 10px;
+        }
+
+        /* 滚动平滑效果 */
+        #announcement-content {
+            scroll-behavior: smooth; /* 平滑滚动 */
+        }
+
+        /* 加载动画样式 */
+        .loading-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #00ccff;
+        }
+
+        .loading-indicator .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00ccff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+}
+
+/* 邮箱功能 */
+
+/* 添加在control-menu.css中或页面的样式部分 */
+.notification-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.notification-toast.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dark-mode .notification-toast {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
 }
 
 /* ===== 深色模式 ===== */
@@ -114,63 +248,30 @@
   color: #ffffff;
 }
 
-/* ===== 公告弹窗 ===== */
-.modal {
-  display: none; /* 默认隐藏 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.7); /* 半透明黑色背景 */
-  z-index: 1000; /* 确保在最上层 */
-  
-  /* 弹性布局实现完美居中 */
-  align-items: center;
-  justify-content: center;
+.dark-mode .control-button:hover {
+  background: var(--dark-control-bg-hover);
 }
 
-/* 弹窗内容容器 */
-.modal-content {
-  position: relative;
-  background-color: #fff;
-  margin: auto;
-  padding: 20px;
-  width: 80%;
-  max-width: 600px; /* 最大宽度限制 */
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  
-  /* 动画效果 */
-  animation: modalopen 0.3s ease-out;
+.dark-mode #petals-toggle::after {
+  background: radial-gradient(circle, rgba(255,182,193,0.4) 0%, transparent 70%);
 }
 
-/* 关闭按钮 */
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #aaa;
-  transition: color 0.3s;
+.dark-mode .falling-petals .petal {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
-.close-modal:hover {
-  color: #333;
+/* ===== 公告部分深色模式样式 ===== */
+.dark-mode #announcement-modal {
+  background: var(--dark-modal-bg); /* 深色模式下的背景 */
 }
 
-/* 弹窗动画 */
-@keyframes modalopen {
-  from {
-    opacity: 0;
-    transform: translateY(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.dark-mode #announcement-modal .modal-content {
+  background: var(--dark-modal-content-bg); /* 公告内容区域背景 */
+  color: #ffffff; /* 公告内容文字颜色 */
+}
+
+.dark-mode #announcement-modal .modal-content p {
+  color: #ffffff; /* 确保公告段落文字为白色 */
 }
 
 /* ===== 花瓣按钮特殊样式 ===== */
@@ -239,6 +340,139 @@
   z-index: 999;
 }
 
+ /* 音乐控制按钮的样式 */
+        #music-control button {
+            all: unset;
+            display: contents;
+        }
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+  :root {
+    --control-size: 44px;
+    --control-icon-size: 22px;
+    --menu-gap: 12px;
+  }
+  
+  #control-menu {
+    right: 15px;
+    bottom: 15px;
+  }
+  
+  #music-player {
+    right: calc(var(--control-size) + 20px);
+    bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --control-size: 40px;
+    --control-icon-size: 20px;
+    --menu-gap: 10px;
+  }
+  
+  .petal {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+
+/* ===== 花瓣按钮特殊样式 ===== */
+#petals-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+#petals-toggle::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#petals-toggle.active::after {
+  opacity: 0.6;
+}
+
+/* ===== 花瓣飘落效果 ===== */
+.falling-petals {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.petal {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  border-radius: 50% 0 50% 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    top: -10%;
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    top: 110%;
+    transform: translateX(var(--offset-x)) rotate(360deg);
+  }
+}
+
+/* ===== 音乐播放器 ===== */
+#music-player {
+  position: fixed;
+  right: calc(var(--control-size) + 30px);
+  bottom: 20px;
+  border-radius: 8px;
+  box-shadow: var(--control-shadow);
+  transition: var(--control-transition);
+  overflow: hidden;
+  z-index: 999;
+}
+
+ /* 加载过渡页面样式 */
+      #loadingScreen {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+          text-align: center;
+      }
+
+      .spinner {
+          border: 4px solid rgba(255, 255, 255, 0.3);
+          border-top: 4px solid #3498db;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
 /* ===== 响应式设计 ===== */
 @media (max-width: 768px) {
   :root {
