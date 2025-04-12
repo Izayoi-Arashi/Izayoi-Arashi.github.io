@@ -195,54 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   `;
   document.head.appendChild(styles);
-
-// 公告功能
-        announcementToggle.addEventListener("click", loadAnnouncement);
-
-        function loadAnnouncement() {
-            // 显示加载动画
-            loadingIndicator.style.display = "block";
-            announcementContent.style.display = "none"; // 隐藏公告内容区域
-
-            const announcementUrl = "{{ site.url }}{{ site.baseurl }}{{ site.announcement_path }}?t=" + Date.now();
-            fetch(announcementUrl)
-                .then(response => response.text())
-                .then(text => {
-                    const content = text.replace(/^---[\s\S]*?---/, '').trim();
-                    if (content) {
-                        announcementContent.innerHTML = marked.parse(content);
-                    } else {
-                        announcementContent.innerHTML = '<p class="no-content">暂无公告</p>';
-                    }
-                    // 隐藏加载动画，显示内容
-                    loadingIndicator.style.display = "none";
-                    announcementContent.style.display = "block";
-                    announcementModal.style.display = "block";
-                    document.body.style.overflow = "hidden";
-                })
-                .catch(error => {
-                    announcementContent.innerHTML = `<p class="error">加载失败：${error.message}</p>`;
-                    // 隐藏加载动画，显示内容（加载失败时也显示公告弹窗）
-                    loadingIndicator.style.display = "none";
-                    announcementContent.style.display = "block";
-                    announcementModal.style.display = "block";
-                    document.body.style.overflow = "hidden";
-                });
-        }
-
-        closeModal.addEventListener("click", function() {
-            announcementModal.style.display = "none";
-            document.body.style.overflow = "auto";
-        });
-
-        window.addEventListener("click", function(event) {
-            if (event.target === announcementModal) {
-                announcementModal.style.display = "none";
-                document.body.style.overflow = "auto";
-            }
-        });
-      
- 
+       
       // 响应式调整
       function handleResize() {
           if (window.innerWidth <= 768) {
