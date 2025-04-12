@@ -435,7 +435,9 @@ class WaveAnimator {
   }
 }
 
-new WaveAnimator();
+if (!window.location.pathname.includes("/404/")) {
+    new WaveAnimator();
+}
 
     </script>
     <style>
