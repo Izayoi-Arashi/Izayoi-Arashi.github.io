@@ -36,6 +36,15 @@
   border-radius: 10px;
   backdrop-filter: blur(10px); /* 玻璃效果 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 微软风格的阴影 */
+  opacity: 1; /* 确保菜单默认是可见的 */
+  visibility: visible; /* 默认可见 */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* 平滑的收起/展开动画 */
+}
+
+/* 隐藏菜单 */
+#control-menu.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* 统一按钮样式 */
