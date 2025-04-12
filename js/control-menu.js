@@ -9,11 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const petalsToggle = document.getElementById("petals-toggle");
       const emailCopy = document.getElementById("email-copy");
 
-      const announcementToggle = document.getElementById("announcement-toggle");
-      const announcementModal = document.getElementById("announcement-modal");
-      const closeModal = document.querySelector(".close-modal");
-      const announcementContent = document.getElementById("announcement-content");
-      const loadingIndicator = document.getElementById("loading-indicator");
       // 状态变量
       let isMenuOpen = localStorage.getItem("menu-open") === "true";
       let darkMode = localStorage.getItem("dark-mode");
