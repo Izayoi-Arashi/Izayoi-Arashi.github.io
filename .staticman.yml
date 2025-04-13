@@ -1,0 +1,19 @@
+site:
+  name: "雨缄信笺 | Arashi Blog | 与君远相知,不道云海深"
+  url: "https://arashiizayoi.xin/"
+fields:
+  - name: "昵称"
+    label: "Your Name"
+    type: "text"
+    placeholder: "请输入你的昵称"
+    required: true
+  - name: "电子邮箱"
+    label: "Your Email"
+    type: "email"
+    placeholder: "请输入你的邮箱"
+    required: true
+  - name: "内容"
+    label: "Your Message"
+    type: "textarea"
+    placeholder: "请输入你的留言"
+    required: true
